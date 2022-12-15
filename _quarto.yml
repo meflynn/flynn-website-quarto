@@ -1,5 +1,6 @@
 project:
   type: website
+  output-dir: docs
 
 website:
   title: "Michael Flynn - Political Science, Statistics, and Data Science"
