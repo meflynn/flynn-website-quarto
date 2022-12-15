@@ -1,0 +1,14 @@
+{
+  "hash": "5d1f3960d9cbf81fcef61de9857a651c",
+  "result": {
+    "markdown": "---\ntitle: Test post using brms file\nauthor: Michael Flynn\n---\n\n\nLet's load some brms object files:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\n\nAttaching package: 'dplyr'\n```\n:::\n\n::: {.cell-output .cell-output-stderr}\n```\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n```\n:::\n\n::: {.cell-output .cell-output-stderr}\n```\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n```\n:::\n\n```{.r .cell-code}\nlibrary(brms)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nLoading required package: Rcpp\n```\n:::\n\n::: {.cell-output .cell-output-stderr}\n```\nLoading 'brms' package (version 2.18.0). Useful instructions\ncan be found by typing help('brms'). A more detailed introduction\nto the package is available through vignette('brms_overview').\n```\n:::\n\n::: {.cell-output .cell-output-stderr}\n```\n\nAttaching package: 'brms'\n```\n:::\n\n::: {.cell-output .cell-output-stderr}\n```\nThe following object is masked from 'package:stats':\n\n    ar\n```\n:::\n\n```{.r .cell-code}\nN <- 1e3\n\ndata <- data.frame(x = rnorm(N, 0, 1)) |> \n  mutate(\"y$\" = 1 + 0.5*x)\n\nmodel <- brm(y ~ x,\n             family = gaussian(),\n             data = data,\n             iter = 1000,\n             warmup = 500,\n             backend = \"cmdstanr\",\n             file = here::here(\"test-model\"))\n```\n:::\n\n\nNow let's load the model object\n\n\n::: {.cell}\n\n```{.r .cell-code}\ntest <- readRDS(here::here(\"test-model.rds\"))\n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

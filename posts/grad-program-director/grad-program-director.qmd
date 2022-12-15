@@ -1,0 +1,126 @@
+---
+title: What I learned in my first year as a graduate program director
+author: Michael E. Flynn
+date: '2022-06-06'
+slug: []
+categories:
+  - Academia
+  - teaching
+  - Blogging
+  - PhD
+  - Administration
+  - Graduate School
+tags:
+  - academia
+  - blogging
+  - doctoral degrees
+  - doctorate
+  - jobs
+  - phd
+  - administration
+---
+
+**tl;dr: This post provides a brief overview of some of my biggest takeaways after my first year directing the Security Studies program at Kansas State University. Forging positive working relationships with other rank and file administrators is key, as is institutionalizing lots of the procedures that may have formerly been relegated to post-it notes on a computer monitor.**
+
+
+# Background
+
+I just finished my first year as the director of the Security Studies program here at K-State, and I've learned quite a bit in the last year. This post is an effort to record some of my thoughts on entering into this new role, and hopefully provide some sense of what to expect for others who find themselves taking on a similar job. I think having some knowledge in advance can be a big help, but it will likely be an adjustment regardless, and no matter where you are I expect you'll only be able to adapt to the role by doing it.
+
+Also, some of the usual caveats that limit the relevance of the post:
+
+1. This is an interdisciplinary program run between two departments
+2. We have a steady diet of military students through an institutionalized relationship with the Command and General Staff College
+3. The program has an MA and a PhD component
+
+
+# Prior Experience
+
+Up to this point I really haven't had any kind of "pure" administrative experience. I'd headed some departmental committees in the past, but that really wasn't comparable in any way. The Security Studies program at Kansas State is an interdisciplinary program between History and Political Science. In order to promote greater involvement between the two departments, and to ease the transition into the program directorship, we have an associate director position for the program. I actually started in this role two years ago, and while it's normally supposed to last for three years personnel changes prompted me to step into the directorship after a little less than a year. 
+
+It was a nice stepping stone of sorts, but its responsibilities are pretty sparse compared to the directorship. That should probably change a bit as the onboarding experience can be daunting. I frequently send emails to my predecessor when difficult cases arise, and thankfully he's very generous with his time (even though he's now a department chair). Since we have the position already, and since there's just so much to understand stepping into a role like this, it makes sense to try to ease that transition and promote a bit more involvement by the associate director. This probably isn't a common arrangement in most graduate-level programs, but I expect the fundamental feeling of being pushed into the deep end is more or less the same.
+
+
+# Workload
+
+It's a lot. On paper my time as associate director was only listed as 5% administrative. This year as director it will probably be something like 15-20%. But that's still low balling how much time I devote to the position. 
+
+First, there's a lot of paperwork. Students have to fill out a program of study (a roadmap of sorts, detailing planned coursework and committee members), another form if they want to change committee members, another form if they want to edit their program of study, an application to take their final examinations, and for PhD students a request for an defense examination ballot. Some of this is exceedingly irritating—for example, we don't even have an exam, and yet students are still required to fill this out, and it often leads to errors and causes lots of needless headaches for the students and myself. It's not a bad idea to have the students assemble a basic roadmap, but some of this could be streamlined, if not eliminated altogether. 
+
+As director of the program nearly all of it comes through me at least once, but often up to three times—once as director, once as default program adviser, and once as default committee chair. Because a lot of the roles are assigned by default it's typically up to the director to catch any errors as other faculty are not necessarily well versed in the requirements and process. I definitely wasn't before stepping into this role, and I didn't know what was normal and what was a red flag.
+
+This also assumes that the process goes smoothly the first time. It usually doesn't. The modal student probably submits some of this paperwork 2-3 times before it's all correct. 
+
+Running the admissions process is also a considerable amount of work. Much of this is concentrated around three admissions committee review meetings, but for the director (and to a lesser extent the associate director) we're also fielding a lot of admissions related questions throughout the rest of the year. This can entail just answering questiosn to preliminary reviews of transfer credits.
+
+This aspect of the job is also complicated by our student body. A high proportion of our MA students are active duty  military officers coming through Ft. Leavenworth, and they're usually on very tight schedules. Since they often don't have time between learning that they'll be attending CGSC at Ft. Leavenworth and applying to our program, we often have to conduct interviews in place of traditions letters of recommendation. This also means we have to do some fairly intensive and repeated advising to ensure students don't make mistakes on their schedules or paperwork. This is also true for civilian students, but the tighter timelines for the former group make it even more pressing.
+
+The automated part of the process takes a lot of time. But there's also a lot of work associated with answering student-specific questions, as I touched on above. Often this is about transfer credits or trying to deal with unique situations that might require additional attention. Re transfer credits, student committees are tasked with reviewing proposed credits for suitability and fit. It usually falls on the director to organize this process, but you also frequently need to provide preliminary assessments for students who are trying to understand the process.
+
+Then there are lots of emails or meetings with prospective students who are interested in the program. We get lots of inquiries from civilian and military applicants, and these are two very different populations with very different considerations. Learning those contours takes time. The plus side is that lots of our military applicants are further along in their careers and so they tend to come in very prepared, but it still takes a lot of time to work with each individual student to help them understand the process, and in many cases, to think about their career expectations after leaving the service. 
+
+This is where building a knowledge of the different needs of MA and PhD applicants has been especially important. Lots of our MA students are civilians looking to go on to a PhD program or government work. We also  have lots of MA students who are senior captains or new majors in the Army and maybe have another 6-8 years in uniform (at least) before thinking about what comes next. Most of our PhD students are not going to go on to typical academic jobs, but will probably be looking to secure employment at someplace like the School for Advanced Military Studies.
+
+
+# Relationships
+
+I'll divide section into a couple of different parts as I think they represent very different entities.
+
+## Rank and file administration
+
+Relationships with other rank and file administrators are key. As much as academics complain about the administration side of universities, it's important to recognize that there's a real and meaningful distinction between the kind of upper-level administrative bloat that we often think of when we use "administration" as a pejorative term, and the rank and file administrators who help make the university run. 
+
+Program directors come and go, but these folks have often been in their jobs for a long time and know the relevant processes and options better than I ever will. In my experience they are also typically very willing to help accommodate student needs and can help you as a new program director to navigate the quirks of any given case. 
+
+In our case, we also have a representative agent from the Graduate School who works out at Ft. Leavenworth. She's fantastic, and is often our first point of contact with students who might be interested in our programs. But for her to do her job well she needs the active involvement of program staff. For example, it's not always immediately obvious what we cover in our courses. A representative trying to represent multiple graduate programs will probably need to sit down and discuss the substance of those programs with faculty to better understand what's on offer. That way she's better positioned to sell those programs and provide better guidance to interested students to steer them  towards programs that would be a better fit. 
+
+This specific position is probably unique to our program, but the basic idea is that this kind of communication often falls on program directors.
+
+
+## Upper-level administration
+
+This part is far more fragmented and case-specific. There are lots of senior-level positions that are going to affect you in your time as a program director. These different offices often seem to operated more or less independently of one another and this can frequently cause some headaches.
+
+I came into this position just as we got a new dean of the graduate school/vice provost for graduate education. She's been great and seems to be genuinely interested in helping departments and programs to maintain, and in many cases rebuild, relationships with Ft. Leavenworth. In our case this kind of senior level support has been essential. 
+
+It's also been extremely important to maintain communication to make sure various administrators are getting reliable information on our program. It became clear over the course of this year that the statistics produced by university institutional research was often poorly suited for questions administrators were asking about our program. So making sure your department is keeping reliable enrollment and graduation data can be a good idea. 
+
+But even as one senior administrator might work to support your program, the policies of other offices might work against you. This can be intensely frustrating and create a tremendous amount of uncertainty. In our case, the Security Studies program no longer has its own independent operating funds (it used to). Our former dean didn't seem to have a strategy guiding our college except to collect cuts through attrition. If there was a deeper plan, it was never communicated with us. But this meant that the departments of history and political science lost something like 14 faculty over the last 6-7 years, and many of these people taught courses that were relevant to the program. We've also lost the majority of our funding lines to support graduate teaching/research assistants. These cuts come through our home departments and directly impact the program's ability to recruit and retain students. 
+
+As this was happening, some individuals in the dean's office and in the university's research office have remained strong supporters of the program. They've tried to help our home departments and faculty find sources of funding to help sustain operations.
+
+Ultimately the point there is to never assume that the left hand knows what the right is doing. Different administrators have very different priorities, and your ability to sustain your program is not something that registers for everyone equally. Certain decisions or policies might be bad for your program, for your department, but good for someone else, and there's no guarantee that those decisions or policies will ever be explained to you.
+
+Lots of this might be driven by structural factors beyond any one person's control. Kansas has been coping with cuts to higher ed long before Covid hit. Maybe some strategies or policies would be better/worse at blunting the impacts of these big events, but it might not be any one person's "fault" if resources are scarce. This all depends on where you are. As frustrated as I get I also definitely would not want to be a dean in this environment.
+
+
+
+# Recruiting and Advertising
+
+If you're lucky you work somewhere that receives lots of applications. Maybe this is through reputation alone, or maybe it's through university advertising. But for lots of people you'll probably find that this role entails thinking far more recruitment and advertising than you'd anticipated. 
+
+Some of this might result from cuts to university advertising budgets. But it can also result from increasingly competitive market spaces, particularly as some degree programs open up their online education options and geographic constraints are loosened.
+
+This isn't just a macro-level issue either. Graduate education often involves a much strong interpersonal component than undergraduate education. Especially at the PhD level. Lots of prospective students want to meet to discuss program guidelines and expectations. 
+
+As a program director much of this (again) will probably fall on you. These meetings go a long way towards informing their understanding of procedural issues, but they also inform student views on how willing faculty are to help students work through things. If you're rushing would-be applicants out the door after a few minutes that will probably not send a great signal of how active students are treated. The upside is that it gives you an opportunity to meet potential students early on and help them to make what is an incredibly important and impactful decision—both personally and professionally. I have lots of opinions about graduate education and this gives me an opportunity to share them in a constructive and meaningful way.
+
+
+# Compensation
+
+Let's start by acknowledging that most graduate program directorships are probably not compensated (i.e. paid) positions. But they should be, and that should be the norm. I'll also preface this by saying that this isn't intended to be an exhaustive treatment of this subject and/or its remedies. 
+
+I'm fortunate enough to receive a small stipend for summer salary, but its sustainability is highly uncertain, and to be honest this isn't enough. Academics are often expected to fulfill some service requirements, and maybe some larger administrative requirements. Most of us realize this at some point in graduate school. And on paper this seems like a fine arrangement. 
+
+But all of the stuff highlighted above takes up a ton of time and it cuts into the stuff that you're really getting evaluated and promoted on. It also often extends into summer months when many of us are technically off contract. Sure, on paper that 20% administrative commitment looks manageable, but as I say above, in reality the time you spend on these sorts of responsibilities often extends *far* beyond that. 
+
+It's also frequently not possible to compartmentalize these responsibilities in such a way that will maximize your productivity in other areas. Meetings, in particular, must accommodate student, applicant, or administrators' needs, meaning they  often fall into odd time spaces that break up otherwise solid chunks of time that would be otherwise dedicated to teaching prep, research etc.
+
+Again, this is problematic because these positions take a big bite out of the time available for faculty to focus on teaching and/or research—the things that typically get them promoted (obviously the balance depends on what type of school you're at). These problems are further compounded by the fact that service responsibilities often fall disproportionately on women and people of color. 
+
+Paying people a better administrative stipend for this kind of work is one way to try to address some of these issues. Another way to compensate people who take on more labor-intensive service or administrative burden would be to automatically count time served as the equivalent of some level of research productivity or teaching effort. For example, program directors would automatically receive credit for a publication in a given year when they submit their files for an annual review. These options don't solve all of the problems discussed above, but it's a start, and better than carrying on as is.
+
+
+# Let's wrap it up
+
+Turns out being a program director is a lot of work, and it's probably going to amount to more than whatever your official percentages indicate. Again, none of this is supposed to be an exhaustive discussion of problems and/or solutions. At the very least there's probably some value in commiserating and understanding that you're not alone if you find yourself in a similar position with more responsibilities and very little power/authority to do much that feels meaningful. And hopefully this can help give some folks a heads-up of what to expect if they find themselves in a similar role.

@@ -1,0 +1,37 @@
+project:
+  type: website
+
+website:
+  title: "Michael Flynn - Political Science, Statistics, and Data Science"
+  description: "This is the academic website for Michael E. Flynn, associate professor of political science at Kansas State University."
+  google-analytics: "UA-16400827-1"
+  navbar:
+    right:
+      - href: index.qmd
+        text: Home
+      - href: posts.qmd
+        text: Blog
+      - href: minerva.qmd
+        text: Minerva
+      - href: book.qmd 
+        text: Book
+      - href: software.qmd
+        text: Software
+      - href: teaching.qmd
+        text: Teaching
+      - href: consulting.qmd
+        text: Consulting
+      - href: contact.qmd
+        text: Contact
+
+
+format:
+  html:
+    theme: [cosmo, styles.scss]
+    css: styles.scss
+    toc: true
+    page-layout: article
+    
+
+
+

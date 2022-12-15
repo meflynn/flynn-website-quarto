@@ -1,0 +1,75 @@
+---
+#title: "Michael Flynn"
+#subtitle: "Associate Professor of Political Science <br> Kansas State University"
+---
+
+<br>
+
+::::{.columns}
+
+:::{.column width="45%"}
+
+<div class="profile">
+
+<img class="profile-pic" src="files/media/profile-smaller-2019.png">
+
+<div class="title-name">
+Michael Flynn
+</div>
+
+<div class="title-position">
+Associate Professor of Political Science
+</div>
+
+<div class="title-institution">
+<a href="https://www.k-state.edu/polsci/">Kansas State University</a>
+</div>
+
+
+<div class="social-media-icons">
+
+  <a class="social social-envelope" href="mailto:meflynn@ksu.edu"><i class="fa-solid fa-envelope fa-2xl"></i></a>
+
+  <a class="social social-mastodon" href="https://fosstodon.org/@michaelflynn">{{< fa brands mastodon size=2xl >}}</a>
+  
+  <a class="social social-github" href="https://www.github.com/meflynn">{{< fa brands github size=2xl >}}</a>
+
+  <a class="social social-twitter" href="https://www.twitter.com/flynnpolsci">{{< fa brands twitter size=2xl >}}</a>
+
+  <a class="social icon-cv" href="files/flynn-cv.pdf">CV</a>
+
+</div>
+
+
+
+
+
+</div>
+
+:::
+
+:::{.column width="55%"}
+
+# **About Me**
+
+My name is Michael Flynn. I’m currently an associate professor of political science and director of the security studies program at Kansas State University. My research focuses primarily on the political economy of states’ foreign policy behavior. My peer-reviewed research has appeared in the American Political Science Review, the British Journal of Political Science, International Studies Quarterly, and various other journals. I have also published several blog posts or op-eds in outlets like the Monkey Cage, The Conversation, and Political Violence @ a Glance. My research has also been featured in media outlets like The Economist, Al Jazeera, and Newsweek.
+
+I have recently finished a book project that focuses on the politics of US overseas military deployments. This is forthcoming with Oxford University Press and will be released in October of 2022 and is available for pre-order at Amazon. Click the book image below!
+
+<a href="https://a.co/d/7RKUOO7">
+<img src="files/media/Allen_etal_Beyond_cover_OUP.jpg" style="width: 85%; margin: auto;">
+</a>
+:::
+
+::::
+
+# Research Interests {.unlisted .unnumbered}
+
+Broadly speaking, my research interests include the following subjects and topic areas:
+
+- US Foreign Policy
+- Political Economy of Security
+- Military Deployments
+- Statistical Research Methods
+- Bayesian Modeling
+- Multilevel Modeling
