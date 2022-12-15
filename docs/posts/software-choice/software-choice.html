@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Flynn">
+<meta name="dcterms.date" content="2021-04-22">
+
+<title>Michael Flynn - Political Science, Statistics, and Data Science - On software choice</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-16400827-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<link rel="stylesheet" href="../../styles.scss">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Michael Flynn - Political Science, Statistics, and Data Science</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../minerva.html">
+ <span class="menu-text">Minerva</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../book.html">
+ <span class="menu-text">Book</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html">
+ <span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html">
+ <span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../consulting.html">
+ <span class="menu-text">Consulting</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html">
+ <span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">On software choice</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Blogging</div>
+                <div class="quarto-category">stats</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Michael Flynn </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 22, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#cost" id="toc-cost" class="nav-link active" data-scroll-target="#cost">Cost</a></li>
+  <li><a href="#out-of-date-software" id="toc-out-of-date-software" class="nav-link" data-scroll-target="#out-of-date-software">Out of date software?</a></li>
+  <li><a href="#extended-benefits" id="toc-extended-benefits" class="nav-link" data-scroll-target="#extended-benefits">Extended benefits</a></li>
+  <li><a href="#culture" id="toc-culture" class="nav-link" data-scroll-target="#culture">Culture</a></li>
+  <li><a href="#takeaway" id="toc-takeaway" class="nav-link" data-scroll-target="#takeaway">Takeaway?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>tldr; If Stata or SPSS works well for what you do, that’s great—You should keep using the tool that makes you better at your job! However, as university faculty we’re not just making choices for ourselves, but for the students we teach. And those choices have a lot of knock-on effects. In general I think we should tend to err on the side of lowering barriers to entry for students and providing them with the most flexible tools for the job they want to have, but also the jobs they <em>might</em> have. While R has a lot of problems and quirks, I think it’s the best <em>relative</em> option considering these various factors.</p>
+<p>This post is all about the glories of R. Not really. But maybe kind of? This recent tweet gained some traction and generated a bit of discussion on the subject of proprietary software vs open source alternatives like R:</p>
+<blockquote class="twitter-tweet blockquote">
+<p lang="en" dir="ltr">
+Too many young students are having their time and money wasted by being forced to use out of date tools like SPSS because their professors are scared of the new stuff. There. I said it. <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/python?src=hash&amp;ref_src=twsrc%5Etfw">#python</a> <a href="https://twitter.com/hashtag/datascience?src=hash&amp;ref_src=twsrc%5Etfw">#datascience</a>.
+</p>
+— Keith McNulty (<span class="citation" data-cites="dr_keithmcnulty">@dr_keithmcnulty</span>) <a href="https://twitter.com/dr_keithmcnulty/status/1382870396408627202?ref_src=twsrc%5Etfw">April 16, 2021</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>I’m not going to delve much into the motivations for various faculty avoiding R (or even other alternatives like Python). I don’t necessarily think it’s fear driving people, but more likely they don’t see the utility or think the return on investment is low. But there are two bits that caught my attention that speak to these issues. First, the idea of wasting money. Second, the idea that tools are out of date.</p>
+<p>This post is really primarily about my thoughts on switching from someone who uses R to an R user. I think this is a distinction with a meaningful difference, and it definitely pertains to some of these issues. I went from someone who was trained on and primarily used Stata for all of my work-related modeling (as well as other stuff, like tracking my cat’s weight when he was sick) to someone who uses R for just about everything, from modeling, to writing letters, to building my website. Suffice it to say, I’m currently a big fan.</p>
+<p>What this post is not intended to be is a screed about why R is <em>objectively</em> the best programming language/platform for social scientists. That said, I do think it’s <em>relatively</em> the best. I learned R about a decade ago while I was still using Stata for most of my work, but remained a very casual user and it took me another several years to make the switch. Part of this was because it felt like the learning curve was pretty long and arduous. Even now, there are a lot of things about R that are a massive pain in the ass. For example, the tedious process of updating a particular package when you have five projects up and running, or a package with a given function name masking the identically-named function you <em>really</em> want to call. I’m looking at you <code>{plyr}</code>. Even still, I lose a lot of time dealing with some of these issues, so I completely understand and even share a lot of the frustrations that people have with R. Hence the disclaimer about it not being <em>objectively</em> best. But, <em>relatively</em> I think it has a lot of qualities that are desirable, and even better than, many of the other major software packages used by social scientists. The rest of this post is intended to highlight some of these benefits.</p>
+<section id="cost" class="level1">
+<h1>Cost</h1>
+<p>First, the most basic issue. Stata was always fairly expensive, but in the last year or two they announced that they were switching to an annual subscription model as opposed to the one-time charge for a perpetual license for whatever version you happened to purchase. Even when I started buying Stata as a graduate student in 2007, it was pretty expensive considering that I was making all of 17,000 per year before taxes. For students who are currently looking to purchase Stata Stata SE is running 179 per year for <em>student</em> pricing. The multicore variant is upwards of 375 per year. That’s a lot.</p>
+<p>The upside of R here is clear—it’s free. There <em>can</em> be costs associated with using R and some of the packages you can run across. Querying Google Maps, for example, can incur costs if you run over a certain threshold. But if your goal is primarily to read in data, clean it, and run a linear regression you’re on solid ground.</p>
+<p>Resources for students in many PhD programs have been getting slim for a while now. Particularly at state schools. And while faculty often have limited control over the baseline rate of pay for graduate students at these institutions, one thing we can control is the cost associated with things like books, software, etc. Is $180 going to break the bank for a graduate student? Maybe not, but it’s also lumped in with a lot of other costs that they incurring while in graduate school.</p>
+<p>It’s also not unreasonable to expect that graduate students will need more powerful tools to do the kind of work they’re pursuing. Maybe work that they, or their advisers, are conducting requires more powerful software capabilities. With Stata MP running from about 300-400 per year, that’s a pretty huge cost. While faculty may have funds to pay for this kind of thing, graduate students might not. This creates a kind of capabilities gap between graduate students and faculty in a way that’s nowhere near as evident with alternatives like R. Maybe some departments have licenses to run better versions on multiple lab computers, but this is also a massive expense that many departments may not be in a position to keep up either.</p>
+</section>
+<section id="out-of-date-software" class="level1">
+<h1>Out of date software?</h1>
+<p>This one’s a little trickier. I think it’s <em>kind of</em> true. Running a linear regression is going to be the same, regardless of what you use. If that’s all you’re doing then it doesn’t really matter, and it’s hard to be out of date on this point. But I remember a major motivation for learning R was that Stata’s graphical capabilities were extremely poor compared with the things I was seeing coming out of R. They’ve gotten better for sure. I remember being super excited in 2014 or 2015 when Stata announced that they were <em>finally</em> implementing transparency capabilities. I’ve always enjoyed the data visualization part of the job, so Stata’s lag in implementing capabilities that were long-since standard in R was frustrating. But that’s the thing, while running a regression is the same whether you do it in R, Stata, or SPSS, the ability to effectively communicate that information is not divorced from running the models themselves. The ability to effectively communicate information is a huge part of our jobs, so the inferior quality of data visualization capabilities in some software packages is a big problem.</p>
+<p>The problem with capability lags isn’t limited to data visualization. We see it across the board in modeling capabilities as well. There’s a pretty strong assumption on the part of faculty who get by just fine with a given proprietary software platform that their students will also get by just fine with those capabilities. But this just doesn’t seem realistic. Stata finally implemented Bayesian modeling capabilities with version 15, but these capabilities had been present on other software platforms for a long time. And while Stata did finally enable users to implement Bayesian modeling, these capabilities were seriously limited compared to other packages available through R (e.g.&nbsp;not running multiple chains).</p>
+<p>The point here isn’t that everyone needs to get into Bayesian modeling—that’s just an example—but that if students want to learn about state of the art methods, proprietary software packages often aren’t going to be the place for it. And state of the art here shouldn’t be taken as synonymous with “highly advanced” or “futuristic”. But if and when they’re interests take them into methodological territory that doesn’t overlap perfectly with yours as an adviser the standard of what’s expected may diverge considerably from what’s capable with the tools you assume are fine. When I learned social network analysis I was taught on Pajek. But looking around at what was being published in Political Science and Sociology, it seemed like everyone was using R, not Pajek. While I learned a lot of substantive knowledge, the implementational/computational skills I learned were useless and I had to go back and relearn a lot of material. Not just because of tastes, but because the software just wasn’t capable of estimating the sorts of models that were relevant to my interests. More to the point, the field in practice seemed to have advanced beyond that that particular package was even capable of.</p>
+<p>Having to learn a new software package to implement what I wanted wasn’t the end of the world, but it did create a lot of costs in terms of time and effort to re-learn basic implementation issues that could have been avoided had the person who taught the course been more in line with the state of the art, so to speak. But I get it—Pajek probably worked fine for them for what they were doing. The problem is that wasn’t effective or useful for what was expected of the students they were teaching. The advantage of R in this context is that if you only need to use linear regression for your work, great. But in teaching that material to your students you’re also teaching them the basic language and ecosystem they’ll need to simply install another package that can handle material that is more relevant to their interests. That is, when you’re teaching someone in R they’ll use that environment and language for their basic stats and regression skills, but if their interests take them in directions that diverge from their instructor’s they don’t have to reinvent the wheel by learning a new platform and language. Even if you only ever use frequentist models, it’s a short jump for a student whose research interests take into into multilevel Bayesian modeling with packages like <code>{brms}</code>. I’d even venture to guess that it will be easier for an adviser to keep up with what the student is doing if they’re both working from a shared language as the synatx is largely the same.</p>
+</section>
+<section id="extended-benefits" class="level1">
+<h1>Extended benefits</h1>
+<p>Another advantage of R seems to be that learning it seems to have much greater utility for students who are seeking non-academic jobs. Don’t get me wrong, there are some private firms that definitely use other proprietary software packages, like Stata or SPSS. In our work we’ve dealt with survey firms who send us our data in SPSS file formats. I think that’s bad practice, but the point is the probability of being able to use some of these software packages outside of academia is not 0. That said, use of R and other languages like Python seem to be much more widespread in industry. Again, proceeding from the premise of “I can afford this software and it’s fine for my work” seems faulty when, as instructors and advisers, our role extends beyond what works for us. Not all students are going to end up in academia. Even many of those on the PhD track who aspire to get tenure track jobs will be forced out of the academic job market and into private sector jobs. Not all of them will choose to go into analytics or data science jobs (substantive skills are enormously beneficial, too), but a lot of them will. Combining substantive expertise with methodological skills that are more readily transferable across the academic/industry divide seems like another way to better prepare students for whatever is to come.</p>
+<p>I’d also venture to guess that R makes interdisciplinary collaboration easier. Obviously this isn’t ironclad, but my experience has generally been that different disciplines seem to cluster around particular software packages. While not insurmountable, this certainly raises the cost of conducting collaborative work with people outside of your discipline. Not just learning a new language, but figuring out how to unify workflows based around totally separate software languages and the processes those incentivize can be tricky.</p>
+</section>
+<section id="culture" class="level1">
+<h1>Culture</h1>
+<p>This last one is admittedly more idiosyncratic, but I just find the culture of the broader R community to be far more welcoming and helpful than Stata. To some extent this isn’t surprising. The people contributing to open source software development genuinely like working on what they’re doing. They have to, otherwise they wouldn’t be doing it. It’s not hard to find enthusiastic R users, but I’m not sure the same can be said for alternative platforms. This makes an enormous difference insofar as there is a massive reserve of people who are willing and happy to help when you run into problems.</p>
+<p>But you don’t have to be a superfan of the software you’re using—it’s a tool, a means to an end. But there are other cultural bits that I do think make a difference. I guess I’d label this broadly as “workflow” culture. Again, this sort of thing is present with other software packages. Scott Long’s <em>Workflow of Data Analysis Using Stata</em> was a great resource for managing your workflow and projects. That said, I think the broader culture that has grown up around and along with R is one that is much more cognizant of tying the initially disparate elements of your projects together into a single, unified, workflow. You can see this with the marriage of statistical modeling and writing in RMarkdown, or in the development of different packages used to communicate information through web-based platforms, like <code>{shiny}</code>, <code>{bookdown}</code>, or <code>{pkgdown}</code>, or interfacing easily with GitHub.</p>
+<p>Obviously a lot of this is still up to the individual user. Rather, using R by itself doesn’t automatically make you a better social scientist. It doesn’t automatically make your work more replicable. People can still be bad at their job regardless of what platform they use. What it does do is front-loads a lot of the capabilities and ancillary packages that make these things more visible and accessible. It’s more likely to make you aware that these tools even exist, whereas they tend to be more obscured on platforms like Stata.</p>
+</section>
+<section id="takeaway" class="level1">
+<h1>Takeaway?</h1>
+<p>To reiterate, if Stata or SPSS works well enough for what you do, that’s great—You should keep using the tool that makes you better at your job! However, as university faculty we’re not just making choices for ourselves, but for the students we teach. And those choices have a lot of knock-on effects. In general I think we should tend to err on the side of lowering barriers to entry for students and providing them with the most flexible tools for the job they want to have, but also the jobs they <em>might</em> have. While R has a lot of problems and quirks, I think it’s the best <em>relative</em> option considering these various factors.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
