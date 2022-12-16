@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: docs
+  lib-dir: library
 
 website:
   title: "Michael Flynn - Political Science, Statistics, and Data Science"
@@ -27,8 +28,8 @@ website:
 
 format:
   html:
-    theme: [styles.scss, cosmo]
-    css: styles.scss
+    theme: [library/styles.scss, cosmo]
+    css: library/styles.scss
     toc: true
     page-layout: article
     
