@@ -17,8 +17,12 @@ tags:
   - data science
   - blogging
   - publishing
-draft: true
+draft: false
+execute:
+  eval: false
 ---
+
+**NOTE** Since moving the site to Quarto I've been  having some trouble getting Quarto to render this particular post.  Something to do witht he particular model objects that I read in in the second code chunk. I think the post is still useful, but I'm going to omit the output from the code chunks since it breaks the post. I'll try to follow up with someone smarter than I to see how I can go about fixing things.
 
 **tl;dr: Learn how to make some cool and customizable tables for multinomial logit models using {brms} and {modelsummary}.**
 

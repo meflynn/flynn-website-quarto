@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael E. Flynn">
+<meta name="dcterms.date" content="2022-06-14">
+
+<title>Michael Flynn - Political Science, Statistics, and Data Science - Making tables for multinomial models with {modelsummary} and {brms}</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-16400827-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<link rel="stylesheet" href="../../styles.scss">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Michael Flynn - Political Science, Statistics, and Data Science</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../minerva.html">
+ <span class="menu-text">Minerva</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../book.html">
+ <span class="menu-text">Book</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html">
+ <span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html">
+ <span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../consulting.html">
+ <span class="menu-text">Consulting</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Making tables for multinomial models with {modelsummary} and {brms}</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Academia</div>
+                <div class="quarto-category">Statistics</div>
+                <div class="quarto-category">Models</div>
+                <div class="quarto-category">Publishing</div>
+                <div class="quarto-category">Methods</div>
+                <div class="quarto-category">Data Science</div>
+                <div class="quarto-category">brms</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Michael E. Flynn </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 14, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#multilevel-multinomial-logit-models" id="toc-multilevel-multinomial-logit-models" class="nav-link" data-scroll-target="#multilevel-multinomial-logit-models">Multilevel Multinomial Logit Models</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#customization" id="toc-customization" class="nav-link" data-scroll-target="#customization">Customization</a></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together">Putting it all together</a></li>
+  <li><a href="#whats-left" id="toc-whats-left" class="nav-link" data-scroll-target="#whats-left">What’s left?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p><strong>NOTE</strong> Since moving the site to Quarto I’ve been having some trouble getting Quarto to render this particular post. Something to do witht he particular model objects that I read in in the second code chunk. I think the post is still useful, but I’m going to omit the output from the code chunks since it breaks the post. I’ll try to follow up with someone smarter than I to see how I can go about fixing things.</p>
+<p><strong>tl;dr: Learn how to make some cool and customizable tables for multinomial logit models using {brms} and {modelsummary}.</strong></p>
+<p><strong>UPDATE: Vincent informed me that the most recent version of <code>{modelsummary}</code> relies entirely on the <code>{parameters}</code> package. Apparently the <code>{broom}</code> package will no longer be actively developing. Keep this in mind if you’re trying this approach and get stuck.</strong></p>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>I’m coming off a couple of long projects where we were using a lot of multinomial logit models, and making publication quality tables was a major challenge. Actually, started using {brms} several years ago partly because I had data where we had 1) lots of individuals making choices, 2) those individuals were all grouped in some pretty clear ways, and 3) we were also interested in modeling group-level characteristics that might relate to individuals’ choices. This more or less marked my full transition from Stata to R and from frequentist stats to Bayesian stats.</p>
+<p>Early on the biggest problem I ran into was finding a way to generate tables for multinomial models run using {brms}. Initially most packages didn’t support {brms} and/or developing tables for multilevel/hierarchical models required a lot of extra legwork. Building tables to accommodate choice models was another issue. Taken together, these problems meant that I had to write a lot of extensive code by hand to generate clean Latex tables for the models I was using. The process has, thankfully, become much simpler over the last couple of years.</p>
+<p>First, for those who aren’t familiar {brms} is an amazing package created by <a href="https://paul-buerkner.github.io/brms/">Paul Bürkner</a>. It stands for Bayesian Regression Modeling using Stan, and, as the name suggests, provides users with a convenient front-end for building regression models using Stan as a back end. This is particularly useful for building multilevel models, but also lots of other stuff.</p>
+<p>Second, {modelsummary} is another amazing and ever-expanding package created by <a href="https://vincentarelbundock.github.io/modelsummary/">Vincent Arel-Bundock</a>. This packages does a few different things, but most importantly and prominently it helps users to create excellent tables for summarizing data and building tables for regression output. The package is incredibly flexible, supports dozens of different model types, and Vincent is constantly adding new features.</p>
+<p>Both packages are fantastic. If you’re interested in Bayesian modeling, or just looking for a new and easy way to build tables for whatever modeling package you already use, you should check out one or both of these packages.</p>
+</section>
+<section id="multilevel-multinomial-logit-models" class="level1">
+<h1>Multilevel Multinomial Logit Models</h1>
+<p>Lots of regression models are going to be fairly simple to present in a table format, and there are some fairly easy ways to go about generating those tables. Typically you’ll have a single column per model, and each row of your table will be for a single variable. You might also have some summary statistics for the model at the bottom (think $ N $, $ R^2 $, etc.).</p>
+<p>Multinomial models get a little more complicated because you’ll typically have multiple outcomes. Specifically, you’ll have $k-1 $ columns to present in the table, where $k $ is the number of choices respondents have. In our case we had lots of models where survey respondents offered their assessments of various actors and we condensed those assessments down into four general categories: Positive, Neutral, Negative, and Don’t Know. This means we ultimately ended up with three columns per model, with the “Neutral” response serving as the baseline category against which the others were compared.</p>
+<p>Multilevel models complicate things slightly because you may also have summary statistics for the groups in your data in addition to the general summary statistics for the model.</p>
+<p>Last, Bayesian models and {brms} specifically provide users with a ton of additional information they might want to present beyond the traditional stuff you’d find in frequentist models. Some of this information can take a <em>long</em> time to compile. There’s often going to be an efficiency and transparency tradeoff here, and so you may want to customize what you present in your table. Even if you end up presenting lots of information in the end, having the ability to control what’s in your table at the outset can be really useful as you run the code to make sure the basic output looks right.</p>
+<p>Anyway, the goal here is rather niche, but it’s to talk through the process of building nice and readable tables when we’re using these models and have lots of information to present. {modelsummary} lets us do this, but also requires a bit of additional effort to fully customize our output.</p>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting Started</h1>
+<p>OK, first we’re going to load our libraries. The relevance of some of these is immediately obvious given what I’ve already said, but I’ll talk more about some of the additional packages we need below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parameters)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In addition to loading the libraries we want to load our model objects. In this case I have three models, each with three outcome categories. Each of these ends with a “p1” or a “t1” to denote the reference group for the model’s outcome variable (e.g.&nbsp;if the outcome variable is asking about troops, people, or government).</p>
+<p>Then I’m creating a list object to store the three model objects. Note here that I’m leaving the label for the individual models blank by including the empty quotation marks in the list function. Depending on your situation you can go ahead and name these if you want. In my case it makes more sense to keep them empty because I plan to add a grouping header/title later in the final table and based on how {modelsummary} works including the titles here would create some redundancies in the final output and take up extra horizontal space. If you’re working with HTML output and you have scrollable tables maybe this doesn’t matter, but it can matter a lot for print versions..</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m.c.t1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"files/data-files/m.c.t1.rds"</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>m.c.p1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"files/data-files/m.c.p1.rds"</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>m.c.g1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"files/data-files/m.c.g1.rds"</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list object to store the three separate model objects.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mod.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">" "</span> <span class="ot">=</span> m.c.t1,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">" "</span> <span class="ot">=</span> m.c.p1,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">" "</span> <span class="ot">=</span> m.c.g1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Before we move on, let’s take a quick look at the models and what they look like.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.list[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There’s a lot going on here, but you can see from the summary output that organizing this could be a bit of a bear. We have three outcome categories, lots of categorical variables (some conceptually related), model summary statistics, etc.</p>
+</section>
+<section id="customization" class="level1">
+<h1>Customization</h1>
+<p>The first two chunks are pretty boiler plate, and for lots of types of models you can probably just go on to use {modelsummary} directly and get some nice tables. But this section is going to dive into some of the extra steps required to make the tables look nice and clean, but also to save us a ton of time.</p>
+<p>The big issue that we have to address is that {modelsummary} is going to automatically try to generate lots of different types of goodness-of-fit or model summary statistics for the models you’re including. If this were OLS it would be super quick. But since we’re using {brms} models the defaults can run for a very long time and, depending on your workflow needs, cause some major slowdowns.</p>
+<p>{modelsummary} is using the packages like {tidy}, {parameters}, and {broom} to extract information from the models in your list and to generate a basic data frame with that output that serves as the basis for the final table. Things like WAIC and LOOIC can take a <em>long</em> time to calculate, and depending on your needs you might not want them right way.</p>
+<p>Beyond that, you might just want to customize how the footer of your table looks, what information is included in which places, etc. This is a good way to do that, but it takes a little extra work.</p>
+<p>First, we need to assign a “custom” class to each of the three model objects stored in the <code>mod.list</code> object. Assigning the custom class is going allow us to write some custom {tidy} and {glance} functions that will let us select the specific summary stats and other model info that we want to include.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(mod.list)){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">class</span>(mod.list[[i]]) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"custom"</span>, <span class="fu">class</span>(mod.list[[i]]))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we can write out custom tidy function, appropriately labeled here <code>tidy.custom</code>. Actually, I think you <em>have</em> to name it this so {modelsummary} recognizes that you want to use a custom function.</p>
+<p>There’s a lot going on here, and some of it is going to be specific to the models I’m using as an example.</p>
+<p>First, you create the function, where <code>x</code> is the object placeholder, and <code>conf.level=.95</code> is specifying the default confidence/credible interval threshold. The <code>...</code> just leaves it open for other arguments.</p>
+<p>Next we create an object named <code>out</code> using the {parameters} package. First we start off creating a data frame using this function, then we standardize all of the variable/column names (i.e.&nbsp;make them lower case). So far pretty standard.</p>
+<p>The <code>mutate</code> chunk is where things get more complicated, and where you’ll need to substitute your own model-specific factors. {modelsummary} also has a formula-based argument for helping you to arrange your models in the resulting table, but we need to do a little extra work here to properly identify the outcome variable levels. This is partly a function of the fact that {brms} does some weird things like attaching outcome choices (i.e.&nbsp;the binary outcome variable for the individual equations) as prefixes to each variable name, meaning there are no outcome levels for {parameters} to automatically detect. So we need to create them.</p>
+<p>All I’m going here is using <code>case_when(...)</code> to identify the outcome variable levels/choices and creating a categorical <code>y.level</code> variable containing the full name for each of the choices for the outcome variable. As I mentioned above, those are “Don’t know”, “Negative”, and “Positive” (with “Neutral” as the omitted reference category).</p>
+<p>Next, I take the <code>term</code> column that {parameters} generates, which contains all of the predictor variables, and I remove the outcome level prefixes that {brms} attaches. This way I have two columns with variable names (<code>term</code>) and the outcome variable choice/model equation (i.e.&nbsp;<code>y.level</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tidy method extracts level names into new column</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tidy.custom <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">conf.level=</span>.<span class="dv">95</span>, ...) {                                   <span class="co"># Create function</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">=</span> parameters<span class="sc">::</span><span class="fu">parameters</span>(x, <span class="at">ci=</span>conf.level, <span class="at">verbose=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span>                 <span class="co"># Call {parameters} to pull model parameter info with specified credible interval</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        parameters<span class="sc">::</span><span class="fu">standardize_names</span>(<span class="at">style=</span><span class="st">"broom"</span>) <span class="sc">|&gt;</span>                            <span class="co"># make names lower case</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">y.level =</span> <span class="fu">case_when</span>(<span class="fu">grepl</span>(<span class="st">"mudk"</span>, term) <span class="sc">~</span> <span class="st">"Don't Know"</span>,              <span class="co"># Change outcome level values to plain meaning for output table</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">grepl</span>(<span class="st">"muneg"</span>, term) <span class="sc">~</span> <span class="st">"Negative"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">grepl</span>(<span class="st">"mupos"</span>, term) <span class="sc">~</span> <span class="st">"Positive"</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">term =</span> <span class="fu">gsub</span>(<span class="st">"dk|neg|pos"</span>, <span class="st">""</span>, term))                                 <span class="co"># remove outcome prefix {brms} attaches to variable names</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we can move on to writing a custom function to pull the relevant model and summary statistic information. First, we need to tell <code>glance()</code> to quiet down since it’s going to do lots of stuff we don’t necessarily want it to do right now. I can’t remember if the <code>gof.check</code> lines are necessary at this point (I seem to recall it had no effect one way or the other when I was initially working on this), but I’ll turn those off just to be safe, too.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write custom glance function to extract summary information.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>glance.custom <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ret <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">N =</span> <span class="fu">summary</span>(x)<span class="sc">$</span>nobs)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  ret</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn off GOF stuff</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>gof.check <span class="ot">&lt;-</span> modelsummary<span class="sc">::</span>gof_map</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>gof.check<span class="sc">$</span>omit <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we can move on to using the {parameters} package to full information on the “random” part of our varying intercepts model. We’ll also use this step to include some basic summary information on the models as mentioned above.</p>
+<p>Ultimately the goal here is to generate a clean data frame containing summary information that we want. I’ve included more specific comments in the code chunk below for readers who want to scrutinize each step, but much of this mirrors what we just did with the <code>tidy.custom()</code> function above, it’s just doing it to the “random” or “varying” part of the model rather than the population-level coefficients.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write function to loop over list of models</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">lapply</span>(mod.list, <span class="cf">function</span>(x){</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  temp.sd <span class="ot">&lt;-</span> parameters<span class="sc">::</span><span class="fu">parameters</span>(x, <span class="at">effect =</span> <span class="st">"random"</span>)  <span class="sc">|&gt;</span>                   <span class="co"># start with parameters and pull "random" component of model</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">".*sd.*"</span>, Parameter)) <span class="sc">|&gt;</span>                                       <span class="co"># filter out parameters containing standard deviation info</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">".*persYes.*|.*nonpersYes.*|.*Intercept.*"</span>, Parameter)) <span class="sc">|&gt;</span>     <span class="co"># further filter parameters containing SD info for relevant variables</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(Parameter, Median) <span class="sc">|&gt;</span>                                         <span class="co"># Keep only the Parameter (name) column and the Median column</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Median =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Median, <span class="dv">2</span>)),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">y.level =</span> <span class="fu">case_when</span>(                                                       <span class="co"># Like before, create a y.level column for outcome variable level/equation</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">grepl</span>(<span class="st">".*mudk.*"</span>, Parameter) <span class="sc">~</span> <span class="st">"dk"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">grepl</span>(<span class="st">".*mupos.*"</span>, Parameter) <span class="sc">~</span> <span class="st">"pos"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">grepl</span>(<span class="st">".*muneg.*"</span>, Parameter) <span class="sc">~</span> <span class="st">"neg"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Parameter =</span> <span class="fu">gsub</span>(<span class="st">"_mudk_|_mupos_|_muneg_"</span>, <span class="st">"_"</span>, Parameter)) <span class="sc">|&gt;</span>              <span class="co"># Remove the {brms} prefix from the Parameter column</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> Parameter,                                             <span class="co"># Rearrange  columns from long to wide</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">values_from =</span> Median,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">names_from =</span> y.level) <span class="sc">|&gt;</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Parameter =</span> <span class="fu">case_when</span>(                                                <span class="co"># Rename relevant parameters to appear how you want in text</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">grepl</span>(<span class="st">".*Intercept.*"</span>, Parameter) <span class="sc">~</span> <span class="st">"sd(Intercept)"</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  temp.obs <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(<span class="sc">~</span>Parameter, <span class="sc">~</span>dk, <span class="sc">~</span>neg, <span class="sc">~</span>pos,                       <span class="co"># Create another data frame containing observation count and grouping info</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"N"</span>, <span class="fu">as.character</span>(<span class="fu">nobs</span>(x)), <span class="st">""</span>, <span class="st">""</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Group"</span>, <span class="st">"Country"</span>, <span class="st">""</span>, <span class="st">""</span>,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"</span><span class="sc">\\</span><span class="st"># Groups"</span>, <span class="fu">as.character</span>(<span class="fu">length</span>(<span class="fu">unique</span>(x<span class="sc">$</span>data<span class="sc">$</span>country))), <span class="st">""</span>, <span class="st">""</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  temp.com <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(temp.obs, temp.sd)                                       <span class="co"># Bind two data frames together for consolidated footer data frame</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(temp.com)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Group everything from the three models together</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Also select relevant columns containing information</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>rows.com <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(rows[[<span class="dv">1</span>]], rows[[<span class="dv">2</span>]], rows[[<span class="dv">3</span>]]) <span class="sc">|&gt;</span> </span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>) </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename those columns so they'll match eventual output data frame names</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rows.com) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span>, <span class="st">"col4"</span>, <span class="st">"col5"</span>, <span class="st">"col6"</span>, <span class="st">"col7"</span>, <span class="st">"col8"</span>, <span class="st">"col9"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Great! Next we can start cleaning up the variable names for presenting them in the table, and we can even go a step further to add grouping labels to help readers move between broad categories of predictor variables (e.g.&nbsp;income, age, etc.).</p>
+<p>Here’s we’re going to generate a tribble with the “raw” variable names and the “clean” label for presentation. Note that we have to arrange them in the order in which we want them to appear.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>coef.list <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(<span class="sc">~</span>raw, <span class="sc">~</span>clean,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_contact_persYes"</span>, <span class="st">"Personal Contact: Yes"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_contact_persDontknowDdeclinetoanswer"</span>, <span class="st">"Personal Contact: DK/Decline"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_contact_nonpersYes"</span>, <span class="st">"Network Contact: Yes"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_contact_nonpersDontknowDdeclinetoanswer"</span>, <span class="st">"Network Contact: DK/Decline"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_benefit_persYes"</span>, <span class="st">"Personal Benefit: Yes"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_benefit_persDontknowDdeclinetoanswer"</span>, <span class="st">"Personal Benefit: DK/Decline"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_benefit_nonpersYes"</span>, <span class="st">"Network Benefit: Yes"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_benefit_nonpersDontknowDdeclinetoanswer"</span>, <span class="st">"Network Benefit: DK/Decline"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_age25to34years"</span>, <span class="st">"25-34"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_age35to44years"</span>, <span class="st">"35-44"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_age45to54years"</span>, <span class="st">"45-54"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_age55to64years"</span>, <span class="st">"55-65"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_ageAge65orolder"</span>, <span class="st">"&gt;65"</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_income.5.cat21M40%"</span>, <span class="st">"21-40"</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_income.5.cat41M60%"</span>, <span class="st">"41-60"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_income.5.cat61M80%"</span>, <span class="st">"61-80"</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_income.5.cat81M100%"</span>, <span class="st">"81-100"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_genderFemale"</span>, <span class="st">"Female"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_genderNonMbinary"</span>, <span class="st">"Non-binary"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_genderNoneoftheabove"</span>, <span class="st">"None of the above"</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_minorityYes"</span>, <span class="st">"Minority: Yes"</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_minorityDeclinetoanswer"</span>, <span class="st">"Minoriy: Decline to answer"</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religCatholicism"</span>, <span class="st">"Catholic"</span>,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religChristianityprotestant"</span>, <span class="st">"Protestant"</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religBuddhism"</span>, <span class="st">"Buddhism"</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religHinduism"</span>, <span class="st">"Hindu"</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religIslam"</span>, <span class="st">"Islam"</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religJudaism"</span>, <span class="st">"Judaism"</span>,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religShinto"</span>, <span class="st">"Shinto"</span>,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religMormonism"</span>, <span class="st">"Mormonism"</span>,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religLocal"</span>, <span class="st">"Local Religion"</span>,</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religOther"</span>, <span class="st">"Other"</span>,</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_religDeclinetoanswer"</span>, <span class="st">"Religion: Decline to answer"</span>,</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_ed_z"</span>, <span class="st">"Education"</span>,</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_ideology_z"</span>, <span class="st">"Ideology"</span>,</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_troops_crime_persYes"</span>, <span class="st">"Personal Crime Experience: Yes"</span>,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_1DontknowDdeclinetoanswer"</span>, <span class="st">"Influence 1: DK/Decline"</span>,</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_1Alittle"</span>, <span class="st">"Influence 1: A little"</span>,</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_1Some"</span>, <span class="st">"Influence 1: Some"</span>,</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_1Alot"</span>, <span class="st">"Influence 1: A lot"</span>,</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_2DontknowDdeclinetoanswer"</span>, <span class="st">"Influence 2: DK/Decline"</span>,</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_2Veryative"</span>, <span class="st">"Influence 2: Very negative"</span>,</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_2Negative"</span>, <span class="st">"Influence 2: Negative"</span>,</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_2Positive"</span>, <span class="st">"Influence 2: Positive"</span>,</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_american_inf_2Veryitive"</span>, <span class="st">"Influence 2: Very positive"</span>,</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_basecount_z"</span>, <span class="st">"Base count"</span>,</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_gdp_z"</span>, <span class="st">"GDP"</span>,</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_pop_z"</span>, <span class="st">"Population"</span>,</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_troops_z"</span>, <span class="st">"Troop deployment size"</span>,</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_Intercept"</span>, <span class="st">"Intercept"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we’re going to add a new column that contains the grouping list. Since we’re using lots of categorical predictor variables we want to make sure they’re grouped in a sensible way.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>coef.list <span class="ot">&lt;-</span> coef.list <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*ontact.*"</span>, raw) <span class="sc">~</span> <span class="st">"Contact Status"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*enefit.*"</span>, raw) <span class="sc">~</span> <span class="st">"Economic Benefits"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*age.*"</span>, raw) <span class="sc">~</span> <span class="st">"Age"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*ncome.*"</span>, raw) <span class="sc">~</span> <span class="st">"Income Quintile"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*gender.*"</span>, raw) <span class="sc">~</span> <span class="st">"Gender Identification"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*minority.*"</span>, raw) <span class="sc">~</span> <span class="st">"Minority Self-Identification"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*relig.*"</span>, raw) <span class="sc">~</span> <span class="st">"Religious Identification"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*ed_z.*"</span>, raw) <span class="sc">~</span> <span class="st">"Education"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*ideology_z.*"</span>, raw) <span class="sc">~</span> <span class="st">"Ideology"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*crime.*"</span>, raw) <span class="sc">~</span> <span class="st">"Crime Experience"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*inf_1.*"</span>, raw) <span class="sc">~</span> <span class="st">"American Influence (Amount)"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*inf_2.*"</span>, raw) <span class="sc">~</span> <span class="st">"American Influence (Quality)"</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>           <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Group-Level Variables"</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>         )) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, because we’re dealing with a really wide table we’ll have coefficients with standard errors underneath. This means that each variable name is actually going to take up two lines. So we need to do a little extra here to properly format this bit. I have to admit I think Vincent actually came up with this particular solution as I was puttering with it for a while. So more props to him!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find how long the coefficient list is for the final table hline</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>last.line <span class="ot">&lt;-</span> <span class="fu">length</span>(coef.list[[<span class="dv">1</span>]]) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>coef_map <span class="ot">&lt;-</span> <span class="fu">setNames</span>(coef.list<span class="sc">$</span>clean, coef.list<span class="sc">$</span>raw)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">rle</span>(coef.list<span class="sc">$</span>group)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">setNames</span>(idx<span class="sc">$</span>lengths  <span class="sc">*</span> <span class="dv">2</span>, idx<span class="sc">$</span>values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="putting-it-all-together" class="level1">
+<h1>Putting it all together</h1>
+<p>Finally, we’ve done all of the prep work. Now we can generate the actual table itself! I’m going to change just a couple of things here. Since the output is going to appear on a webpage, I’ll change the “output” argument to HTML. I’ll also delete the <code>save_kable()</code> bit that tells it to save to a latex file, but you can add that in at the end if you want output.</p>
+<p>You can see that we use the <code>last.line</code> values from the previous chunk in that last <code>row_spec()</code> line to tell it where to put an horizontal line.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(mod.list,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">estimate =</span> <span class="st">"{estimate}"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">statistic =</span> <span class="st">"conf.int"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fmt =</span> <span class="dv">2</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">group =</span> term <span class="sc">~</span> model <span class="sc">+</span> y.level,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">gof_map =</span> gof.check,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">coef_map =</span> coef_map,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">add_rows =</span> rows.com,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stars =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">output =</span> <span class="st">"kableExtra"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">caption =</span> <span class="st">"Bayesian multilevel multinomial logistic regressions. Population level effects. </span><span class="sc">\\</span><span class="st">label{tab:contactfull}"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>), <span class="at">font_size =</span> <span class="dv">10</span>, <span class="at">position =</span> <span class="st">"center"</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span>, <span class="st">"US Presence"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"US People"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"US Government"</span> <span class="ot">=</span> <span class="dv">3</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_rows</span>(<span class="at">index =</span> idx, <span class="at">bold =</span> <span class="cn">TRUE</span>, <span class="at">background =</span> <span class="st">"gray"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">hline_after =</span> <span class="cn">TRUE</span>)  <span class="sc">|&gt;</span>  </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(last.line, <span class="at">hline_after =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">width =</span> <span class="st">"5cm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">width =</span> <span class="st">"3cm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"600px"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="whats-left" class="level1">
+<h1>What’s left?</h1>
+<p>There are a few things I’d like to tweak. For example, <code>{modelsummary}</code> adds little slashes before the outcome variable name and inserts the name from the model list before that. I leave the list entries blank to avoid this since horizontal space is a premium.</p>
+<p>Blogdown/hugo is also being a bit frustrating with the final table. I’ve tried making the font larger, but for whatever reason the horizontal scrollbar isn’t working with the kableExtra table in this environment. Not great, but it looks ok for now. Sizing and scale were a littl tough to tweak in Tex files, but I got it more or less where it needed to be by the end. I’m sure someone with a little more skill than me can figure out some of the hiccups.</p>
+<p>There’s way more you can do to cusomtize the output of these tables, particularly in the footer. You might want to add particular model fit or summary statistics, and the <code>glance.custom()</code> function is a great place to specify what you want. Much is possible, but I’m going to stop here for now since it took me something like a month to get this posted.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
