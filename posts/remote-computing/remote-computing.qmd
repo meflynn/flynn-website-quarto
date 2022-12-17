@@ -1,0 +1,64 @@
+---
+title: "Bayesian modeling, speed, and how to run R remotely"
+author: "Michael Flynn"
+description: "This post discusses how you can run R remotely to take advantage of more computing power on machines from a remote location."
+date: "2022-12-18"
+categories:
+  - R
+  - brms
+  - Modeling
+  - Computing
+draft: true
+---
+
+# Background 
+
+I've recently come off a book project that involved running lots of multilevel Bayesian logit models (and some other stuff). At times this could be a pretty time-consuming process---with three outcome variables, each with four categories, and multiple model specifications, the modeling literally took days to complete.
+
+As you might imagine, this experience prompted me to look for ways to speed up run times for my models. Now there are a number of ways to do this. Since we're talking about Bayesian models, including informative or regularizing priors can be one way to speed things up. The models in the book were based on an earlier paper and the former had pretty bad vague priors. Bad in the sense that they were far too vague given the models we were running.
+
+:::{.callout-note}
+A very short and amateurish note on terminology used herein. I *think* these are mostly correct, but comments and suggestions are welcome.
+
+- **Local** refers to your personal computer, whether that be a laptop, office desktop, etc. It's what you're typically working with.
+- **Remote** refers to any "other" machine that you want to access and use from your local machine. For example, a university computing cluster.
+- **CPU** refers to the computer's central processing unit. This is the processor that does most of the computer's calculations, runs programs, etc.
+- **GPU** refers to the computer's graphical processing unit. GPUs typically handle the computing associated with processing visual or graphical information. You might have a strong GPU if you're really into gaming or doing more graphically intensive design work, animation, etc.
+- **Client** refers to software that helps users access files or information from other sources. For example, web browsers are clients that help users find information on the internet, which is stored in a range of different sources.
+- **GUI** refers to a graphical user interface. Here there is a visual element to how users interact with the computer. Think of navigating around on Windows or Mac and using your mouse to click on different icons, move files between little pictures of folders, etc.
+- **CLI** refers to a command line interface. This requires users to enter specific textual commands into a command line prompt with no graphical element. If you're old enough to remember installing computer games by exiting out of windows and moving from the C: drive to the D: drive to run Doom 2, that's a version of this.
+- **FTP** refers to file transfer protocol. Basically this is just a method of transferring files back and forth between a server and a client.
+- **SSH** refers to secure shell protocol. Basically just a method of securely transferring information securely on an unsecured network.
+:::
+
+
+There are a number of other ways you get speed gains, too. [Vectorizing](https://mc-stan.org/docs/2_18/stan-users-guide/vectorization.html) your models is a big one. Since I was primarily using {brms} this involves a little bit of extra programming, and that's a skill that I have to work on developing more moving forward.
+
+These initial solutions focus mostly on better modeling practices, but there are other ways of achieving speed gains that start to (at least to my mind) require users to delve more into computer science. Stan and {brms} allow users to run their models in [parallel](https://mc-stan.org/docs/2_23/stan-users-guide/parallelization-chapter.html), meaning that if users specify multiple chains those chains can be running at the same time (i.e. in parallel). At the most basic level this is pretty easy to implement when setting up a model with {brms}. The user just sets the argument for `cores =` to the desired number of computer processing cores they want to use. 
+
+More recently Stan has implemented a new feature called `threading` that allows for within-chain parallelization, which allows for even faster model run times. You can also (in some cases) draw on [your computer's GPU](https://paul-buerkner.github.io/brms/reference/opencl.html) to speed things up by using {brms}' `opencl` argument, but this only works with some Stan functions.
+
+# Power Up! 
+
+![Vegeta powering up to super saiyan blue](https://media.giphy.com/media/dxld1UBIiGuoh31Fus/giphy.gif){fig-align="center"}
+
+
+There's also a more basic option that's easy to overlook—get a faster computer! This isn't to discount the importance or benefits of learning to program better/more efficiently. This is something that's certainly on my agenda. But there are also often constraints that we face when working on different projects, and we can't do everything at once. Depending on a project's timelines you may need to focus on completing the analysis, and learning new skills always takes some time. Also, as mentioned above, some of the methods of obtaining speed gains aren't always available for a given problem. And even if they are, there's often no guarantee that your available computing power will be sufficient to produce noticeable gains. For example, threading might not be that useful if you don't have many processing cores on your computer.
+
+This was the position I found myself in. I ran most of the book's models on a Dell desktop and a Macbook Pro with an M1 processor. The dilemma I faced was this: The desktop had sufficient memory to take on larger and more complex jobs, but had a fairly slow processor. The M1 on the other hand was much faster, but lacked the memory to take on more complex jobs or post-estimation work.
+
+Finding a more powerful computer might be easier said than done. Getting a computer that's fast enough to run multiple models in parallel can be...expensive, to say the least. But there are other ways to access more powerful machines and borrow processing power for more limited periods when you need it.  So while buying a new machine is nice, it's not strictly necessary. 
+
+Below I'll detail four options that users can explore. Full disclosure—I'm not a computer science person, and my experience with these options is largely as an amateur user who needs them as a convenience in the pursuit of other tasks. Hopefully this serves as a useful starting point, but absolutely talk to someone with more domain knowledge if you want to learn more about specific options.
+
+
+## Use a Cluster
+
+If you work at a larger university (or maybe even a smaller one) the chances are pretty good that the computer science/engineering department folks have a high performance computing cluster. The nice thing about these is that they are often available for use by anyone on campus.
+
+The basic idea here is that you submit specific jobs that you want the cluster to process. These might be tasks that require significant processing speed or maybe more memory than your local machine can provide. 
+
+As an example, Kansas State University's "Beocat" computing cluster is open to K-State faculty. You are first required to create an account. Once that's done you have a personal profile that you can access 
+
+
+

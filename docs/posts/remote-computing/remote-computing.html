@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Flynn">
+<meta name="dcterms.date" content="2022-12-18">
+<meta name="description" content="This post discusses how you can run R remotely to take advantage of more computing power on machines from a remote location.">
+
+<title>Michael E. Flynn - Bayesian modeling, speed, and how to run R remotely</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../library/quarto-nav/quarto-nav.js"></script>
+<script src="../../library/quarto-nav/headroom.min.js"></script>
+<script src="../../library/clipboard/clipboard.min.js"></script>
+<script src="../../library/quarto-search/autocomplete.umd.js"></script>
+<script src="../../library/quarto-search/fuse.min.js"></script>
+<script src="../../library/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../library/quarto-html/quarto.js"></script>
+<script src="../../library/quarto-html/popper.min.js"></script>
+<script src="../../library/quarto-html/tippy.umd.min.js"></script>
+<script src="../../library/quarto-html/anchor.min.js"></script>
+<link href="../../library/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../library/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../library/bootstrap/bootstrap.min.js"></script>
+<link href="../../library/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../library/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-16400827-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<link rel="stylesheet" href="library/styles.scss">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Michael E. Flynn</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../minerva.html">
+ <span class="menu-text">Minerva</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../book.html">
+ <span class="menu-text">Book</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html">
+ <span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html">
+ <span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../consulting.html">
+ <span class="menu-text">Consulting</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Bayesian modeling, speed, and how to run R remotely</h1>
+                  <div>
+        <div class="description">
+          This post discusses how you can run R remotely to take advantage of more computing power on machines from a remote location.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">brms</div>
+                <div class="quarto-category">Modeling</div>
+                <div class="quarto-category">Computing</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Michael Flynn </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 18, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#power-up" id="toc-power-up" class="nav-link" data-scroll-target="#power-up">Power Up!</a>
+  <ul class="collapse">
+  <li><a href="#use-a-cluster" id="toc-use-a-cluster" class="nav-link" data-scroll-target="#use-a-cluster">Use a Cluster</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>I’ve recently come off a book project that involved running lots of multilevel Bayesian logit models (and some other stuff). At times this could be a pretty time-consuming process—with three outcome variables, each with four categories, and multiple model specifications, the modeling literally took days to complete.</p>
+<p>As you might imagine, this experience prompted me to look for ways to speed up run times for my models. Now there are a number of ways to do this. Since we’re talking about Bayesian models, including informative or regularizing priors can be one way to speed things up. The models in the book were based on an earlier paper and the former had pretty bad vague priors. Bad in the sense that they were far too vague given the models we were running.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A very short and amateurish note on terminology used herein. I <em>think</em> these are mostly correct, but comments and suggestions are welcome.</p>
+<ul>
+<li><strong>Local</strong> refers to your personal computer, whether that be a laptop, office desktop, etc. It’s what you’re typically working with.</li>
+<li><strong>Remote</strong> refers to any “other” machine that you want to access and use from your local machine. For example, a university computing cluster.</li>
+<li><strong>CPU</strong> refers to the computer’s central processing unit. This is the processor that does most of the computer’s calculations, runs programs, etc.</li>
+<li><strong>GPU</strong> refers to the computer’s graphical processing unit. GPUs typically handle the computing associated with processing visual or graphical information. You might have a strong GPU if you’re really into gaming or doing more graphically intensive design work, animation, etc.</li>
+<li><strong>Client</strong> refers to software that helps users access files or information from other sources. For example, web browsers are clients that help users find information on the internet, which is stored in a range of different sources.</li>
+<li><strong>GUI</strong> refers to a graphical user interface. Here there is a visual element to how users interact with the computer. Think of navigating around on Windows or Mac and using your mouse to click on different icons, move files between little pictures of folders, etc.</li>
+<li><strong>CLI</strong> refers to a command line interface. This requires users to enter specific textual commands into a command line prompt with no graphical element. If you’re old enough to remember installing computer games by exiting out of windows and moving from the C: drive to the D: drive to run Doom 2, that’s a version of this.</li>
+<li><strong>FTP</strong> refers to file transfer protocol. Basically this is just a method of transferring files back and forth between a server and a client.</li>
+<li><strong>SSH</strong> refers to secure shell protocol. Basically just a method of securely transferring information securely on an unsecured network.</li>
+</ul>
+</div>
+</div>
+<p>There are a number of other ways you get speed gains, too. <a href="https://mc-stan.org/docs/2_18/stan-users-guide/vectorization.html">Vectorizing</a> your models is a big one. Since I was primarily using {brms} this involves a little bit of extra programming, and that’s a skill that I have to work on developing more moving forward.</p>
+<p>These initial solutions focus mostly on better modeling practices, but there are other ways of achieving speed gains that start to (at least to my mind) require users to delve more into computer science. Stan and {brms} allow users to run their models in <a href="https://mc-stan.org/docs/2_23/stan-users-guide/parallelization-chapter.html">parallel</a>, meaning that if users specify multiple chains those chains can be running at the same time (i.e.&nbsp;in parallel). At the most basic level this is pretty easy to implement when setting up a model with {brms}. The user just sets the argument for <code>cores =</code> to the desired number of computer processing cores they want to use.</p>
+<p>More recently Stan has implemented a new feature called <code>threading</code> that allows for within-chain parallelization, which allows for even faster model run times. You can also (in some cases) draw on <a href="https://paul-buerkner.github.io/brms/reference/opencl.html">your computer’s GPU</a> to speed things up by using {brms}’ <code>opencl</code> argument, but this only works with some Stan functions.</p>
+</section>
+<section id="power-up" class="level1">
+<h1>Power Up!</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://media.giphy.com/media/dxld1UBIiGuoh31Fus/giphy.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Vegeta powering up to super saiyan blue</figcaption><p></p>
+</figure>
+</div>
+<p>There’s also a more basic option that’s easy to overlook—get a faster computer! This isn’t to discount the importance or benefits of learning to program better/more efficiently. This is something that’s certainly on my agenda. But there are also often constraints that we face when working on different projects, and we can’t do everything at once. Depending on a project’s timelines you may need to focus on completing the analysis, and learning new skills always takes some time. Also, as mentioned above, some of the methods of obtaining speed gains aren’t always available for a given problem. And even if they are, there’s often no guarantee that your available computing power will be sufficient to produce noticeable gains. For example, threading might not be that useful if you don’t have many processing cores on your computer.</p>
+<p>This was the position I found myself in. I ran most of the book’s models on a Dell desktop and a Macbook Pro with an M1 processor. The dilemma I faced was this: The desktop had sufficient memory to take on larger and more complex jobs, but had a fairly slow processor. The M1 on the other hand was much faster, but lacked the memory to take on more complex jobs or post-estimation work.</p>
+<p>Finding a more powerful computer might be easier said than done. Getting a computer that’s fast enough to run multiple models in parallel can be…expensive, to say the least. But there are other ways to access more powerful machines and borrow processing power for more limited periods when you need it. So while buying a new machine is nice, it’s not strictly necessary.</p>
+<p>Below I’ll detail four options that users can explore. Full disclosure—I’m not a computer science person, and my experience with these options is largely as an amateur user who needs them as a convenience in the pursuit of other tasks. Hopefully this serves as a useful starting point, but absolutely talk to someone with more domain knowledge if you want to learn more about specific options.</p>
+<section id="use-a-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="use-a-cluster">Use a Cluster</h2>
+<p>If you work at a larger university (or maybe even a smaller one) the chances are pretty good that the computer science/engineering department folks have a high performance computing cluster. The nice thing about these is that they are often available for use by anyone on campus.</p>
+<p>The basic idea here is that you submit specific jobs that you want the cluster to process. These might be tasks that require significant processing speed or maybe more memory than your local machine can provide.</p>
+<p>As an example, Kansas State University’s “Beocat” computing cluster is open to K-State faculty. You are first required to create an account. Once that’s done you have a personal profile that you can access</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="meflynn/flynn-website-quarto" data-repo-id="R_kgDOIn9zwQ" data-category="General" data-category-id="DIC_kwDOIn9zwc4CTII2" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

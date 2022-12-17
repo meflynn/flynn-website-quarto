@@ -4,7 +4,7 @@ project:
   lib-dir: library
 
 website:
-  title: "Michael Flynn - Political Science, Statistics, and Data Science"
+  title: "Michael E. Flynn"
   description: "This is the academic website for Michael E. Flynn, associate professor of political science at Kansas State University."
   google-analytics: "UA-16400827-1"
   navbar:
@@ -26,6 +26,10 @@ website:
       - href: consulting.qmd
         text: Consulting
 
+comments: 
+  giscus:
+    repo: meflynn/flynn-website-quarto
+    
 format:
   html:
     theme: [library/styles.scss, cosmo]
