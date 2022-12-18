@@ -44,13 +44,15 @@ $link-color: #268bd2 !default;
   margin-left: 20pt;
   margin-right: 20pt;
   margin-top: 12%;
+  display: flex-grid;
+  flex-wrap: wrap;
 }
 
 
 
 .profile-pic {
   font-family: $font-default;
-  display: flex;
+  display: flex-grid;
   margin-left: auto;
   margin-right: auto;
   justify-content: center;

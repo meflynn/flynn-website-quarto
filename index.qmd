@@ -2,6 +2,7 @@
 #title: "Michael Flynn"
 #subtitle: "Associate Professor of Political Science <br> Kansas State University"
 page-layout: custom
+comments: false
 ---
 
 <div class="landing-page-container">
@@ -73,6 +74,8 @@ Broadly speaking, my research interests include the following subjects and topic
 - Statistical Research Methods
 - Bayesian Modeling
 - Multilevel Modeling
+
+<br>
 
 
 </div>
