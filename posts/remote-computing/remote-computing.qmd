@@ -91,7 +91,7 @@ Only a couple of major notes that I came across. First, make sure your remote (e
 Second, you'll also need something like Git/GitHub set up to help you move projects and files to the remote session. 
 
 
-# Mac Screen Share
+## Mac Screen Share
 
 After playing with Matti's recommendation for a while I came across another even more direct solution—Mac OS' native Screen Sharing app. The only major limitation here that I'm currently aware of is that it requires both the local and remote computers to be Macs. 
 
