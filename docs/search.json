@@ -14,6 +14,34 @@
     "text": "I also offer freelance statistical and data analysis consulting services. I can work with you and your organization on a range of topics, including data collection, research study designs, performance metrics, statistical analyses, and more. For more information please visit my consulting page:\nPrior Analytics, LLC"
   },
   {
+    "objectID": "posts/remote-computing/remote-computing.html",
+    "href": "posts/remote-computing/remote-computing.html",
+    "title": "Bayesian modeling, speed boosts, and how to run R remotely",
+    "section": "",
+    "text": "Tip\n\n\n\nWho is this for? More narrowly, people who are running Bayesian models and are looking for a speed boost. More broadly, anyone who needs more resources than their local machine can offer. Either way, remote options can be a great way to access more power and computing resources."
+  },
+  {
+    "objectID": "posts/remote-computing/remote-computing.html#use-a-cluster",
+    "href": "posts/remote-computing/remote-computing.html#use-a-cluster",
+    "title": "Bayesian modeling, speed boosts, and how to run R remotely",
+    "section": "Use a Cluster",
+    "text": "Use a Cluster\nIf you work at a larger university (or maybe even a smaller one) the chances are pretty good that the computer science/engineering department folks have a high performance computing cluster. The nice thing about these is that they are often available for use by anyone on campus.\nThe basic idea here is that you submit specific jobs that you want the cluster to process. These might be tasks that require significant processing speed or maybe more memory than your local machine can provide.\nAs an example, Kansas State University’s “Beocat” computing cluster is open to K-State faculty. You are first required to create an account. Once that’s done you have a personal profile that you can access and from which you can submit jobs for the cluster. Usually there’s some sort of manager that sorts jobs on the basis of estimated computing needs, duration, etc., so you might have to wait a little while for your models to start, finish, etc. You can also use a desktop client like Cyberduck that provides a GUI through which you can manage files and move them back and forth between your local machine and the cluster.\nI’ll note that I had mixed success with this. R already runs on Beocat, but getting Stan and {brms} properly configured was a chore, and it never quite got here. I reached out for help a couple of times and the Beocat people (while very responsive) were never able to resolve things, so I had to find an alternative."
+  },
+  {
+    "objectID": "posts/remote-computing/remote-computing.html#amazon-web-services",
+    "href": "posts/remote-computing/remote-computing.html#amazon-web-services",
+    "title": "Bayesian modeling, speed boosts, and how to run R remotely",
+    "section": "Amazon Web Services",
+    "text": "Amazon Web Services\nAmazon Web Services is another option. Someone recommended this to me, and I started to look into it but never actually used it. My impression is that is functions much like accessing a university-based cluster. Amazon has a bunch of powerful computers that you can submit jobs to. Unlike your university’s cluster, though, there may be some small fee attached to it. I’m always a bit wary of this sort of arrangement as I don’t trust my up-front estimates of time and resource needs to be accurate, but maybe others with more experience will have more to say."
+  },
+  {
+    "objectID": "posts/remote-computing/remote-computing.html#r-studio-server",
+    "href": "posts/remote-computing/remote-computing.html#r-studio-server",
+    "title": "Bayesian modeling, speed boosts, and how to run R remotely",
+    "section": "R Studio Server",
+    "text": "R Studio Server\nThe first two options rely on accessing fairly substantial computing resources set up by third (second?) parties. But what if your jobs don’t require that much power or time? Can you find more local solutions? Yes.\nLet’s imagine that we have a slower laptop computer and a faster desktop computer located in our office. In this situation we might want to connect the laptop that we’re operating at home or at a coffee shop to the more powerful desktop so we can make the desktop do the more labor-intensive task of running our models.\nThis is the exact situation I now find myself in. I was fortunate enough to apply for a small internal grant for a new desktop and purchased a Mac Studio with the funds. It currently sits in my office on campus. I also often use my Macbook Pro, which as I mentioned previously doesn’t have a ton of memory. It’s fine for writing the models and code, but I don’t want to start a model that is going to suck up all of my memory and processing power, leaving me unable to complete other basic tasks.\nThere are a couple of ways that you can go about this. This first option was very graciously provided by Matti Vuorre in response to a question I posed on Mastodon. It requires that you download and install Tailscale, Docker, and possibly [RStudio Server](https://support–rstudio-com.netlify.app/products/rstudio/download-server/.\nI’ll let people who are interested go ahead and check out Matti’s blog post on the subject because it’s more detailed than I can get into here. Suffice it to say his directions are very clear and I was able to get this approach up and running fairy easily.\nOnly a couple of major notes that I came across. First, make sure your remote (e.g. desktop) computer can’t go to sleep as this will break the connection and you won’t be able to establish/re-establish the connection from your remote location.\nSecond, you’ll also need something like Git/GitHub set up to help you move projects and files to the remote session."
+  },
+  {
     "objectID": "posts/grad-program-director/grad-program-director.html",
     "href": "posts/grad-program-director/grad-program-director.html",
     "title": "What I learned in my first year as a graduate program director",
@@ -186,6 +214,6 @@
     "href": "posts.html",
     "title": "Michael Flynn’s Blog",
     "section": "",
-    "text": "Making tables for multinomial models with {modelsummary} and {brms}\n\n\n\n\n\n\n\n\n\nJun 14, 2022\n\n\nMichael E. Flynn\n\n\n27 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat I learned in my first year as a graduate program director\n\n\n\n\n\n\n\n\n\nJun 6, 2022\n\n\nMichael E. Flynn\n\n\n13 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMilitary Officers Pursuing PhDs: Are Three Years Enough?\n\n\n\n\n\n\n\n\n\nMay 24, 2022\n\n\nMichael E. Flynn\n\n\n16 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat’s the Difference?\n\n\n\n\n\n\n\n\n\nOct 12, 2021\n\n\nMichael E. Flynn\n\n\n9 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHurdle lognormal densities, take II\n\n\n\n\n\n\n\n\n\nJun 11, 2021\n\n\nMichael Flynn\n\n\n4 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOn software choice\n\n\n\n\n\n\n\n\n\nApr 22, 2021\n\n\nMichael Flynn\n\n\n12 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHurdle lognormal distribution densities?\n\n\n\n\n\n\n\n\n\nMar 3, 2021\n\n\nMichael Flynn\n\n\n4 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Bayesian modeling, speed boosts, and how to run R remotely\n\n\n\n\n\n\n\n\n\nDec 18, 2022\n\n\nMichael Flynn\n\n\n12 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMaking tables for multinomial models with {modelsummary} and {brms}\n\n\n\n\n\n\n\n\n\nJun 14, 2022\n\n\nMichael E. Flynn\n\n\n27 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat I learned in my first year as a graduate program director\n\n\n\n\n\n\n\n\n\nJun 6, 2022\n\n\nMichael E. Flynn\n\n\n13 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMilitary Officers Pursuing PhDs: Are Three Years Enough?\n\n\n\n\n\n\n\n\n\nMay 24, 2022\n\n\nMichael E. Flynn\n\n\n16 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat’s the Difference?\n\n\n\n\n\n\n\n\n\nOct 12, 2021\n\n\nMichael E. Flynn\n\n\n9 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHurdle lognormal densities, take II\n\n\n\n\n\n\n\n\n\nJun 11, 2021\n\n\nMichael Flynn\n\n\n4 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOn software choice\n\n\n\n\n\n\n\n\n\nApr 22, 2021\n\n\nMichael Flynn\n\n\n12 min\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHurdle lognormal distribution densities?\n\n\n\n\n\n\n\n\n\nMar 3, 2021\n\n\nMichael Flynn\n\n\n4 min\n\n\n\n\n\n\nNo matching items"
   }
 ]

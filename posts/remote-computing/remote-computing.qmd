@@ -1,15 +1,20 @@
 ---
-title: "Bayesian modeling, speed, and how to run R remotely"
+title: "Bayesian modeling, speed boosts, and how to run R remotely"
 author: "Michael Flynn"
 description: "This post discusses how you can run R remotely to take advantage of more computing power on machines from a remote location."
 date: "2022-12-18"
 categories:
   - R
   - brms
+  - Bayesian Modeling
   - Modeling
   - Computing
-draft: true
+draft: false
 ---
+
+:::{.callout-tip}
+**Who is this for?** More narrowly, people who are running Bayesian models and are looking for a speed boost. More broadly, anyone who needs more resources than their local machine can offer. Either way, remote options can be a great way to access more power and computing resources. 
+:::
 
 # Background 
 
@@ -18,7 +23,7 @@ I've recently come off a book project that involved running lots of multilevel B
 As you might imagine, this experience prompted me to look for ways to speed up run times for my models. Now there are a number of ways to do this. Since we're talking about Bayesian models, including informative or regularizing priors can be one way to speed things up. The models in the book were based on an earlier paper and the former had pretty bad vague priors. Bad in the sense that they were far too vague given the models we were running.
 
 :::{.callout-note}
-A very short and amateurish note on terminology used herein. I *think* these are mostly correct, but comments and suggestions are welcome.
+A very short and amateurish note on terminology used herein. I *think* these are mostly correct, but comments and suggestions are welcome in the space below.
 
 - **Local** refers to your personal computer, whether that be a laptop, office desktop, etc. It's what you're typically working with.
 - **Remote** refers to any "other" machine that you want to access and use from your local machine. For example, a university computing cluster.
@@ -29,6 +34,7 @@ A very short and amateurish note on terminology used herein. I *think* these are
 - **CLI** refers to a command line interface. This requires users to enter specific textual commands into a command line prompt with no graphical element. If you're old enough to remember installing computer games by exiting out of windows and moving from the C: drive to the D: drive to run Doom 2, that's a version of this.
 - **FTP** refers to file transfer protocol. Basically this is just a method of transferring files back and forth between a server and a client.
 - **SSH** refers to secure shell protocol. Basically just a method of securely transferring information securely on an unsecured network.
+- **VPN** refers to a virtual private network. This is a way to provide a secure connection between two or more users/devices over an unsecured network to help prevent people from monitoring content/traffic.
 :::
 
 
@@ -58,7 +64,61 @@ If you work at a larger university (or maybe even a smaller one) the chances are
 
 The basic idea here is that you submit specific jobs that you want the cluster to process. These might be tasks that require significant processing speed or maybe more memory than your local machine can provide. 
 
-As an example, Kansas State University's "Beocat" computing cluster is open to K-State faculty. You are first required to create an account. Once that's done you have a personal profile that you can access 
+As an example, Kansas State University's "Beocat" computing cluster is open to K-State faculty. You are first required to create an account. Once that's done you have a personal profile that you can access and from which you can submit jobs for the cluster. Usually there's some sort of manager that sorts jobs on the basis of estimated computing needs, duration, etc., so you might have to wait a little while for your models to start, finish, etc. You can also use a desktop client like [Cyberduck](https://cyberduck.io/) that provides a GUI through which you can manage files and move them back and forth between your local machine and the cluster.
+
+I'll note that I had mixed success with this. R already runs on Beocat, but getting Stan and {brms} properly configured was a chore, and it never quite got here. I reached out for help a couple of times and the Beocat people (while very responsive) were never able to resolve things, so I had to find an alternative.
+
+
+## Amazon Web Services
+
+[Amazon Web Services](https://aws.amazon.com/?nc2=h_lg) is another option. Someone recommended this to me, and I started to look into it but never actually used it. My impression is that is functions much like accessing a university-based cluster. Amazon has a bunch of powerful computers that you can submit jobs to. Unlike your university's cluster, though, there may be some small fee attached to it. I'm always a bit wary of this sort of arrangement as I don't trust my up-front estimates of time and resource needs to be accurate, but maybe others with more experience will have more to say.
+
+
+## R Studio Server
+
+The first two options rely on accessing fairly substantial computing resources set up by third (second?) parties. But what if your jobs don't require *that* much power or time? Can you find more local solutions? Yes. 
+
+Let's imagine that we have a slower laptop computer and a faster desktop computer located in our office. In this situation we might want to connect the laptop that we're operating at home or at a coffee shop to the more powerful desktop so we can make the desktop do the more labor-intensive task of running our models. 
+
+This is the exact situation I now find myself in. I was fortunate enough to apply for a small internal grant for a new desktop and purchased a Mac Studio with the funds. It currently sits in my office on campus. I also often use my Macbook Pro, which as I mentioned previously doesn't have a ton of memory. It's fine for writing the models and code, but I don't want to start a model that is going to suck up all of my memory and processing power, leaving me unable to complete other basic tasks.
+
+There are a couple of ways that you can go about this. This first option was very graciously [provided by Matti Vuorre](https://mvuorre.github.io/posts/remote-r/) in response to a question I posed on Mastodon. It requires that you download and install [Tailscale](https://tailscale.com/), [Docker](https://www.docker.com/), and possibly [RStudio Server](https://support--rstudio-com.netlify.app/products/rstudio/download-server/.
+
+I'll let people who are interested go ahead and check out Matti's blog post on the subject because it's more detailed than I can get into here. Suffice it to say his directions are very clear and I was able to get this approach up and running fairy easily.
+
+Only a couple of major notes that I came across. First, make sure your remote (e.g. desktop) computer can't go to sleep as this will break the connection and you won't be able to establish/re-establish the connection from your remote location. 
+
+Second, you'll also need something like Git/GitHub set up to help you move projects and files to the remote session. 
+
+
+# Mac Screen Share
+
+After playing with Matti's recommendation for a while I came across another even more direct solution—Mac OS' native Screen Sharing app. The only major limitation here that I'm currently aware of is that it requires both the local and remote computers to be Macs. 
+
+First, download Tailscale (linked above) on the local and remote devices. This will establish a VPN that you can use to connect the two computers securely. The nice thing about Tailscale is that it's super easy to use. Specifically, it can create a menu bar icon where you can easily access the IP addresses of the relevant machines connected to the network. There's also a web-based dashboard that you can use to monitor the devices on the network.
+
+![Screenshot showing the location of the sharing menu in System Settings.](screen-1.png){#fig-screenshot1}
+
+Second, this also requires you to edit some of the security and connection settings on your remote machine. To do this you first open up the System Settings menu, either through the icon on your task bar at the bottom of your screen or by clicking on the Apple icon in the upper left. Then you click on the General menu, and then on sharing over on the right hand side. @fig-screenshot1 shows the locations of these buttons in Mac OS Ventura.
+
+
+![Screenshot showing the security and permissions options that you can change](screen-2.png){#fig-screenshot2}
+
+Once you've navigated to this menu you then need to alter the security settings and permissions. @fig-screenshot2 shows the menu options here that you can change. A couple of these are linked by default, and I can't remember which exactly, but you basically want to enable File Sharing, Remote Login, and Remote Management. You can also limit which profiles can log in to the computer, and you should definitely make sure that the device is still password protected with a solid password. Also note that you do not have to make these adjustments on your local machine. In my case I've only made them on the more powerful machine I want to use remotely. 
+
+![Figure showing the screen sharing IP address menu](screen-3.png){#fig-screenshot3} 
+
+
+Finally, if you type "Screen Sharing" into the finder on your local Mac (e.g. your weaker laptop) and hit Enter it will open a small window where you can enter your remote device's IP address from Tailscale. You can see this in @fig-screenshot3. After you hit "Connect" it will prompt you to log in to the remote device using your user credentials. 
+
+The great thing about this approach is it opens a window that you can use to directly control your remote device from your local screen. This means you can open RStudio and manipulate objects, files, apps, etc., as you normally would. I'm a lazy man, and being able to actually see the content and "use" the more powerful computer directly and without having to makes my life easier.
+
+So far this option has worked great, and provided nobody points out some very obvious and critical security issues (I mean it's definitely possible), I think this will become a staple of my workflow moving forward. That said, my understanding is that this *should* be pretty secure through a couple of mechanisms. First, more recent versions of the Mac OS secure connections when you're using your login information, and keystrokes and mouse movements are all encrypted. Second, Tailscale uses end-to-end encryption and nothing is passed through a cloud-based server of any kind. There are other options that I've come across, like using an ssh tunnel, but this is not a procedure I'm familiar with. Ultimately I'd defer to more computer-savvy people for more suggestions on how to use this method in the most secure way possible.   
+
+
+# Summary
+
+There are a lot of different ways to speed up your Bayesian models. Packages like {brms} and Stan more broadly provide a number of pathways to achieve speed gains. Some of these are through better coding/programming. Others by taking greater advantage of local computing capabilities. While these options are great, it's also possible to speed things up by running your models on a more powerful computer. These aren't really competing options, but it's good to have a sense of the full range of tools available when running these models.
 
 
 
