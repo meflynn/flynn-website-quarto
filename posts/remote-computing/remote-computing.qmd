@@ -82,7 +82,7 @@ Let's imagine that we have a slower laptop computer and a faster desktop compute
 
 This is the exact situation I now find myself in. I was fortunate enough to apply for a small internal grant for a new desktop and purchased a Mac Studio with the funds. It currently sits in my office on campus. I also often use my Macbook Pro, which as I mentioned previously doesn't have a ton of memory. It's fine for writing the models and code, but I don't want to start a model that is going to suck up all of my memory and processing power, leaving me unable to complete other basic tasks.
 
-There are a couple of ways that you can go about this. This first option was very graciously [provided by Matti Vuorre](https://mvuorre.github.io/posts/remote-r/) in response to a question I posed on Mastodon. It requires that you download and install [Tailscale](https://tailscale.com/), [Docker](https://www.docker.com/), and possibly [RStudio Server](https://support--rstudio-com.netlify.app/products/rstudio/download-server/.
+There are a couple of ways that you can go about this. This first option was very graciously [provided by Matti Vuorre](https://mvuorre.github.io/posts/remote-r/) in response to a question I posed on Mastodon. It requires that you download and install [Tailscale](https://tailscale.com/), [Docker](https://www.docker.com/), and possibly [RStudio Server](https://support--rstudio-com.netlify.app/products/rstudio/download-server/).
 
 I'll let people who are interested go ahead and check out Matti's blog post on the subject because it's more detailed than I can get into here. Suffice it to say his directions are very clear and I was able to get this approach up and running fairy easily.
 
