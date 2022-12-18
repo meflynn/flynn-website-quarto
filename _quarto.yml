@@ -32,8 +32,8 @@ comments:
     
 format:
   html:
-    theme: [library/styles.scss, cosmo]
-    css: library/styles.scss
+    theme: [styles.scss, cosmo]
+    css: styles.scss
     toc: true
     page-layout: article
     

@@ -76,7 +76,7 @@ ga('send', {
 </script>
 
 
-<link rel="stylesheet" href="library/styles.scss">
+<link rel="stylesheet" href="styles.scss">
 </head>
 
 <body class="nav-fixed">
@@ -130,20 +130,17 @@ ga('send', {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-layout-custom page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
 
 
 
+<div class="landing-page-container">
 <p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
+<div class="grid">
+<div class="g-col-6 g-col-md.6">
 <div class="profile">
 <p><img class="profile-pic" src="files/media/profile-smaller-2019.png"></p>
 <div class="title-name">
@@ -163,14 +160,13 @@ ga('send', {
 <p><a class="social icon-cv" href="files/flynn-cv.pdf">CV</a></p>
 </div>
 </div>
-</div><div class="column" style="width:55%;">
-<section id="about-me" class="level1">
-<h1><strong>About Me</strong></h1>
+</div>
+<section id="about-me" class="level1 unlisted unnumbered g-col-6 g-col-md.6">
+<h1 class="unlisted unnumbered"><strong>About Me</strong></h1>
 <p>My name is Michael Flynn. I’m currently an associate professor of political science and director of the security studies program at Kansas State University. My research focuses primarily on the political economy of states’ foreign policy behavior. My peer-reviewed research has appeared in the American Political Science Review, the British Journal of Political Science, International Studies Quarterly, and various other journals. I have also published several blog posts or op-eds in outlets like the Monkey Cage, The Conversation, and Political Violence @ a Glance. My research has also been featured in media outlets like The Economist, Al Jazeera, and Newsweek.</p>
 <p>I have recently finished a book project that focuses on the politics of US overseas military deployments. This is forthcoming with Oxford University Press and will be released in October of 2022 and is available for pre-order at Amazon. Click the book image below!</p>
 <p><a href="https://a.co/d/7RKUOO7"> <img src="files/media/Allen_etal_Beyond_cover_OUP.jpg" style="width: 85%; margin: auto;"> </a></p>
 </section>
-</div>
 </div>
 <section id="research-interests" class="level1 unlisted unnumbered">
 <h1 class="unlisted unnumbered">Research Interests</h1>
@@ -183,11 +179,12 @@ ga('send', {
 <li>Bayesian Modeling</li>
 <li>Multilevel Modeling</li>
 </ul>
-
-
 </section>
+</div>
 
-</main> <!-- /main -->
+
+
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -1,15 +1,16 @@
 ---
 #title: "Michael Flynn"
 #subtitle: "Associate Professor of Political Science <br> Kansas State University"
+page-layout: custom
 ---
+
+<div class="landing-page-container">
 
 <br>
 
+:::{.grid}
 
-
-::::{.columns}
-
-:::{.column width="45%"}
+:::{.g-col-6 .g-col-md.6}
 
 <div class="profile">
 
@@ -43,16 +44,13 @@ Associate Professor of Political Science
 </div>
 
 
-
-
-
 </div>
 
 :::
 
-:::{.column width="55%"}
+:::{.g-col-6 .g-col-md.6}
 
-# **About Me**
+# **About Me** {.unlisted .unnumbered}
 
 My name is Michael Flynn. I’m currently an associate professor of political science and director of the security studies program at Kansas State University. My research focuses primarily on the political economy of states’ foreign policy behavior. My peer-reviewed research has appeared in the American Political Science Review, the British Journal of Political Science, International Studies Quarterly, and various other journals. I have also published several blog posts or op-eds in outlets like the Monkey Cage, The Conversation, and Political Violence @ a Glance. My research has also been featured in media outlets like The Economist, Al Jazeera, and Newsweek.
 
@@ -63,7 +61,7 @@ I have recently finished a book project that focuses on the politics of US overs
 </a>
 :::
 
-::::
+:::
 
 # Research Interests {.unlisted .unnumbered}
 
@@ -75,3 +73,6 @@ Broadly speaking, my research interests include the following subjects and topic
 - Statistical Research Methods
 - Bayesian Modeling
 - Multilevel Modeling
+
+
+</div>
