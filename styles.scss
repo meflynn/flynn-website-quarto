@@ -37,17 +37,22 @@ $link-color: #268bd2 !default;
 .profile-container {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
 }
 
-.profile {
+.profile .square:nth-child(1){
   margin-left: 20pt;
   margin-right: 20pt;
   margin-top: 12%;
   display: flex-grid;
   flex-wrap: wrap;
+  order: 1;
 }
 
+.profile-text .square:nth-child(2){
+  order: 2;
+}
 
 
 .profile-pic {
@@ -55,6 +60,7 @@ $link-color: #268bd2 !default;
   display: flex-grid;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 12%;
   justify-content: center;
   border-radius: 50%;
   width: 90%;
