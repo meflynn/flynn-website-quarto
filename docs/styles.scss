@@ -29,6 +29,8 @@ $link-color: #268bd2 !default;
   max-width: 800px;
   display: flex-grid;
   flex-wrap: wrap;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 
@@ -39,11 +41,13 @@ $link-color: #268bd2 !default;
   flex-wrap: wrap;
   width: 100%;
   align-items: flex-start;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .profile .square:nth-child(1){
-  margin-left: 20pt;
-  margin-right: 20pt;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 12%;
   display: flex-grid;
   flex-wrap: wrap;
@@ -52,32 +56,36 @@ $link-color: #268bd2 !default;
 
 .profile-text .square:nth-child(2){
   order: 2;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
 .profile-pic {
   font-family: $font-default;
-  display: flex-grid;
+  display: flex;
   margin-left: auto;
   margin-right: auto;
   margin-top: 12%;
   justify-content: center;
   border-radius: 50%;
-  width: 90%;
+  max-width: 90%;
 }
 
 .title-name {
   font-family: $font-default;
-  font-size: 28pt;
+  font-size: 2.0em;
   text-align: center;
   font-weight: 800;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 0;
   padding-bottom: 0;
 }
 
 .title-position { 
   font-family: $font-default;
-  font-size: 18pt;
+  font-size: 1.6em;
   text-align: center;
   padding-top: -10px;
   margin-top: -10px;
@@ -87,9 +95,11 @@ $link-color: #268bd2 !default;
 
 .title-institution {
   font-family: $font-default;
-  font-size: 18pt;
+  font-size: 1.6em;
   color: $link-color;
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: -10px;
 }
 
@@ -100,6 +110,8 @@ $link-color: #268bd2 !default;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .social {
