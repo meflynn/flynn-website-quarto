@@ -65,12 +65,10 @@ I have recently finished a book project that focuses on the politics of US overs
 </div>
 :::
 
-:::
 
 </div>
 
-
-# Research Interests {.unlisted .unnumbered}
+# **Research Interests** {.unlisted .unnumbered}
 
 Broadly speaking, my research interests include the following subjects and topic areas:
 
@@ -80,6 +78,11 @@ Broadly speaking, my research interests include the following subjects and topic
 - Statistical Research Methods
 - Bayesian Modeling
 - Multilevel Modeling
+
+
+
+:::
+
 
 <br>
 
