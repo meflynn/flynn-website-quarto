@@ -22,7 +22,7 @@ Michael Flynn
 </div>
 
 <div class="title-position">
-Associate Professor of Political Science
+Professor <br> Department of Political Science
 </div>
 
 <div class="title-institution">
@@ -78,8 +78,6 @@ Broadly speaking, my research interests include the following subjects and topic
 - Statistical Research Methods
 - Bayesian Modeling
 - Multilevel Modeling
-
-
 
 :::
 
