@@ -7,6 +7,7 @@ website:
   title: "Michael E. Flynn"
   description: "This is the academic website for Michael E. Flynn, associate professor of political science at Kansas State University."
   google-analytics: "UA-16400827-1"
+  twitter-card: true
   body-header: files/header-code/header-code.html
   navbar:
     background: "#205FA7"
