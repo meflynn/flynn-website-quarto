@@ -38,7 +38,7 @@ Professor <br> Department of Political Science
   
   <a class="social social-github" href="https://www.github.com/meflynn">{{< fa brands github size=2xl >}}</a>
 
-  <a class="social social-twitter" href="https://www.twitter.com/flynnpolsci">{{< fa brands twitter size=2xl >}}</a>
+  <a class="social social-linkedin" href="https://www.linkedin.com/in/michael-e-flynn-29309126/">{{< fa brands linkedin-in size=2xl >}}</a>
 
   <a class="social icon-cv" href="files/flynn-cv.pdf">CV</a>
 
