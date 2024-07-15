@@ -32,6 +32,8 @@ comments:
   giscus:
     repo: meflynn/flynn-website-quarto
     
+include-before-body: files/body-code/statcounter-code-file.html
+
 format:
   html:
     theme: [styles.scss, cosmo]
