@@ -32,14 +32,13 @@ comments:
   giscus:
     repo: meflynn/flynn-website-quarto
     
-include-before-body: files/body-code/statcounter-code-file.html
-
 format:
   html:
     theme: [styles.scss, cosmo]
     css: styles.scss
     toc: true
     page-layout: article
+    include-before-body: files/body-code/statcounter-code-file.html
     
 execute:
   freeze: auto
