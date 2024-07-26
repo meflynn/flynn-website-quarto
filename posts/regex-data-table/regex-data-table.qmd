@@ -230,7 +230,7 @@ The first two lines use the `fill` function to fill in the country code and coun
 
 Next, I want to ensure that every agreement has a "baseline" amendment year so we can expand and reshape the data. To do this, I group the data by individual agreement using the `rowwise()` function. Then I create the `amended_year` variable using the entered into force year and the amended years. We'll come back to this in a second.
 
-```{r cleaning-up, echo=FALSE, eval=FALSE}
+```{r cleaning-up, echo=FALSE, message=FALSE}
 data <- data |> 
   tidyr::fill(ccode, .direction = "down") |> # Fill in the country code
   tidyr::fill(countryname, .direction = "down") |> # Fill in the country name
