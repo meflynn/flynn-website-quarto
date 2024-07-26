@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.545">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Flynn">
+<meta name="dcterms.date" content="2024-07-25">
+<meta name="description" content="A tutorial on how to use regular expressions to turn raw text into a data table.">
+
+<title>Michael E. Flynn - Using regular expressions (regex) to turn raw text into a data table</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../library/quarto-nav/quarto-nav.js"></script>
+<script src="../../library/quarto-nav/headroom.min.js"></script>
+<script src="../../library/clipboard/clipboard.min.js"></script>
+<script src="../../library/quarto-search/autocomplete.umd.js"></script>
+<script src="../../library/quarto-search/fuse.min.js"></script>
+<script src="../../library/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../library/quarto-html/quarto.js"></script>
+<script src="../../library/quarto-html/popper.min.js"></script>
+<script src="../../library/quarto-html/tippy.umd.min.js"></script>
+<script src="../../library/quarto-html/anchor.min.js"></script>
+<link href="../../library/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../library/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../library/bootstrap/bootstrap.min.js"></script>
+<link href="../../library/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../library/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-16400827-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<link rel="stylesheet" href="../../styles.scss">
+<meta name="twitter:title" content="Michael E. Flynn - Using regular expressions (regex) to turn raw text into a data table">
+<meta name="twitter:description" content="A tutorial on how to use regular expressions to turn raw text into a data table.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Michael E. Flynn</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../minerva.html"> 
+<span class="menu-text">Minerva</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../book.html"> 
+<span class="menu-text">Book</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../consulting.html"> 
+<span class="menu-text">Consulting</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Using regular expressions (regex) to turn raw text into a data table</h1>
+                  <div>
+        <div class="description">
+          A tutorial on how to use regular expressions to turn raw text into a data table.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">blogging</div>
+                <div class="quarto-category">data analysis</div>
+                <div class="quarto-category">statistics</div>
+                <div class="quarto-category">foreign-policy</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Michael Flynn </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 25, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#using-regular-expressions-to-extract-data" id="toc-using-regular-expressions-to-extract-data" class="nav-link" data-scroll-target="#using-regular-expressions-to-extract-data">Using Regular Expressions to Extract Data</a>
+  <ul class="collapse">
+  <li><a href="#lets-load-the-data" id="toc-lets-load-the-data" class="nav-link" data-scroll-target="#lets-load-the-data">Let’s load the data</a></li>
+  <li><a href="#splitting-the-data-into-rows" id="toc-splitting-the-data-into-rows" class="nav-link" data-scroll-target="#splitting-the-data-into-rows">Splitting the data into rows</a></li>
+  <li><a href="#extracting-relevant-data" id="toc-extracting-relevant-data" class="nav-link" data-scroll-target="#extracting-relevant-data">Extracting relevant data</a>
+  <ul class="collapse">
+  <li><a href="#country-codes-and-names" id="toc-country-codes-and-names" class="nav-link" data-scroll-target="#country-codes-and-names">Country codes and names</a></li>
+  <li><a href="#agreement-types" id="toc-agreement-types" class="nav-link" data-scroll-target="#agreement-types">Agreement types</a></li>
+  <li><a href="#dates" id="toc-dates" class="nav-link" data-scroll-target="#dates">Dates</a></li>
+  <li><a href="#cleaning-up-the-data" id="toc-cleaning-up-the-data" class="nav-link" data-scroll-target="#cleaning-up-the-data">Cleaning up the data</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+<!-- Default Statcounter code for Michael E. Flynn --
+Political Sc http://www.m-flynn.com -->
+<script type="text/javascript">
+var sc_project=5861296; 
+var sc_invisible=1; 
+var sc_security="850f1a8e"; 
+</script>
+<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async=""></script>
+<noscript><div class="statcounter"><a title="Web Analytics" href="https://statcounter.com/" target="_blank"><img class="statcounter" src="https://c.statcounter.com/5861296/0/850f1a8e/1/" alt="Web Analytics" referrerpolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
+
+
+
+
+<p>files/header-code/header-code.html</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you’re like me, regular expressions (regex) can be a bit confusing and intimidating. But they’re incredibly powerful and can save you a lot of time when working with text data. In this tutorial, I’ll walk you through how to use regex to turn raw text into a data table that can be used to more easily analyze the extracted data. This post assumes you have a basic familiarity with R and RStudio. If you’re new to R, I recommend checking out some other sources like the <a href="https://r4ds.had.co.nz/">R for Data Science</a> book by Hadley Wickham and Garrett Grolemund, or just Googling around until you find something useful.</p>
+</div>
+</div>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>Often times the data that we want to analyze are not in a nice, clean format. They might be buried in a PDF, or spread out across multiple web pages, or even just in a plain text file. In these cases, we need to extract the data from the raw text before we can start analyzing it.</p>
+<p>In the case of web pages, packages like <code>rvest</code> can be super useful for extracting text, or even full tables, from the body of a webpage. In the case of PDF files, packages like <code>pdftools</code> or <code>tabulizer</code> can be really helpful (that said I’ve never had a lot of luck with tabulizer, so do with that what you will).</p>
+<p>In other cases, we might have raw text files containing a mass of text that contains lots of useful and interesting information. The problem, though, is that these formats often aren’t conducive to loading data and analyzing it quickly—instead, we need to do a lot of organizing and cleaning first. This is where regular expressions come in handy. In fact, depending on the methods that you use to extract data from a PDF file, you might find that you need to use regex commands to clean up the extracted text before you can start analyzing it there, too.</p>
+<p>In this example I’m going to walk through a recent case where I needed to extract data from a raw text file. A PhD student brought me some data they wanted to use but didn’t know how to go about getting it into the correct format to analyze. Essentially I had a massive text file and needed to create a data table with the typical row-wise observation and column-wise variable format. I’ll show you how I used regular expressions to turn the raw text into a data table that I could then analyze in R. There are also <strong>lots</strong> of different ways you could go about this, so I’ll talk a little bit about my strategy for deciding how to go about breaking the text up.</p>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting Started</h1>
+<p>First, let’s take a look at the data and the format that we’re dealing with so we can get an idea of what the data actually look like.</p>
+<p>The data that we’re dealing with is a text file containing information on United States Treaties in Force (TIF). The text file is a massive list of treaties, each with a bunch of information about the treaty. Here’s a snapshot of the raw text file in a text editor:</p>
+<div id="fig-datasnapshot1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-datasnapshot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data-snapshot.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-datasnapshot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Snapshot of the raw text file in text editor.
+</figcaption>
+</figure>
+</div>
+<p>This is a useful first step because just looking at the structure of the raw data can give us a few tips to help us get started.</p>
+<p>First, we can see that there are lots of blocks of text separated by line breaks. Each block contains information on a single treaty. We can also see that each block contains a lot of information, but that the information is structured in a way that we can use to extract the data we need. For example, we can see the country name is included near the top of the first block, followed by an all-caps line detailing the type of treaty. Then we see information about the specific treaty agreement, the date it was signed or where notes were exchanged, the date it entered into force, and additional information like unique identification numbers for each agreement.</p>
+<p>But we can also see a few problems. There are some functions that could make this process really easy. The <code>separate</code> family of functions from the <code>tidyr</code> package, for example, could be really useful for splitting the text into columns. But the problem is that the text isn’t structured in a way that makes it easy to use these functions. For example, we don’t have clear or consistent delimiters like a comma or a tab to work with. And while we can use some regular expressions to split columns, the varying order and structure of the agreement text made this especially challenging (though maybe someone who’s better at this could show a clean and quick way to do it, in which case I’ll scream).</p>
+<p>Another problem is that each agreement has a different number of lines of text. This means that we can’t just split the text into rows and columns based on a fixed number of lines or breaks.</p>
+<p>Third, not every treaty has the same information. Some treaties have more information than others. This means that we can’t just split the text into columns based on a fixed number of columns or particular text markers.</p>
+<p>So, given these features of the data we need to find a way to extract the data we need from the text file. This is where regular expressions come in handy.</p>
+</section>
+<section id="using-regular-expressions-to-extract-data" class="level1">
+<h1>Using Regular Expressions to Extract Data</h1>
+<p>In this section I’ll walk through the specific steps that I followed. I’ll preface this by saying that I’m terrible with regular expressions and this took me a few hours to really nail down. I kept running into a few problems that I’ll talk about as we go. But I’ll also say that I found this to be a really fun and rewarding process. It was like solving a puzzle, and I learned a lot more about regular expressions in the process. In fact, every time I work with them it because a little easier (like many things in life).</p>
+<section id="lets-load-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="lets-load-the-data">Let’s load the data</h2>
+<p>OK, so let’s go ahead and load the raw data. Because we’re dealing with a text file that’s not in a nice format, we’ll use the <code>readr</code> package to read the text file into R. Again, note that we can’t use the <code>read_csv</code> function because the data isn’t in a CSV format. Instead, we’ll use the <code>read_file</code> function from the <code>readr</code> package to read the text file into R as one big character string.</p>
+<p>To make it easy, we’ll just call it “string”. We’ll also load the other packages that we’ll be using.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ purrr     1.0.2
+✔ forcats   1.0.0     ✔ tibble    3.2.1
+✔ ggplot2   3.5.1     ✔ tidyr     1.3.1
+✔ lubridate 1.9.3     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<p>Next, take a quick look at the string object to get an idea of what the data look like in this format. I won’t run that here because it’s a massive string, but you can run <code>string</code> in the console to see what it looks like. Again, taking a look reveals some useful information.</p>
+<p>First, if you’re not familiar with reading in text data into R, you’ll probably notice the weird characters like <code>\r</code> and <code>\n</code> that keep popping up. These are special characters that denote some feature of the underlying document that you read in. In this case, they mark line breaks.</p>
+<p>Now I’m not an expert on the genesis of this particular pattern—some files only use <code>\n</code> while files like this use both. <a href="https://stackoverflow.com/questions/1761051/difference-between-n-and-r">This page</a> does a deeper dive on the subject, but the important thing to know is that they’re explicit markers for features of the text that we looked at in <a href="#fig-datasnapshot1" class="quarto-xref">Figure&nbsp;1</a> above. To put it differently, even raw text files use different encoding schemes. Just because you see a line break or a blank line in a text file doesn’t mean there’s nothing there. Even blank spaces have to have some sort of encoding to be read by a computer to tell it that there’s a blank space! Weird!</p>
+<p>Anyway, these markers are a good first place to start. All we’ve done so far is read the file into one massive character string. That means we have 9,000+ agreements all recorded in a single cell, and that just won’t do.</p>
+</section>
+<section id="splitting-the-data-into-rows" class="level2">
+<h2 class="anchored" data-anchor-id="splitting-the-data-into-rows">Splitting the data into rows</h2>
+<p>The next step is going to be splitting the data into separate rows so that each individual agreement is in its own row. We can do this by splitting the string based on the line breaks.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> string <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What I’m doing here is creating a new object named <code>data</code>, since we’re moving from the raw text and this will ultimately be the data that we want to work with.</p>
+<p>The <code>str_split</code> function is from the <code>stringr</code> package, which is part of the <code>tidyverse</code>. The first argument to <code>str_split</code> is the string that we want to split. In this case, we’re splitting the string based on the regular expression <code>\\r\\n\\r\\n</code>. This regular expression tells R to split the string based on the pattern of two line breaks. The <code>\\r</code> and <code>\\n</code> are the special characters that denote line breaks, and the <code>\\r\\n\\r\\n</code> pattern tells R to split the string based on two line breaks in a row.</p>
+<p>Why two in a row? Well, if we look back at <a href="#fig-datasnapshot1" class="quarto-xref">Figure&nbsp;1</a>, we can see that each agreement is separated by a blank line, meaning two line breaks. This is a consistent pattern that we can use to split the string into separate agreements.</p>
+<p>Now let’s take a look to make sure we’re getting separate lines for each agreement. But note that it’s still going to be a character list, so we can’t use the <code>head()</code> function to look at the first few rows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data[[<span class="dv">1</span>]][<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "\r\nA\r\nAFGHANISTAN\r\nCULTURAL EXCHANGES, PROPERTY &amp; COOPERATION\r\nAgreement relating to the exchange of official publications.\r\nExchange of notes at Kabul February 29, 1944. Entered into force February 29, 1944.\r\n58 Stat. 1393; EAS 418; 5 Bevans 3; 106 UNTS 247"
+[2] "Agreement concerning cultural relations. Exchange of notes at Washington June 26, 1958. Entered into force June 26, 1958.\r\n9 UST 997; TIAS 4069; 321 UNTS 67"                                                                                                               
+[3] "Agreement relating to the establishment of a Peace Corps program in Afghanistan.\r\nExchange of notes at Kabul September 6 and 11, 1962. Entered into force September 11, 1962.\r\n13 UST 2100; TIAS 5169; 461 UNTS 169"                                                      </code></pre>
+</div>
+</div>
+<p>Great! We can see that we have three agreements in the first three rows. I’ll give a spoiler here and say that in reality we have 9,000+ agreements and a couple of the individual rows don’t correspond to agreements, but we’re on the right track and this is stuff we can clean up later.</p>
+<p>So let’s go ahead and convert this into a data frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(<span class="at">col.names =</span> <span class="st">"agreement_text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>All we’re doing here is converting the list to a data frame and naming the resulting column “agreement_text”.</p>
+</section>
+<section id="extracting-relevant-data" class="level2">
+<h2 class="anchored" data-anchor-id="extracting-relevant-data">Extracting relevant data</h2>
+<p>Now that we have the data in a data frame, we can start extracting the relevant information from each agreement. This is where regular expressions come in handy.</p>
+<p>I’m going to walk through the code that I used to extract the relevant information from each agreement. I’ll break it down into smaller steps so that it’s easier to follow. That said, there’s lots of information to go over here, so I’ll just give a brief overview of what I’m doing in each step. I’ve included notes for each line, so you can refer to those, too.</p>
+<section id="country-codes-and-names" class="level3">
+<h3 class="anchored" data-anchor-id="country-codes-and-names">Country codes and names</h3>
+<p>The data are structured so that agreements are listed by individual country and agreement type. I want to first break out the individual country information for each agreement, and for that I’m going to use the <code>countrycode</code> package. This is one of the most useful packages around if you work with international relations or comparative politics data.</p>
+<p>The first step will be to generate the correlates of war (COW) country code for each country that appears in the data. The <code>countrycode</code> package is super useful as it will scan the agreement text and match country names it finds there.</p>
+<p>The second step is to identify the country names based on the COW codes we just pulled from the agreement text. We also want to remove any that read “United States” because we know that these are all US agreements with other countries, and so any of those matches are just incidental and we can replace them with missing values (i.e.&nbsp;<code>NA</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ccode =</span> countrycode<span class="sc">::</span><span class="fu">countrycode</span>(agreement_text, <span class="at">origin =</span> <span class="st">"country.name"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">destination =</span> <span class="st">"cown"</span>), <span class="co"># Extract the country code from the agreement text</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ccode =</span> <span class="fu">case_when</span>( <span class="co"># Remove the United States. countrycode picked it up from agreement text.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>          ccode <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="cn">NA</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> ccode</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">countryname =</span> countrycode<span class="sc">::</span><span class="fu">countrycode</span>(ccode, <span class="at">origin =</span> <span class="st">"cown"</span>, <span class="co"># create standardized country name variable</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">destination =</span> <span class="st">"country.name"</span>),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">countryname =</span> <span class="fu">case_when</span>( <span class="co"># Remove the United States. countrycode picked it up from agreement text.</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>          countryname <span class="sc">==</span> <span class="st">"United States"</span> <span class="sc">~</span> <span class="cn">NA</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> countryname</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="agreement-types" class="level3">
+<h3 class="anchored" data-anchor-id="agreement-types">Agreement types</h3>
+<p>All of the agreements belong to different classes of agreements, depending on the specific issue areas they address. For example, some pertain to defense, others to cultural issues, and some to economics and finance. As with the country names, agreements are organized by type, so we can pull the relevant text from the <code>agreement_text</code> column.</p>
+<p>This part is trickier, and it took me a lot of trial and error. But, from looking at the raw data we can see that the agreement type is always written out in all capital letters. Again, a super useful detail!</p>
+<p>The <code>str_extract</code> function is super useful here. I’m using it to extract the parts of the <code>agreement_text</code> column that match the provided regular expression. In this case, we want to tell it to look for all of the capital letters at the beginning of the string (i.e.&nbsp;the <code>agreement_text</code> cell). More specifically, we’ll use it within the <code>mutate()</code> function to create a new column called <code>type</code> that contains the extracted agreement type.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"^[A-ZA-Z</span><span class="sc">\\</span><span class="st">sA-Z</span><span class="sc">\\</span><span class="st">s</span><span class="sc">\\</span><span class="st">W]*</span><span class="sc">\\</span><span class="st">b"</span>), <span class="co"># Extract the type of agreement</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The regular expression I’m using here is <code>^[A-ZA-Z\\sA-Z\\s\\W]*\\b</code>. This is a bit complicated, but it’s basically doing the following:</p>
+<ol type="1">
+<li><code>^</code> - This tells R to start looking at the beginning of the string.</li>
+<li><code>[A-ZA-Z\\sA-Z\\s\\W]*</code> - This tells R to look for any number of capital letters (i.e.&nbsp;<code>A-Z</code>), any number of capital letters followed by spaces (i.e.&nbsp;<code>A-Z\\s</code>), and any number of capital letters followed by a space <em>and</em> special characters like punctuation marks (i.e.&nbsp;<code>A-Z\\s\\W</code>). The <code>*</code> means that it can match zero or more of these characters.</li>
+<li><code>\\b</code> - This tells R to stop looking when it reaches a word boundary. This is important because we don’t want to match any additional characters that might come after the agreement type. If we omit this part then we also end up picking up the first capital letter of the next chunk of text.</li>
+</ol>
+<p>It’s important to know that you can write this out in different ways that will all yield the same result. I found this to be a more efficient way to do it than my first pass, but there are other ways to write the regular expression that will also work. For example, you could also write it as <code>^[A-Z]*(?:[A-Z ]*[A-Z \\W]*[A-Z])?\\b</code>. This is a little more complicated, but it should produce the same results.</p>
+</section>
+<section id="dates" class="level3">
+<h3 class="anchored" data-anchor-id="dates">Dates</h3>
+<p>The next bit of information that we want to extract is the dates associated with each agreement. This includes the date that the agreement was signed or where there was an exchange of diplomatic notes, the date that it entered into force, and any dates where the agreement might have been amended.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">exchange =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"Exchange of.*</span><span class="sc">\\</span><span class="st">."</span>), <span class="co"># Extract the exchange of notes date</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">exchange_year =</span> <span class="fu">str_extract</span>(exchange, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>), <span class="co"># Extract the year of the exchange of notes</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">signed =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"Signed.*</span><span class="sc">\\</span><span class="st">."</span>), <span class="co"># Extract the signed date</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">signed_year =</span> <span class="fu">str_extract</span>(signed, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>), <span class="co"># Extract the year of the signed date</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">entered_force =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"Entered.*</span><span class="sc">\\</span><span class="st">.|Entered*</span><span class="sc">\\</span><span class="st">;"</span>), <span class="co"># Notice some entries have effective date, which is different from entered into force.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">entered_force_year =</span> <span class="fu">str_extract</span>(entered_force, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>), <span class="co"># Extract the year of the entered into force date</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">amended =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"(.*Amendment.*)(?&lt;=Amendment)(?s)(.*$)"</span>), <span class="co"># Extract the amendment text</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">amended_year =</span> <span class="fu">str_extract_all</span>(amended, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">,</span><span class="sc">\\</span><span class="st">s)</span><span class="sc">\\</span><span class="st">d{4}"</span>) <span class="co"># Extract the version number using amended dates</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is a bit clunky, and I’m sure that someone who is better at regular expressions could do this more efficiently. But the basic idea is that we’re using the <code>str_extract</code> function to extract the relevant dates from the <code>agreement_text</code> column.</p>
+<p>For each date type I’m essentially performing the following steps. We can look at the exchange of notes year as an example:</p>
+<ol type="1">
+<li><code>Exchange of.*\\.</code> - This regular expression tells R to look for the text “Exchange of” followed by any number of characters and ending with a period. This will match the entire sentence that contains the exchange of notes date.</li>
+<li><code>\\d{4}</code> - This regular expression tells R to look for a four-digit number. This will match the year of the exchange of notes date.</li>
+</ol>
+<p>The other date types are extracted in a similar way. The only difference is that the regular expressions are tailored to match the specific text patterns that correspond to each date type.</p>
+<p>What’s clunky about this method is that I first extract the full string that corresponds to each date that we’re interested in. For example, I first extract the full sentence that contains “Exchange of notes…” and then extract the year from that individual sentence. I’ve tried other methods, like using the lookaround operators and non-capture groupings, to try to pull the years from sentences containing certain phrases, but I haven’t had much luck getting it to work. I’m sure there’s a more efficient way to do this, but this is what I came up with.</p>
+<p>Another tricky bit concerns the amendment years. some agreements are never amended. Some only once. Others multiple times. So I’m using the <code>str_extract_all</code> function to extract all of the years that appear in the <code>amended</code> column. This will return a list of years for each agreement in the amended cell, which we can then unnest to create a unique row for each year. But this also requires us to create a value for the starting year of <em>every</em> agreement if we’re interested in tracking the version or iteration of any given agreement.</p>
+</section>
+<section id="cleaning-up-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning-up-the-data">Cleaning up the data</h3>
+<p>The last step is to clean up the data. The biggest step here is to finish organizing the agreements according to amendment iteration and filling in the country names, agreement types, etc. This also involves removing any leading white spaces or punctuation marks from the date columns and converting the year columns to numeric encoding. It also involves removing any rows that have empty agreement text or missing version numbers.</p>
+<p>The first two lines use the <code>fill</code> function to fill in the country code and country name columns. This is necessary because the country code and country name are only listed once for each country, but we want them to be listed for each agreement. The <code>fill</code> function fills in the missing values based on the previous non-missing value.</p>
+<p>Next, I want to ensure that every agreement has a “baseline” amendment year so we can expand and reshape the data. To do this, I group the data by individual agreement using the <code>rowwise()</code> function. Then I create the <code>amended_year</code> variable using the entered into force year and the amended years. We’ll come back to this in a second.</p>
+<p>The next two lines in the <code>mutate()</code> function just clean up the agreement type variable by removing the country name from the type. This is necessary because the country name is included in the agreement type for some agreements. The <code>str_remove</code> function is used to remove the country name from the agreement type and then we also recode empty rows <code>NA</code> if there’s no agreement type. This is an artifact of some lines having no agreement listed, but they’re given their own row because of a white space or line break. Next we ungroup the data and we fill the agreement type down.</p>
+<p>The only real important line left in this code is the <code>unnest(amended_year)</code> function. This function is used to unnest the <code>amended_year</code> column. Remember the cells that contained the list values for every year that an agreement was amended? Well we want a separate line for each of those amended versions of the agreement. If you’re familiar with IR data, you can think of this in a similar way to thinking about country-year data. We might be interested in when or why an agreement changes, so we want to break that out into separate rows. This is what the <code>unnest</code> function does. It takes a list column and creates a new row for each value in the list.</p>
+<p>This is also why we wanted to make sure we had at least one year listed in this column, even if an agreement was never actually amended—it ensures that once we unnest the data on the <code>amended_year</code> column we have a unique row for each agreement (even those that were never amended).</p>
+<p>If you look at the data in your viewer now, you should see a nice country-agreement-year data set that you can use to analyze the agreements. Cool beans.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="meflynn/flynn-website-quarto" data-repo-id="R_kgDOIn9zwQ" data-category="General" data-category-id="DIC_kwDOIn9zwc4CTII2" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/regex-data-table/regex-data-table.html",
       "/posts/remote-computing/remote-computing.html",
       "/posts/tables-modelsummary-brms/tables-modelsummary-brms.html",
       "/posts/grad-program-director/grad-program-director.html",

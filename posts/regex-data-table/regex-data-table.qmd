@@ -1,0 +1,270 @@
+---
+title: "Using regular expressions (regex) to turn raw text into a data table"
+author: "Michael Flynn"
+date: "2024-07-25"
+description: "A tutorial on how to use regular expressions to turn raw text into a data table."
+categories:
+  - blogging
+  - data analysis
+  - statistics
+  - foreign-policy
+tags:
+  - blogging
+  - stats
+  - regex
+  - data analysis
+word-count:
+format:
+  html:
+    code-overflow: wrap
+execution:
+  warning: false
+  message: false
+  echo: false
+---
+
+:::{.callout-tip}
+If you're like me, regular expressions (regex) can be a bit confusing and intimidating. But they're incredibly powerful and can save you a lot of time when working with text data. In this tutorial, I'll walk you through how to use regex to turn raw text into a data table that can be used to more easily analyze the extracted data. This post assumes you have a basic familiarity with R and RStudio. If you're new to R, I recommend checking out some other sources like the [R for Data Science](https://r4ds.had.co.nz/) book by Hadley Wickham and Garrett Grolemund, or just Googling around until you find something useful.
+:::
+
+# Background
+
+Often times the data that we want to analyze are not in a nice, clean format. They might be buried in a PDF, or spread out across multiple web pages, or even just in a plain text file. In these cases, we need to extract the data from the raw text before we can start analyzing it. 
+
+In the case of web pages, packages like `rvest` can be super useful for extracting text, or even full tables, from the body of a webpage. In the case of PDF files, packages like `pdftools` or `tabulizer` can be really helpful (that said I've never had a lot of luck with tabulizer, so do with that what you will).
+
+In other cases, we might have raw text files containing a mass of text that contains lots of useful and interesting information. The problem, though, is that these formats often aren't conducive to loading data and analyzing it quickly—instead, we need to do a lot of organizing and cleaning first. This is where regular expressions come in handy. In fact, depending on the methods that you use to extract data from a PDF file, you might find that you need to use regex commands to clean up the extracted text before you can start analyzing it there, too.
+
+In this example I'm going to walk through a recent case where I needed to extract data from a raw text file. A PhD student brought me some data they wanted to use but didn't know how to go about getting it into the correct format to analyze. Essentially I had a massive text file and needed to create a data table with the typical row-wise observation and column-wise variable format. I'll show you how I used regular expressions to turn the raw text into a data table that I could then analyze in R. There are also **lots** of different ways you could go about this, so I'll talk a little bit about my strategy for deciding how to go about breaking the text up.
+
+
+# Getting Started
+
+First, let's take a look at the data and the format that we're dealing with so we can get an idea of what the data actually look like.
+
+The data that we're dealing with is a text file containing information on United States Treaties in Force (TIF). The text file is a massive list of treaties, each with a bunch of information about the treaty. Here's a snapshot of the raw text file in a text editor:
+
+![Snapshot of the raw text file in text editor.](data-snapshot.jpg){#fig-datasnapshot1}
+
+This is a useful first step because just looking at the structure of the raw data can give us a few tips to help us get started. 
+
+First, we can see that there are lots of blocks of text separated by line breaks. Each block contains information on a single treaty. We can also see that each block contains a lot of information, but that the information is structured in a way that we can use to extract the data we need. For example, we can see the country name is included near the top of the first block, followed by an all-caps line detailing the type of treaty. Then we see information about the specific treaty agreement, the date it was signed or where notes were exchanged, the date it entered into force, and additional information like unique identification numbers for each agreement.
+
+But we can also see a few problems. There are some functions that could make this process really easy. The `separate` family of functions from the `tidyr` package, for example, could be really useful for splitting the text into columns. But the problem is that the text isn't structured in a way that makes it easy to use these functions. For example, we don't have clear or consistent delimiters like a comma or a tab to work with. And while we can use some regular expressions to split columns, the varying order and structure of the agreement text made this especially challenging (though maybe someone who's better at this could show a clean and quick way to do it, in which case I'll scream).
+
+Another problem is that each agreement has a different number of lines of text. This means that we can't just split the text into rows and columns based on a fixed number of lines or breaks. 
+
+Third, not every treaty has the same information. Some treaties have more information than others. This means that we can't just split the text into columns based on a fixed number of columns or particular text markers.
+
+So, given these features of the data we need to find a way to extract the data we need from the text file. This is where regular expressions come in handy.
+
+
+# Using Regular Expressions to Extract Data
+
+In this section I'll walk through the specific steps that I followed. I'll preface this by saying that I'm terrible with regular expressions and this took me a few hours to really nail down. I kept running into a few problems that I'll talk about as we go. But I'll also say that I found this to be a really fun and rewarding process. It was like solving a puzzle, and I learned a lot more about regular expressions in the process. In fact, every time I work with them it because a little easier (like many things in life). 
+
+## Let's load the data
+
+OK, so let's go ahead and load the raw data. Because we're dealing with a text file that's not in a nice format, we'll use the `readr` package to read the text file into R. Again, note that we can't use the `read_csv` function because the data isn't in a CSV format. Instead, we'll use the `read_file` function from the `readr` package to read the text file into R as one big character string. 
+
+To make it easy, we'll just call it "string". We'll also load the other packages that we'll be using.
+
+```{r load-text-file}
+#| echo: false
+#| 
+library(readr)
+library(stringr)
+library(tidyverse)
+library(countrycode)
+
+string <- readr::read_file(here::here("posts/regex-data-table/TIF-2020-Full-website-view.txt"))
+
+```
+
+Next, take a quick look at the string object to get an idea of what the data look like in this format. I won't run that here because it's a massive string, but you can run `string` in the console to see what it looks like. Again, taking a look reveals some useful information.
+
+First, if you're not familiar with reading in text data into R, you'll probably notice the weird characters like `\r` and `\n` that keep popping up. These are special characters that denote some feature of the underlying document that you read in. In this case, they mark line breaks. 
+
+Now I'm not an expert on the genesis of this particular pattern—some files only use `\n` while files like this use both. [This page](https://stackoverflow.com/questions/1761051/difference-between-n-and-r) does a deeper dive on the subject, but the important thing to know is that they're explicit markers for features of the text that we looked at in @fig-datasnapshot1 above. To put it differently, even raw text files use different encoding schemes. Just because you see a line break or a blank line in a text file doesn't mean there's nothing there. Even blank spaces have to have some sort of encoding to be read by a computer to tell it that there's a blank space! Weird!
+
+Anyway, these markers are a good first place to start. All we've done so far is read the file into one massive character string. That means we have 9,000+ agreements all recorded in a single cell, and that just won't do.
+
+## Splitting the data into rows
+
+The next step is going to be splitting the data into separate rows so that each individual agreement is in its own row. We can do this by splitting the string based on the line breaks. 
+
+```{r split-rows}
+data <- string |>
+  stringr::str_split("\\r\\n\\r\\n") 
+```
+
+What I'm doing here is creating a new object named `data`, since we're moving from the raw text and this will ultimately be the data that we want to work with.
+
+The `str_split` function is from the `stringr` package, which is part of the `tidyverse`. The first argument to `str_split` is the string that we want to split. In this case, we're splitting the string based on the regular expression `\\r\\n\\r\\n`. This regular expression tells R to split the string based on the pattern of two line breaks. The `\\r` and `\\n` are the special characters that denote line breaks, and the `\\r\\n\\r\\n` pattern tells R to split the string based on two line breaks in a row.
+
+Why two in a row? Well, if we look back at @fig-datasnapshot1, we can see that each agreement is separated by a blank line, meaning two line breaks. This is a consistent pattern that we can use to split the string into separate agreements.
+
+Now let's take a look to make sure we're getting separate lines for each agreement. But note that it's still going to be a character list, so we can't use the `head()` function to look at the first few rows. 
+
+
+```{r line-inspection}
+data[[1]][1:3]
+```
+
+Great! We can see that we have three agreements in the first three rows. I'll give a spoiler here and say that in reality we have 9,000+ agreements and a couple of the individual rows don't correspond to agreements, but we're on the right track and this is stuff we can clean up later.
+
+So let's go ahead and convert this into a data frame.
+
+```{r data-frame-conversation}
+
+data <- data |> 
+  as.data.frame(col.names = "agreement_text")
+
+```
+
+All we're doing here is converting the list to a data frame and naming the resulting column "agreement_text". 
+
+
+## Extracting relevant data
+
+Now that we have the data in a data frame, we can start extracting the relevant information from each agreement. This is where regular expressions come in handy.
+
+I'm going to walk through the code that I used to extract the relevant information from each agreement. I'll break it down into smaller steps so that it's easier to follow. That said, there's lots of information to go over here, so I'll just give a brief overview of what I'm doing in each step. I've included notes for each line, so you can refer to those, too.
+
+
+### Country codes and names
+
+The data are structured so that agreements are listed by individual country and agreement type. I want to first break out the individual country information for each agreement, and for that I'm going to use the `countrycode` package. This is one of the most useful packages around if you work with international relations or comparative politics data.
+
+The first step will be to generate the correlates of war (COW) country code for each country that appears in the data. The `countrycode` package is super useful as it will scan the agreement text and match country names it finds there.
+
+The second step is to identify the country names based on the COW codes we just pulled from the agreement text. We also want to remove any that read "United States" because we know that these are all US agreements with other countries, and so any of those matches are just incidental and we can replace them with missing values (i.e. `NA`).
+
+
+```{r country-code, warning=FALSE, message=FALSE}
+
+data <- data |> 
+  mutate(ccode = countrycode::countrycode(agreement_text, origin = "country.name",
+                                      destination = "cown"), # Extract the country code from the agreement text
+        ccode = case_when( # Remove the United States. countrycode picked it up from agreement text.
+          ccode == 2 ~ NA,
+          TRUE ~ ccode
+        ),
+        countryname = countrycode::countrycode(ccode, origin = "cown", # create standardized country name variable
+                                      destination = "country.name"),
+        countryname = case_when( # Remove the United States. countrycode picked it up from agreement text.
+          countryname == "United States" ~ NA,
+          TRUE ~ countryname
+        )
+        )
+
+```
+
+
+
+### Agreement types
+
+All of the agreements belong to different classes of agreements, depending on the specific issue areas they address. For example, some pertain to defense, others to cultural issues, and some to economics and finance. As with the country names, agreements are organized by type, so we can pull the relevant text from the `agreement_text` column.
+
+This part is trickier, and it took me a lot of trial and error. But, from looking at the raw data we can see that the agreement type is always written out in all capital letters. Again, a super useful detail!
+
+The `str_extract` function is super useful here. I'm using it to extract the parts of the `agreement_text` column that match the provided regular expression. In this case, we want to tell it to look for all of the capital letters at the beginning of the string (i.e. the `agreement_text` cell). More specifically, we'll use it within the `mutate()` function to create a new column called `type` that contains the extracted agreement type.
+
+
+```{r agreement-type, warning=FALSE}
+
+data <- data |> 
+  mutate(type = str_extract(agreement_text, "^[A-ZA-Z\\sA-Z\\s\\W]*\\b"), # Extract the type of agreement
+)
+
+
+```
+
+The regular expression I'm using here is `^[A-ZA-Z\\sA-Z\\s\\W]*\\b`. This is a bit complicated, but it's basically doing the following:
+
+  1. `^` - This tells R to start looking at the beginning of the string.
+  2. `[A-ZA-Z\\sA-Z\\s\\W]*` - This tells R to look for any number of capital letters (i.e. `A-Z`), any number of capital letters followed by spaces (i.e. `A-Z\\s`), and any number of capital letters followed by a space *and* special characters like punctuation marks (i.e. `A-Z\\s\\W`). The `*` means that it can match zero or more of these characters.
+  3. `\\b` - This tells R to stop looking when it reaches a word boundary. This is important because we don't want to match any additional characters that might come after the agreement type. If we omit this part then we also end up picking up the first capital letter of the next chunk of text.
+  
+It's important to know that you can write this out in different ways that will all yield the same result. I found this to be a more efficient way to do it than my first pass, but there are other ways to write the regular expression that will also work. For example, you could also write it as `^[A-Z]*(?:[A-Z ]*[A-Z \\W]*[A-Z])?\\b`. This is a little more complicated, but it should produce the same results.
+  
+  
+### Dates
+
+The next bit of information that we want to extract is the dates associated with each agreement. This includes the date that the agreement was signed or where there was an exchange of diplomatic notes, the date that it entered into force, and any dates where the agreement might have been amended.
+
+```{r dates}
+
+data <- data |> 
+  mutate(exchange = str_extract(agreement_text, "Exchange of.*\\."), # Extract the exchange of notes date
+         exchange_year = str_extract(exchange, "\\d{4}"), # Extract the year of the exchange of notes
+         signed = str_extract(agreement_text, "Signed.*\\."), # Extract the signed date
+         signed_year = str_extract(signed, "\\d{4}"), # Extract the year of the signed date
+         entered_force = str_extract(agreement_text, "Entered.*\\.|Entered*\\;"), # Notice some entries have effective date, which is different from entered into force.
+         entered_force_year = str_extract(entered_force, "\\d{4}"), # Extract the year of the entered into force date
+         amended = str_extract(agreement_text, "(.*Amendment.*)(?<=Amendment)(?s)(.*$)"), # Extract the amendment text
+         amended_year = str_extract_all(amended, "(?<=\\,\\s)\\d{4}") # Extract the version number using amended dates
+  )
+
+```
+
+This is a bit clunky, and I'm sure that someone who is better at regular expressions could do this more efficiently. But the basic idea is that we're using the `str_extract` function to extract the relevant dates from the `agreement_text` column. 
+
+For each date type I'm essentially performing the following steps. We can look at the exchange of notes year as an example:
+
+1. `Exchange of.*\\.` - This regular expression tells R to look for the text "Exchange of" followed by any number of characters and ending with a period. This will match the entire sentence that contains the exchange of notes date. 
+2. `\\d{4}` - This regular expression tells R to look for a four-digit number. This will match the year of the exchange of notes date.
+
+The other date types are extracted in a similar way. The only difference is that the regular expressions are tailored to match the specific text patterns that correspond to each date type.
+
+What's clunky about this method is that I first extract the full string that corresponds to each date that we're interested in. For example, I first extract the full sentence that contains "Exchange of notes..." and then extract the year from that individual sentence. I've tried other methods, like using the lookaround operators and non-capture groupings, to try to pull the years from sentences containing certain phrases, but I haven't had much luck getting it to work. I'm sure there's a more efficient way to do this, but this is what I came up with.
+
+Another tricky bit concerns the amendment years. some agreements are never amended. Some only once. Others multiple times. So I'm using the `str_extract_all` function to extract all of the years that appear in the `amended` column. This will return a list of years for each agreement in the amended cell, which we can then unnest to create a unique row for each year. But this also requires us to create a value for the starting year of *every* agreement if we're interested in tracking the version or iteration of any given agreement.
+
+
+### Cleaning up the data
+
+The last step is to clean up the data. The biggest step here is to finish organizing the agreements according to amendment iteration and filling in the country names, agreement types, etc. This also involves removing any leading white spaces or punctuation marks from the date columns and converting the year columns to numeric encoding. It also involves removing any rows that have empty agreement text or missing version numbers. 
+
+The first two lines use the `fill` function to fill in the country code and country name columns. This is necessary because the country code and country name are only listed once for each country, but we want them to be listed for each agreement. The `fill` function fills in the missing values based on the previous non-missing value.
+
+Next, I want to ensure that every agreement has a "baseline" amendment year so we can expand and reshape the data. To do this, I group the data by individual agreement using the `rowwise()` function. Then I create the `amended_year` variable using the entered into force year and the amended years. We'll come back to this in a second.
+
+```{r cleaning-up, echo=FALSE, eval=FALSE}
+data <- data |> 
+  tidyr::fill(ccode, .direction = "down") |> # Fill in the country code
+  tidyr::fill(countryname, .direction = "down") |> # Fill in the country name
+  rowwise() |> # Do this so the mutate works! Runs following functions on one row at a time.
+  mutate(amended_year = list(c(print(entered_force_year), print(amended_year))), # Print the entered into force year and version number
+         type = str_remove(type, paste0("A\\r\\n", toupper(countryname), "\\r\\n")), # Remove the country name from the type
+         type = case_when( # Make missing agreement types NA
+           type == "" ~ NA,
+           TRUE ~ type
+         )) |>
+  ungroup() |>  # Do this so fill works! Removes grouping created by rowwise() above.
+  tidyr::fill(type, .direction = "down") |> # Fill in the agreement type
+  mutate(type = factor(type)) |> # Make the agreement type a factor
+  group_by(ccode) |> # Group by country code
+  mutate(agreement_num = glue::glue("{ccode}-{as.numeric(type)*1000}-{row_number()+1000}")) |> # Create an agreement number
+  unnest(amended_year) |> # Unnest by version number. This creates a unique row/observation for each value of the amendment dates/version number stored in amended_year.
+  dplyr::filter(agreement_text != "") |> # Remove rows with empty agreement text
+  dplyr::filter(!is.na(amended_year)) |> # Remove rows with NA version numbers
+  mutate(across(c(exchange, signed, entered_force), # Remove leading white spaces and punctuation marks.
+                ~ str_remove_all(., "^\\s|^[:punct:]")),
+         across(c(exchange_year, signed_year, entered_force_year, amended_year), # Convert to numeric encoding.
+                ~ as.numeric(.))) |>
+  dplyr::select(agreement_text, ccode, countryname, type, exchange, exchange_year, signed, signed_year, entered_force, entered_force_year, agreement_num, amended_year) |>
+  arrange(ccode, type, agreement_num, amended_year) |>
+  group_by(agreement_num) |>
+  mutate(version_num = row_number())
+```
+
+The next two lines in the `mutate()` function just clean up the agreement type variable by removing the country name from the type. This is necessary because the country name is included in the agreement type for some agreements. The `str_remove` function is used to remove the country name from the agreement type and then we also recode empty rows `NA` if there's no agreement type. This is an artifact of some lines having no agreement listed, but they're given their own row because of a white space or line break. Next we ungroup the data and we fill the agreement type down.
+
+The only real important line left in this code is the `unnest(amended_year)` function. This function is used to unnest the `amended_year` column. Remember the cells that contained the list values for every year that an agreement was amended? Well we want a separate line for each of those amended versions of the agreement. If you're familiar with IR data, you can think of this in a similar way to thinking about country-year data. We might be interested in when or why an agreement changes, so we want to break that out into separate rows. This is what the `unnest` function does. It takes a list column and creates a new row for each value in the list. 
+
+This is also why we wanted to make sure we had at least one year listed in this column, even if an agreement was never actually amended—it ensures that once we unnest the data on the `amended_year` column we have a unique row for each agreement (even those that were never amended).
+
+If you look at the data in your viewer now, you should see a nice country-agreement-year data set that you can use to analyze the agreements. Cool beans.
+
+
