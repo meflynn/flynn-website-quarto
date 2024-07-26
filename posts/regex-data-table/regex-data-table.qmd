@@ -20,7 +20,7 @@ format:
 execution:
   warning: false
   message: false
-  echo: false
+  eval: false
 ---
 
 :::{.callout-tip}
@@ -69,7 +69,7 @@ OK, so let's go ahead and load the raw data. Because we're dealing with a text f
 
 To make it easy, we'll just call it "string". We'll also load the other packages that we'll be using.
 
-```{r load-text-file}
+```{r load-text-file, message=FALSE}
 #| echo: false
 #| 
 library(readr)
@@ -193,7 +193,7 @@ It's important to know that you can write this out in different ways that will a
 
 The next bit of information that we want to extract is the dates associated with each agreement. This includes the date that the agreement was signed or where there was an exchange of diplomatic notes, the date that it entered into force, and any dates where the agreement might have been amended.
 
-```{r dates}
+```{r dates, eval = FALSE}
 
 data <- data |> 
   mutate(exchange = str_extract(agreement_text, "Exchange of.*\\."), # Extract the exchange of notes date
@@ -230,7 +230,7 @@ The first two lines use the `fill` function to fill in the country code and coun
 
 Next, I want to ensure that every agreement has a "baseline" amendment year so we can expand and reshape the data. To do this, I group the data by individual agreement using the `rowwise()` function. Then I create the `amended_year` variable using the entered into force year and the amended years. We'll come back to this in a second.
 
-```{r cleaning-up, echo=FALSE, message=FALSE}
+```{r cleaning-up, eval = FALSE}
 data <- data |> 
   tidyr::fill(ccode, .direction = "down") |> # Fill in the country code
   tidyr::fill(countryname, .direction = "down") |> # Fill in the country name
