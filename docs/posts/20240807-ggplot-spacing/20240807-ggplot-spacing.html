@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.545">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Michael Flynn">
+<meta name="dcterms.date" content="2024-08-07">
+<meta name="description" content="A short guide on how to effectively use real estate with information-dense plots.">
+
+<title>Michael E. Flynn - Better Organizing Plots with ggplot and patchwork</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../library/quarto-nav/quarto-nav.js"></script>
+<script src="../../library/quarto-nav/headroom.min.js"></script>
+<script src="../../library/clipboard/clipboard.min.js"></script>
+<script src="../../library/quarto-search/autocomplete.umd.js"></script>
+<script src="../../library/quarto-search/fuse.min.js"></script>
+<script src="../../library/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../library/quarto-html/quarto.js"></script>
+<script src="../../library/quarto-html/popper.min.js"></script>
+<script src="../../library/quarto-html/tippy.umd.min.js"></script>
+<script src="../../library/quarto-html/anchor.min.js"></script>
+<link href="../../library/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../library/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../library/bootstrap/bootstrap.min.js"></script>
+<link href="../../library/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../library/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-16400827-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<link rel="stylesheet" href="../../styles.scss">
+<meta name="twitter:title" content="Michael E. Flynn - Better Organizing Plots with ggplot and patchwork">
+<meta name="twitter:description" content="A short guide on how to effectively use real estate with information-dense plots.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Michael E. Flynn</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../minerva.html"> 
+<span class="menu-text">Minerva</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../book.html"> 
+<span class="menu-text">Book</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../consulting.html"> 
+<span class="menu-text">Consulting</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Better Organizing Plots with ggplot and patchwork</h1>
+                  <div>
+        <div class="description">
+          A short guide on how to effectively use real estate with information-dense plots.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">blogging</div>
+                <div class="quarto-category">data analysis</div>
+                <div class="quarto-category">data science</div>
+                <div class="quarto-category">dataviz</div>
+                <div class="quarto-category">data visualization</div>
+                <div class="quarto-category">statistics</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Michael Flynn </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 7, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem">The Problem</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a>
+  <ul class="collapse">
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example 1</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example 2</a></li>
+  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example 3</a></li>
+  <li><a href="#example-4" id="toc-example-4" class="nav-link" data-scroll-target="#example-4">Example 4</a></li>
+  </ul></li>
+  <li><a href="#other-options" id="toc-other-options" class="nav-link" data-scroll-target="#other-options">Other Options?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+<!-- Default Statcounter code for Michael E. Flynn --
+Political Sc http://www.m-flynn.com -->
+<script type="text/javascript">
+var sc_project=5861296; 
+var sc_invisible=1; 
+var sc_security="850f1a8e"; 
+</script>
+<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async=""></script>
+<noscript><div class="statcounter"><a title="Web Analytics" href="https://statcounter.com/" target="_blank"><img class="statcounter" src="https://c.statcounter.com/5861296/0/850f1a8e/1/" alt="Web Analytics" referrerpolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
+
+
+
+
+<p>files/header-code/header-code.html</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Who’s this for? This is a short guide with a couple of useful tips for better utilizing your plot real estate with ggplot when you’ve got a lot going on. This is for anyone who wants to make their plots more informative and visually appealing when dealing with lots of information, labels, titles, etc.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|echo: false</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#|message: false</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#|include: false</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#|warning: false</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#|error: false</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries and data</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Do some basic cleaning to get the variables ready for plotting</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"posts/20240807-ggplot-spacing/poland-survey.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 2254 Columns: 106
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (79): Status, ResponseId, DistributionChannel, UserLanguage, Q56, gender...
+dbl (11): StartDate, EndDate, Progress, Duration (in seconds), RecordedDate,...
+lgl (16): Finished, rnid, study, PID, K2, RISN, rid, Q_BallotBoxStuffing, Q_...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data.contact.type <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(contact_pers_type) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      tidyr<span class="sc">::</span><span class="fu">separate_longer_delim</span>(contact_pers_type,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">delim =</span> stringr<span class="sc">::</span><span class="fu">regex</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">,|</span><span class="sc">\\</span><span class="st">,(?=[A-Z])"</span>)) <span class="sc">|&gt;</span>  <span class="co"># This regex identifies a comma followed by a period, or a comma immediately followed by a capital letter, but uses the lookahead question mark thing to ignore the capital letter so it doesn't include it as a delimiter.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">contact_pers_type =</span> <span class="fu">trimws</span>(contact_pers_type),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">b$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, contact_pers_type),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, contact_pers_type)) <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">group_by</span>(contact_pers_type) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(contact_pers_type))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is a short post inspired by some recent work I did on a project. The primary goal is to show ggplot users a couple of tricks that they can use to make better use of the visual space in their plots when they have a lot of information to display. This is especially useful when you have multiple plots that you want to display together, and you want to make sure that they are visually appealing and informative. It can also be helpful when you’re trying to display lots of information in axis labels. I’ll be using the <code>ggplot2</code> package in R for this post, but the principles should be applicable to other plotting libraries as well.</p>
+<p>This is a pretty short example but I’ll try to walk through my process. Readers who want to take a deeper dive into this topic might want to check our Kieran Healy’s excellent book on data visualization, <a href="https://socviz.co/">Data Visualization: A Practical Introduction</a>.</p>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>When you’re working with ggplot, you often have a lot of information that you want to display in your plots. This can include things like titles, axis labels, legends, and other annotations. However, if you’re not careful, all of this information can quickly clutter up your plot and make it difficult to read and interpret. This is especially true when you’re trying to display multiple plots together, as you might in a grid or faceted plot.</p>
+<p>One thing to note is that I have a personal bias towards wanting to display information with figures where possible. Tables can be great, but I think it’s often easier to process lots of information—particularly when we’re comparing across categories—when we’re dealing with visual representations of that information. So I’m always looking for ways to make my plots as informative as possible without sacrificing readability.</p>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<p>On a recent project we were attempting to show a couple of different related points of information. Without going into too much unnecessary detail, we wanted to show information from a survey that we fielded on individual attitudes towards US military personnel stationed in their country. Specifically, we wanted to show 1) the number of people who reported having personal contact with US service personnel, and 2) the nature of the contact for those individuals who reported it. Ultimately we wanted to show the categories and the count of individuals who responded for each category.</p>
+<section id="example-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-1">Example 1</h3>
+<p>Here’s a bare bones example of what we’re looking for.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">y =</span> contact_pers, <span class="at">x =</span> <span class="fu">after_stat</span>(count<span class="sc">/</span><span class="fu">sum</span>(count)))) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Percent of Respondents"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Contact with US Service Personnel"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data.contact.type, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(contact_pers_type, total), <span class="at">x =</span> total)) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)  <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Respondents"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Type of Contact"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-baseexample" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-baseexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="20240807-ggplot-spacing_files/figure-html/fig-baseexample-1.png" id="fig-baseexample" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-baseexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Some obvious problems with <a href="#fig-baseexample" class="quarto-xref">Figure&nbsp;1</a>. The proportions are way off, largely due to the fact that the reported contact types are long character strings. This forces the plot on the right to take up waaaaaaay more space then it should, crowding out all the other information. We can’t even see the bars or numbers, which are kind of important.</p>
+<p>This is a bit of a straw man as it uses a completely bare bones <code>ggplot</code> without any modifications, but it helps to highlight some of the problems that we’re dealing with. There are a few basic things we can do to clean this up and make it more informative.</p>
+</section>
+<section id="example-2" class="level3">
+<h3 class="anchored" data-anchor-id="example-2">Example 2</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">y =</span> contact_pers, <span class="at">x =</span> <span class="fu">after_stat</span>(count<span class="sc">/</span><span class="fu">sum</span>(count)))) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Percent of Respondents"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Contact with US Service Personnel"</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data.contact.type, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(contact_pers_type, total), <span class="at">x =</span> total)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)  <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Respondents"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Type of Contact"</span>) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">str_wrap</span>(x, <span class="at">width =</span> <span class="dv">55</span>))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-example2" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-example2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="20240807-ggplot-spacing_files/figure-html/fig-example2-1.png" id="fig-example2" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-example2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-example2" class="quarto-xref">Figure&nbsp;2</a> is a little bit better. We can see the actual axis values and bars, which are carrying almost all of the information that we care about. The big improvement here comes from the <code>scale_y_discrete(labels = function(x) str_wrap(x, width = 55))</code> line of code in the right plot. The <code>str_wrap()</code> function allows ggplot to wrap the character strings across multiple lines, which makes them much easier to read and produces far less distortion in the plot. You can manipulate the <code>width</code> argument to get the desired number of characters per line and tweak the spacing.</p>
+<p>But we can still do better. For example, in the left panel we can see the bars are disproportionately sized compared to the bars in the right panel. This isn’t surprising as we have very few categories in the left plot and several in the right, but we’re stretching them out across the same vertical space. It’s not terrible, but the distortion is notable and distracting. The ordering of these values also isn’t great. We could order them so their in descending frequency, like we do in the right panel. Last, presenting the x axis values as percentage values rather than proportions will better match the count values in the right panel.</p>
+<p>We can also see that the category character strings in the right panel are extremely difficult to read. They’re not right justified, and they run across multiple lines. Finding specific starting points can be tough, and sometimes one category kind of runs into the next, making it hard to match specific categories with their corresponding bars and counts.</p>
+</section>
+<section id="example-3" class="level3">
+<h3 class="anchored" data-anchor-id="example-3">Example 3</h3>
+<p>Let’s take another pass and try to iron out some of these issues.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set custom color for bars</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>barcolor <span class="ot">&lt;-</span> viridis<span class="sc">::</span><span class="fu">turbo</span>(<span class="dv">1</span>, <span class="at">begin =</span> <span class="fl">0.10</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>         <span class="fu">aes</span>(<span class="at">y =</span> contact_pers,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">x =</span> <span class="fu">after_stat</span>(count<span class="sc">/</span><span class="fu">sum</span>(count)))) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> barcolor) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.01</span>)) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Percent"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Reported Contact"</span>) </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data.contact.type,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(contact_pers_type, total),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">x =</span> total)) <span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> barcolor,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">str_wrap</span>(x, <span class="at">width =</span> <span class="dv">55</span>)) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Count"</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="st">"Contact Type"</span>) <span class="sc">+</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y.left =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fl">10.0</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">vjust =</span> <span class="dv">0</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="sc">-</span><span class="fl">5.0</span>, <span class="at">b =</span> <span class="fl">0.5</span>, <span class="at">unit =</span> <span class="st">"cm"</span>)),</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.ticks.length.y.left =</span> <span class="fu">unit</span>(<span class="fl">5.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.ticks.y.left =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">linewidth =</span> <span class="fl">0.3</span>))</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-example3" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-example3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="20240807-ggplot-spacing_files/figure-html/fig-example3-1.png" id="fig-example3" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-example3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-example3" class="quarto-xref">Figure&nbsp;3</a> fixes some big problems with the previous plots, but also creates some new ones. Stacking the figures on top of one another fixes the problems with the distorted column sizes and the difficulty in reading the category labels. It looks a little better now.</p>
+<p>First, we moved from two columns to a single column, placing the plots on top of one another. This produces less compression in the bars helps us to better compare the relative size/magnitude of the x axis values within each plot.</p>
+<p>We can also see in the bottom panel that the respondent categories are left justified, which makes it easier to read the categories and match them to bars. To make it even easier to match categories to particular bars/counts we’ve added a dotted line that runs the length of the y-axis. We do this using the <code>theme()</code> function and the <code>axis.ticks.y.left</code> and <code>axis.ticks.length.y.left</code> arguments. This takes some tweaking to get right, and depends on the settings in the <code>str_wrap()</code> arguments in the <code>scale_y_discrete()</code> function. It will also depend on the overall dimensions of the figure.</p>
+<p>But we can see the bottom panel is now even more crowded. The dotted lines are great, but they don’t help when the text is spilling over from one category to the next.</p>
+</section>
+<section id="example-4" class="level3">
+<h3 class="anchored" data-anchor-id="example-4">Example 4</h3>
+<p>OK, let’s take one more pass and iron out some of the details. This last step also requires that we revisit some of the data cleaning processes that produce the data we use in each plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data.contact.type <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(contact_pers_type) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      tidyr<span class="sc">::</span><span class="fu">separate_longer_delim</span>(contact_pers_type,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">delim =</span> stringr<span class="sc">::</span><span class="fu">regex</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">,|</span><span class="sc">\\</span><span class="st">,(?=[A-Z])"</span>)) <span class="sc">|&gt;</span>  <span class="co"># This regex identifies a comma followed by a period, or a comma immediately followed by a capital letter, but uses the lookahead question mark thing to ignore the capital letter so it doesn't include it as a delimiter.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">contact_pers_type =</span> <span class="fu">trimws</span>(contact_pers_type),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">b$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, contact_pers_type),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, contact_pers_type),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"^"</span>, <span class="st">"\u2022 "</span>, contact_pers_type)) <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">group_by</span>(contact_pers_type) <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(contact_pers_type))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># set custom color for bars</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>barcolor <span class="ot">&lt;-</span> viridis<span class="sc">::</span><span class="fu">turbo</span>(<span class="dv">1</span>, <span class="at">begin =</span> <span class="fl">0.10</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>         <span class="fu">aes</span>(<span class="at">y =</span> contact_pers,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">x =</span> <span class="fu">after_stat</span>(count<span class="sc">/</span><span class="fu">sum</span>(count)))) <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> barcolor) <span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.01</span>)) <span class="sc">+</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Percent"</span>,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Reported Contact"</span>) </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> data.contact.type,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(contact_pers_type, total),</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>               <span class="at">x =</span> total)) <span class="sc">+</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> barcolor,</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>               <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">str_wrap</span>(x, <span class="at">width =</span> <span class="dv">55</span>, <span class="at">exdent =</span> <span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Count"</span>,</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="st">"Contact Type"</span>) <span class="sc">+</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y.left =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fl">9.0</span>,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">vjust =</span> <span class="dv">0</span>,</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="sc">-</span><span class="fl">5.0</span>, <span class="at">b =</span> <span class="fl">0.5</span>, <span class="at">unit =</span> <span class="st">"cm"</span>)),</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.ticks.length.y.left =</span> <span class="fu">unit</span>(<span class="fl">5.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.ticks.y.left =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">linewidth =</span> <span class="fl">0.3</span>))</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  patchwork<span class="sc">::</span><span class="fu">plot_layout</span>(<span class="at">ncol =</span> <span class="dv">1</span>,</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>                         <span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">'A'</span>) <span class="sc">&amp;</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Oswald"</span>, <span class="at">size =</span> <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-example4" class="quarto-figure quarto-figure-center quarto-float anchored" width="576">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-example4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="20240807-ggplot-spacing_files/figure-html/fig-example4-1.png" id="fig-example4" class="img-fluid figure-img" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-example4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Way better! So what did we do here?</p>
+<p>First, we added a bullet point to the beginning of each category in the contact type data. We did this with the simple <code>gsub()</code> function here: <code>contact_pers_type = gsub("^", "\u2022 ", contact_pers_type)</code>. This just uses a mutate command to insert a bullet point into the beginning of each character string in the <code>contact_pers_type</code> category. This helps to visually separate the categories from one another and makes it easier to match the categories to the bars.</p>
+<p>Note that because the bullet point adds a new character and a blank space, we also want to make sure that the <code>str_wrap()</code> argument is aligning the new lines with the first line so the bullet point actually leads the rest of the text. That is, we don’t want the line break to start a new line flush with the bullet point because this would reduce the bullet point’s use in distinguishing new lines. We do this with the <code>exdent</code> argument in the <code>str_wrap()</code> function. Again, play with values here to find what works for your plot.</p>
+<p>We also increased the overall vertical spacing of the plot. We did this here with Quarto’s <code>fig-height</code> and <code>fig-width</code> arguments, but you could also do this by adjusting the size of the plot in the <code>ggsave()</code> function when you save the plot to include in another document. But adding vertical space helps to eliminate the overlap in the text for the contact type categories.</p>
+<p>Last, we used the <code>patchwork</code> package to adjust the proportions of the individual plots. In this case we set the heights of the plots to 1 and 3, respectively. This gives the bottom plot more vertical space, which helps to eliminate the overlap in the text, and also brings the heights of the top panel’s bars even more into line with the bar heights in the bottom plot. We also added subplot labels to distinguish more easily between panels “A” and “B”.</p>
+</section>
+</section>
+<section id="other-options" class="level2">
+<h2 class="anchored" data-anchor-id="other-options">Other Options?</h2>
+<p>This assumes we want to do all of the work in ggplot, but there are other options for accomplishing similar goals. For example, we could use the <code>gt</code> and <code>geExtras</code> packages to do something similar with sparkline plots. This can be be great in certain circumstances, but I think it would be a bit more difficult to get the same level of control over the plot aesthetics since we’re dealing with two plots and two different axis scales.</p>
+<p>But here’s an example of how you might do this with <code>gt</code> and <code>gtExtras</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|warning: false</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#|message: false</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>data.contact.type <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(contact_pers_type) <span class="sc">|&gt;</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate_longer_delim</span>(contact_pers_type,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">delim =</span> stringr<span class="sc">::</span><span class="fu">regex</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">,|</span><span class="sc">\\</span><span class="st">,(?=[A-Z])"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">contact_pers_type =</span> <span class="fu">trimws</span>(contact_pers_type),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">b$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, contact_pers_type),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, contact_pers_type),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">contact_pers_type =</span> <span class="fu">gsub</span>(<span class="st">"^"</span>, <span class="st">"\u2022 "</span>, contact_pers_type)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(contact_pers_type) <span class="sc">|&gt;</span> </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">list</span>(<span class="fu">n</span>())) <span class="sc">|&gt;</span> </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(contact_pers_type))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>data.contact.type <span class="sc">|&gt;</span> </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="st">"Contact Type"</span> <span class="ot">=</span> contact_pers_type,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Count"</span> <span class="ot">=</span> total) <span class="sc">|&gt;</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_bar</span>(</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">column =</span> Count) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="thnebofbwj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#thnebofbwj table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#thnebofbwj thead, #thnebofbwj tbody, #thnebofbwj tfoot, #thnebofbwj tr, #thnebofbwj td, #thnebofbwj th {
+  border-style: none;
+}
+
+#thnebofbwj p {
+  margin: 0;
+  padding: 0;
+}
+
+#thnebofbwj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#thnebofbwj .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#thnebofbwj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#thnebofbwj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#thnebofbwj .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#thnebofbwj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#thnebofbwj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#thnebofbwj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#thnebofbwj .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#thnebofbwj .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#thnebofbwj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#thnebofbwj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#thnebofbwj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#thnebofbwj .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#thnebofbwj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#thnebofbwj .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#thnebofbwj .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#thnebofbwj .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#thnebofbwj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#thnebofbwj .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#thnebofbwj .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#thnebofbwj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#thnebofbwj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#thnebofbwj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#thnebofbwj .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#thnebofbwj .gt_left {
+  text-align: left;
+}
+
+#thnebofbwj .gt_center {
+  text-align: center;
+}
+
+#thnebofbwj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#thnebofbwj .gt_font_normal {
+  font-weight: normal;
+}
+
+#thnebofbwj .gt_font_bold {
+  font-weight: bold;
+}
+
+#thnebofbwj .gt_font_italic {
+  font-style: italic;
+}
+
+#thnebofbwj .gt_super {
+  font-size: 65%;
+}
+
+#thnebofbwj .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#thnebofbwj .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#thnebofbwj .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#thnebofbwj .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#thnebofbwj .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#thnebofbwj .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#thnebofbwj .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#thnebofbwj .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#thnebofbwj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header gt_col_headings">
+<th id="Contact Type" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Contact Type</th>
+<th id="Count" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Count</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Contact Type">• Been close friends with a U.S. service member.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="9.71" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Contact Type">• Dated/were romantically involved with a U.S. service member.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="10.36" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Contact Type">• Did business with a U.S. service member, such as selling them something or buying something from them.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="18.77" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Contact Type">• Don't know/decline to answer.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="1.94" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Contact Type">• Had a U.S. service member as a family member (other than a spouse).</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="5.82" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Contact Type">• Had a U.S. service member as a spouse or domestic partner.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="3.88" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Contact Type">• Had a brief everyday interaction with a U.S. service member, such as conversing on public transport, or shopping at the same market.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="98.37" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Contact Type">• Had a co-worker who was a U.S. servicemember.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="9.71" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Contact Type">• Had a different interaction that does not fit into these categories (please list here).</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="10.36" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Contact Type">• Had a neighbor who was a U.S. servicemember.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="9.71" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Contact Type">• Interacted with a U.S. service member in a recurring social setting, such as a house of worship, sports club, school, etc.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="15.53" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Contact Type">• Interacted with a U.S. service member in an individual social setting, such as a party, bar, festival, etc.</td>
+<td class="gt_row gt_left" headers="Count"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17">
+<defs>
+<style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style>
+</defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs> <clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="> <rect x="0.00" y="0.00" width="113.39" height="14.17"></rect> </clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="39.48" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A020F0;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000018" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g>
+</svg></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="meflynn/flynn-website-quarto" data-repo-id="R_kgDOIn9zwQ" data-category="General" data-category-id="DIC_kwDOIn9zwc4CTII2" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

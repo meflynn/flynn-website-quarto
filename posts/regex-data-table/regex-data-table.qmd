@@ -198,6 +198,7 @@ The next bit of information that we want to extract is the dates associated with
 data <- data |> 
   mutate(exchange = str_extract(agreement_text, "Exchange of.*\\."), # Extract the exchange of notes date
          exchange_year = str_extract(exchange, "\\d{4}"), # Extract the year of the exchange of notes
+         exchange_year_test = str_extract(exchange, "(?<=^Exchange of notes.*?)(\d{4})"),
          signed = str_extract(agreement_text, "Signed.*\\."), # Extract the signed date
          signed_year = str_extract(signed, "\\d{4}"), # Extract the year of the signed date
          entered_force = str_extract(agreement_text, "Entered.*\\.|Entered*\\;"), # Notice some entries have effective date, which is different from entered into force.
@@ -257,6 +258,11 @@ data <- data |>
   arrange(ccode, type, agreement_num, amended_year) |>
   group_by(agreement_num) |>
   mutate(version_num = row_number())
+
+# Write a regular expression that captures four numbers in a row.
+# 
+
+
 ```
 
 The next two lines in the `mutate()` function just clean up the agreement type variable by removing the country name from the type. This is necessary because the country name is included in the agreement type for some agreements. The `str_remove` function is used to remove the country name from the agreement type and then we also recode empty rows `NA` if there's no agreement type. This is an artifact of some lines having no agreement listed, but they're given their own row because of a white space or line break. Next we ungroup the data and we fill the agreement type down.
@@ -266,5 +272,6 @@ The only real important line left in this code is the `unnest(amended_year)` fun
 This is also why we wanted to make sure we had at least one year listed in this column, even if an agreement was never actually amended—it ensures that once we unnest the data on the `amended_year` column we have a unique row for each agreement (even those that were never amended).
 
 If you look at the data in your viewer now, you should see a nice country-agreement-year data set that you can use to analyze the agreements. Cool beans.
+
 
 
