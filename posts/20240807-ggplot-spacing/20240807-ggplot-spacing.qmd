@@ -1,5 +1,5 @@
 ---
-title: "Better Organizing Plots with ggplot and patchwork"
+title: "Better organizing plots with ggplot and patchwork"
 
 author: Michael Flynn
 date: "2024-08-07"
