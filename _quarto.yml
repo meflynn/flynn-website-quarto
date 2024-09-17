@@ -8,7 +8,7 @@ website:
   description: "This is the academic website for Michael E. Flynn, associate professor of political science at Kansas State University."
   google-analytics: "UA-16400827-1"
   twitter-card: true
-  body-header: files/header-code/header-code.html
+  body-header: files/body-code/statcounter-code-file.html
   navbar:
     background: "#205FA7"
     #title: "Dogs rule Cats also rule"
