@@ -1,0 +1,19 @@
+---
+title: "You like DAGs?"
+author: "Michael Flynn"
+description: ""
+date: "2024-09-17"
+categories: ["stats", "statistics", "data science", "teaching", "blogging"]
+---
+
+![Brad Pitt from Snatch](https://tenor.com/search/snatch-dags-gifs){fig-align="center"}
+
+Just a quick post as I reflect on some grading I've been doing. I've been teaching a foreign policy class this semester, and I've been trying to incorporate more social scientific methods into the class. One of the things I've been trying to do is to get students to think more about causal relationships and how we can represent those relationships visually.
+
+This is my second year including a DAG exercise into my foreign policy class. I've always wrestled with the balance between the politics and the social scientific side of my classes. I get that it's not what gets most kids in the door, but if we're a social science then I think we need to at least include some of the social scientific approach into lessons. But figuring out how to do that effectively is a challenge, and some folks looked at me like I was sadistic for asking undergrads to do this kind of work, but I think I've already stumbled on a couple of key takeaways that I think will make this more effective moving forward. 
+
+First, while I think it's a great activity, my biggest takeaway after last year and the first exercise of this year is to simplify things more than I initially assume to be necessary. Way more. Last year they had a lot of flexibility, but that was like herding a bunch of cats hopped up on Mountain Dew. I restricted the readings this time, but even that was too much flexibility. Next time we're all coordinating on a single reading.
+
+Second, treat it as an active reading exercise. Last year I had students more or less create their own DAGs, but that was a bit of a mess. This year I had them select from a number of articles, but as I mentioned above, I'm going to have everyone work off the same article next time. The idea here will be to 1) identify the key variables, 2) draw the DAG, and 3) explain how the key predictors are related to the outcome variable. The benefit of using a reading is that someone else has already laid out the key variables, theory, etc. The students basically just need to go through and pull out the relevant information, visualize the relationships, and re-write the theoretical connections in their own words.
+
+Third, and this is more something I hope *they* take away from the activity, is that the gap between their efforts and the papers and more polished DAGs will hopefully help them to realize how fuzzy and messy our thinking typically is on any topic, but especially this stuff. On its face, drawing a causal diagram should be pretty simple, but it's clear from reviewing several of these submissions that students have a really hard time identifying specific, discrete variables and explaining the mechanisms connecting them. Ultimately thinking in these terms isn't organic for most students—it's something that needs to be taught. But hopefully that process can push them to be more careful and more explicit in their thinking.
