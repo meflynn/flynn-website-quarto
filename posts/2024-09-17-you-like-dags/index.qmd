@@ -6,7 +6,7 @@ date: "2024-09-17"
 categories: ["stats", "statistics", "data science", "teaching", "blogging"]
 ---
 
-![Brad Pitt from Snatch](https://tenor.com/search/snatch-dags-gifs){fig-align="center"}
+![Brad Pitt from Snatch](https://media.tenor.com/QMSZTTSezmUAAAAe/dags-do-you-like-dags.png){fig-align="center"}
 
 Just a quick post as I reflect on some grading I've been doing. I've been teaching a foreign policy class this semester, and I've been trying to incorporate more social scientific methods into the class. One of the things I've been trying to do is to get students to think more about causal relationships and how we can represent those relationships visually.
 
