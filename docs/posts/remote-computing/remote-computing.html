@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.545">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2022-12-18">
 <meta name="description" content="This post discusses how you can run R remotely to take advantage of more computing power on machines from a remote location.">
 
-<title>Michael E. Flynn - Bayesian modeling, speed boosts, and how to run R remotely</title>
+<title>Bayesian modeling, speed boosts, and how to run R remotely – Michael E. Flynn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,7 +91,7 @@ var sc_invisible=1;
 var sc_security="850f1a8e"; 
 </script>
 <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async=""></script>
-<noscript></noscript><meta name="twitter:title" content="Michael E. Flynn - Bayesian modeling, speed boosts, and how to run R remotely">
+<noscript></noscript><meta name="twitter:title" content="Bayesian modeling, speed boosts, and how to run R remotely – Michael E. Flynn">
 <meta name="twitter:description" content="This post discusses how you can run R remotely to take advantage of more computing power on machines from a remote location.">
 <meta name="twitter:card" content="summary">
 </head><body class="nav-fixed"><div class="statcounter"><a title="real time web
@@ -114,7 +114,7 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -149,7 +149,7 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -272,7 +272,7 @@ Note
 <h1>Power Up!</h1>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://media.giphy.com/media/dxld1UBIiGuoh31Fus/giphy.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="https://media.giphy.com/media/dxld1UBIiGuoh31Fus/giphy.gif" class="img-fluid figure-img"></p>
 <figcaption>Vegeta powering up to super saiyan blue</figcaption>
 </figure>
 </div>
@@ -305,7 +305,7 @@ Note
 <h2 class="anchored" data-anchor-id="mac-screen-share">Mac Screen Share</h2>
 <p>After playing with Matti’s recommendation for a while I came across another even more direct solution—Mac OS’ native Screen Sharing app. The only major limitation here that I’m currently aware of is that it requires both the local and remote computers to be Macs.</p>
 <p>First, download Tailscale (linked above) on the local and remote devices. This will establish a VPN that you can use to connect the two computers securely. The nice thing about Tailscale is that it’s super easy to use. Specifically, it can create a menu bar icon where you can easily access the IP addresses of the relevant machines connected to the network. There’s also a web-based dashboard that you can use to monitor the devices on the network.</p>
-<div id="fig-screenshot1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-screenshot1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-screenshot1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="screen-1.png" class="img-fluid figure-img">
@@ -316,7 +316,7 @@ Figure&nbsp;1: Screenshot showing the location of the sharing menu in System Set
 </figure>
 </div>
 <p>Second, this also requires you to edit some of the security and connection settings on your remote machine. To do this you first open up the System Settings menu, either through the icon on your task bar at the bottom of your screen or by clicking on the Apple icon in the upper left. Then you click on the General menu, and then on sharing over on the right hand side. <a href="#fig-screenshot1" class="quarto-xref">Figure&nbsp;1</a> shows the locations of these buttons in Mac OS Ventura.</p>
-<div id="fig-screenshot2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-screenshot2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-screenshot2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="screen-2.png" class="img-fluid figure-img">
@@ -327,7 +327,7 @@ Figure&nbsp;2: Screenshot showing the security and permissions options that you 
 </figure>
 </div>
 <p>Once you’ve navigated to this menu you then need to alter the security settings and permissions. <a href="#fig-screenshot2" class="quarto-xref">Figure&nbsp;2</a> shows the menu options here that you can change. A couple of these are linked by default, and I can’t remember which exactly, but you basically want to enable File Sharing, Remote Login, and Remote Management. You can also limit which profiles can log in to the computer, and you should definitely make sure that the device is still password protected with a solid password. Also note that you do not have to make these adjustments on your local machine. In my case I’ve only made them on the more powerful machine I want to use remotely.</p>
-<div id="fig-screenshot3" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-screenshot3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-screenshot3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="screen-3.png" class="img-fluid figure-img">
@@ -385,18 +385,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -428,7 +417,47 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -463,7 +492,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
