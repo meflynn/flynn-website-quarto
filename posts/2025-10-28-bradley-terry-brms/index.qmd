@@ -1,0 +1,45 @@
+---
+title: "Bradley Terry Models and Pairwise Comparisons in brms"
+author: "Michael Flynn"
+date: "2025-10-28"
+description: "This is a short primer on how to run a Bradley-Terry Model for pairwise comparisons using brms in R."
+categories:
+  - blogging
+  - data analysis
+  - data science
+  - dataviz
+  - data visualization
+  - statistics
+tags:
+  - blogging
+  - dataviz
+  - data visualization
+  - stats
+  - regex
+  - data analysis
+word-count:
+reading-time:
+format:
+  html:
+    code-overflow: wrap
+execution:
+  warning: false
+  message: false
+  eval: false
+---
+
+:::{.callout-tip}
+## Who's this for?
+
+This post is intended as a practical guide for analysts and data scientists who want to implement Bradley-Terry models for pairwise comparison data using `{brms}` in R. This post assumes you have a basic familiarity with R and the `{brms}` package. If you don't, you might want to brush up on those topics first. This can be useful for folks who are wanting to generate rankings of individuals, groups, teams, etc., and who have data on pairwise comparisons (e.g., win/loss data).
+:::
+
+Whew---it's been a minute since I've written a blog post. But I recently published a paper that seemed like it would lend itself nicely to a new post, so here we are! 
+
+The goal of this post is to help readers to understand how to fit a Bradley-Terry model for pairwise comparison data using the `{brms}` package in R. Bradley-Terry models are useful for generating rankings of players, groups, teams, etc., in cases where users might be interested in some kind of underlying latent attribute or characteristic. For example, we might be interested in generating latent measure of a team's skill, or someone's knowledge of a certain topic. Bradley-Terry models are particularly useful when we have data on pairwise comparisons, such as win/loss data from sports matches, or preference data from surveys.
+
+Below I'll provide a brief overview of Bradley-Terry Models, what they are, why we might use them, and why we might want to fit one using `{brms}`, specifically. Then I'll walk through a simple example of how to fit a Bradley-Terry model using `{brms}` in R.
+
+
+## What are Bradley-Terry Models?
+
