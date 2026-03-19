@@ -185,82 +185,58 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <p><a class="social social-github" href="https://www.github.com/meflynn"><i class="fa-brands fa-github fa-2xl" aria-label="github"></i></a> <a class="social social-linkedin" href="https://www.linkedin.com/in/michael-e-flynn-prior-analytics/"><i class="fa-brands fa-linkedin-in fa-2xl" aria-label="linkedin-in"></i></a></p>
 <p><a class="social social-bluesky" href="https://bsky.app/profile/flynnpolsci.bsky.social"><i class="fa-brands fa-bluesky fa-2xl" aria-label="bluesky"></i></a></p>
 <p><a class="social icon-cv" href="files/flynn-cv.pdf">CV</a></p>
+<section id="quantitative-peace" class="level3">
+<h3 data-anchor-id="quantitative-peace">Quantitative Peace</h3>
+</section>
 </div>
-<div id="qp-feed" style="margin-top: 1.2rem;">
-<p style="color: gray; font-style: italic;">
-Loading recent posts…
+<p style="font-size: 0.8rem; color: #999; margin-bottom: 0.8rem;">
+Recent posts from <a href="https://www.quantitativepeace.com" target="_blank" rel="noopener">Quantitative Peace</a>
+</p>
+<div style="
+    border-left: 3px solid #4a90d9;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1.2rem;
+    background: #f9f9f9;
+    border-radius: 0 4px 4px 0;
+">
+<div style="font-size: 0.78rem; color: #888; margin-bottom: 0.25rem;">
+February 23, 2026
+</div>
+<a href="https://quantitativepeace.com/blog/2026/02/publish-or-perish-a-text-adventure-of-academic-survival.html" target="_blank" rel="noopener" style="font-weight: 600; font-size: 1rem; text-decoration: none; color: #1a1a2e;">Publish or Perish: A Text Adventure of Academic Survival</a>
+<p style="margin: 0.4rem 0 0; font-size: 0.88rem; color: #444; line-height: 1.5;">
+An interactive text adventure exploring academic publishing pressures, showing how AI tools like Claude Code can extend social science research. The post Publish or Perish: A Text …
 </p>
 </div>
-<script>
-(async () => {
-  const FEED_URL  = "https://www.quantitativepeace.com/index.xml";
-  const PROXY     = `https://api.allorigins.win/get?url=${encodeURIComponent(FEED_URL)}`;
-  const container = document.getElementById("qp-feed");
-  const COUNT     = 3;
-
-  const fmt = str =>
-    new Date(str).toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
-
-  const getText = (el, tag) => el.querySelector(tag)?.textContent?.trim() ?? "";
-
-  const strip = html => {
-    const d = document.createElement("div");
-    d.innerHTML = html;
-    return d.textContent || d.innerText || "";
-  };
-
-  let items;
-  try {
-    const res  = await fetch(PROXY);
-    const json = await res.json();
-    const xml  = new DOMParser().parseFromString(json.contents, "text/xml");
-    const err  = xml.querySelector("parsererror");
-    if (err) throw new Error("XML parse error");
-    items = [...xml.querySelectorAll("item")].slice(0, COUNT);
-    if (!items.length) throw new Error("No items found in feed");
-  } catch (err) {
-    container.innerHTML = `<p style="color:red;">Could not load feed: ${err.message}</p>`;
-    return;
-  }
-
-  const cards = items.map(item => {
-    const title   = getText(item, "title");
-    const link    = getText(item, "link");
-    const pubDate = fmt(getText(item, "pubDate"));
-    const desc    = getText(item, "description");
-    const snippet = strip(desc).slice(0, 180).trimEnd() + "…";
-
-    return `
-      <div style="
-          border-left: 3px solid #4a90d9;
-          padding: 0.6rem 1rem;
-          margin-bottom: 1.2rem;
-          background: #f9f9f9;
-          border-radius: 0 4px 4px 0;
-      ">
-        <div style="font-size: 0.78rem; color: #888; margin-bottom: 0.25rem;">
-          ${pubDate}
-        </div>
-        <a href="${link}" target="_blank" rel="noopener"
-           style="font-weight: 600; font-size: 1rem; text-decoration: none; color: #1a1a2e;">
-          ${title}
-        </a>
-        <p style="margin: 0.4rem 0 0; font-size: 0.88rem; color: #444; line-height: 1.5;">
-          ${snippet}
-        </p>
-      </div>`;
-  }).join("");
-
-  container.innerHTML = `
-    <p style="font-size: 0.8rem; color: #999; margin-bottom: 0.8rem;">
-      Recent posts from
-      <a href="https://www.quantitativepeace.com" target="_blank" rel="noopener">
-        Quantitative Peace
-      </a>
-    </p>
-    ${cards}`;
-})();
-</script>
+<div style="
+    border-left: 3px solid #4a90d9;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1.2rem;
+    background: #f9f9f9;
+    border-radius: 0 4px 4px 0;
+">
+<div style="font-size: 0.78rem; color: #888; margin-bottom: 0.25rem;">
+November 30, 2020
+</div>
+<a href="https://quantitativepeace.com/blog/2020/11/gifts-for-political-scientists-2020.html" target="_blank" rel="noopener" style="font-weight: 600; font-size: 1rem; text-decoration: none; color: #1a1a2e;">Gifts for Political Scientists, 2020</a>
+<p style="margin: 0.4rem 0 0; font-size: 0.88rem; color: #444; line-height: 1.5;">
+A curated 2020 holiday gift guide for political scientists and IR scholars—books, games, and tools for academics and policy enthusiasts. The post Gifts for Political Scientists, 20…
+</p>
+</div>
+<div style="
+    border-left: 3px solid #4a90d9;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1.2rem;
+    background: #f9f9f9;
+    border-radius: 0 4px 4px 0;
+">
+<div style="font-size: 0.78rem; color: #888; margin-bottom: 0.25rem;">
+October 27, 2020
+</div>
+<a href="https://quantitativepeace.com/blog/2020/10/presidential-election-2020-where-things-stand-with-one-week-to-go.html" target="_blank" rel="noopener" style="font-weight: 600; font-size: 1rem; text-decoration: none; color: #1a1a2e;">Presidential Election 2020: Where things stand with one week to go</a>
+<p style="margin: 0.4rem 0 0; font-size: 0.88rem; color: #444; line-height: 1.5;">
+Pre-election quantitative analysis of the 2020 presidential race: polling averages, battleground state forecasts, and electoral college projections with one week to go. The post Pr…
+</p>
+</div>
 </div>
 </div>
 <div class="g-col-12 g-col-md-6">
