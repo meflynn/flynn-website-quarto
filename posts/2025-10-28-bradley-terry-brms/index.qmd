@@ -44,3 +44,6 @@ Below I'll provide a brief overview of Bradley-Terry Models, what they are, why 
 
 ## What are Bradley-Terry Models?
 
+I'm not intending to provide a comprehensive history of the subject, but it's maybe worth discussing the development of these models a little bit. Bradley--Terry models, as a broad class of models, generally trace their roots to [Bradley and Terry's 1952 paper](https://doi.org/10.2307/2334029) *Rank Analysis of Incomplete Block Designs: The Method of Paired Comparisons*. I say "as a broad class of models" because there are a number of different approaches to dealing with paired comparisons, which, according to Bradley and Terry's own article, go back to at least the 1920s. 
+
+These early models seem to be focused primarily on two goals. First, how to estimate the "rank" of items in relation to one another (essentially a latent dimension). Second, what is the probability that a given item ranks higher than another in a paired comparison?

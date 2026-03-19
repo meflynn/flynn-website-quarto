@@ -181,13 +181,86 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <p><a href="https://www.k-state.edu/polsci/">Kansas State University</a></p>
 </div>
 <div class="social-media-icons">
-<p><a class="social social-envelope" href="mailto:meflynn@ksu.edu"><i class="fa-solid fa-envelope fa-2xl"></i></a></p>
-<p><a class="social social-mastodon" href="https://fosstodon.org/@michaelflynn"><i class="fa-brands fa-mastodon fa-2xl" aria-label="mastodon"></i></a></p>
-<p><a class="social social-github" href="https://www.github.com/meflynn"><i class="fa-brands fa-github fa-2xl" aria-label="github"></i></a></p>
-<p><a class="social social-linkedin" href="https://www.linkedin.com/in/michael-e-flynn-prior-analytics/"><i class="fa-brands fa-linkedin-in fa-2xl" aria-label="linkedin-in"></i></a></p>
+<p><a class="social social-envelope" href="mailto:meflynn@ksu.edu"><i class="fa-solid fa-envelope fa-2xl"></i></a> <a class="social social-mastodon" href="https://fosstodon.org/@michaelflynn"><i class="fa-brands fa-mastodon fa-2xl" aria-label="mastodon"></i></a></p>
+<p><a class="social social-github" href="https://www.github.com/meflynn"><i class="fa-brands fa-github fa-2xl" aria-label="github"></i></a> <a class="social social-linkedin" href="https://www.linkedin.com/in/michael-e-flynn-prior-analytics/"><i class="fa-brands fa-linkedin-in fa-2xl" aria-label="linkedin-in"></i></a></p>
 <p><a class="social social-bluesky" href="https://bsky.app/profile/flynnpolsci.bsky.social"><i class="fa-brands fa-bluesky fa-2xl" aria-label="bluesky"></i></a></p>
 <p><a class="social icon-cv" href="files/flynn-cv.pdf">CV</a></p>
 </div>
+<div id="qp-feed" style="margin-top: 1.2rem;">
+<p style="color: gray; font-style: italic;">
+Loading recent posts…
+</p>
+</div>
+<script>
+(async () => {
+  const FEED_URL  = "https://www.quantitativepeace.com/index.xml";
+  const PROXY     = `https://api.allorigins.win/get?url=${encodeURIComponent(FEED_URL)}`;
+  const container = document.getElementById("qp-feed");
+  const COUNT     = 3;
+
+  const fmt = str =>
+    new Date(str).toLocaleDateString("en-US", { year:"numeric", month:"long", day:"numeric" });
+
+  const getText = (el, tag) => el.querySelector(tag)?.textContent?.trim() ?? "";
+
+  const strip = html => {
+    const d = document.createElement("div");
+    d.innerHTML = html;
+    return d.textContent || d.innerText || "";
+  };
+
+  let items;
+  try {
+    const res  = await fetch(PROXY);
+    const json = await res.json();
+    const xml  = new DOMParser().parseFromString(json.contents, "text/xml");
+    const err  = xml.querySelector("parsererror");
+    if (err) throw new Error("XML parse error");
+    items = [...xml.querySelectorAll("item")].slice(0, COUNT);
+    if (!items.length) throw new Error("No items found in feed");
+  } catch (err) {
+    container.innerHTML = `<p style="color:red;">Could not load feed: ${err.message}</p>`;
+    return;
+  }
+
+  const cards = items.map(item => {
+    const title   = getText(item, "title");
+    const link    = getText(item, "link");
+    const pubDate = fmt(getText(item, "pubDate"));
+    const desc    = getText(item, "description");
+    const snippet = strip(desc).slice(0, 180).trimEnd() + "…";
+
+    return `
+      <div style="
+          border-left: 3px solid #4a90d9;
+          padding: 0.6rem 1rem;
+          margin-bottom: 1.2rem;
+          background: #f9f9f9;
+          border-radius: 0 4px 4px 0;
+      ">
+        <div style="font-size: 0.78rem; color: #888; margin-bottom: 0.25rem;">
+          ${pubDate}
+        </div>
+        <a href="${link}" target="_blank" rel="noopener"
+           style="font-weight: 600; font-size: 1rem; text-decoration: none; color: #1a1a2e;">
+          ${title}
+        </a>
+        <p style="margin: 0.4rem 0 0; font-size: 0.88rem; color: #444; line-height: 1.5;">
+          ${snippet}
+        </p>
+      </div>`;
+  }).join("");
+
+  container.innerHTML = `
+    <p style="font-size: 0.8rem; color: #999; margin-bottom: 0.8rem;">
+      Recent posts from
+      <a href="https://www.quantitativepeace.com" target="_blank" rel="noopener">
+        Quantitative Peace
+      </a>
+    </p>
+    ${cards}`;
+})();
+</script>
 </div>
 </div>
 <div class="g-col-12 g-col-md-6">
@@ -219,8 +292,7 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 </div>
 <p><br></p>
 <p>:::</p>
-<!-- Default Statcounter code for Michael E. Flynn --
-Political Sc http://www.m-flynn.com -->
+<!-- Default Statcounter code for Michael E. Flynn -- Political Sc http://www.m-flynn.com -->
 <script type="text/javascript">
 var sc_project=5861296; 
 var sc_invisible=1; 
