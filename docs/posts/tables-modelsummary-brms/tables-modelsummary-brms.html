@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>Making tables for multinomial models with {modelsummary} and {brms} – Michael E. Flynn</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -73,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../library/quarto-html/tippy.umd.min.js"></script>
 <script src="../../library/quarto-html/anchor.min.js"></script>
 <link href="../../library/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../library/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../library/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../library/bootstrap/bootstrap.min.js"></script>
 <link href="../../library/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../library/bootstrap/bootstrap-f0cd0047984b954f266dd3bf4d52a014.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../library/bootstrap/bootstrap-6732b98c0684e4de9b278c36afffd023.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -274,7 +277,7 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <h1>Getting Started</h1>
 <p>OK, first we’re going to load our libraries. The relevance of some of these is immediately obvious given what I’ve already said, but I’ll talk more about some of the additional packages we need below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
@@ -283,23 +286,23 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In addition to loading the libraries we want to load our model objects. In this case I have three models, each with three outcome categories. Each of these ends with a “p1” or a “t1” to denote the reference group for the model’s outcome variable (e.g.&nbsp;if the outcome variable is asking about troops, people, or government).</p>
 <p>Then I’m creating a list object to store the three model objects. Note here that I’m leaving the label for the individual models blank by including the empty quotation marks in the list function. Depending on your situation you can go ahead and name these if you want. In my case it makes more sense to keep them empty because I plan to add a grouping header/title later in the final table and based on how {modelsummary} works including the titles here would create some redundancies in the final output and take up extra horizontal space. If you’re working with HTML output and you have scrollable tables maybe this doesn’t matter, but it can matter a lot for print versions..</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m.c.t1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"files/data-files/m.c.t1.rds"</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>m.c.t1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"files/data-files/m.c.t1.rds"</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>m.c.p1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"files/data-files/m.c.p1.rds"</span>))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>m.c.g1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"files/data-files/m.c.g1.rds"</span>))</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list object to store the three separate model objects.</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mod.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">" "</span> <span class="ot">=</span> m.c.t1,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">" "</span> <span class="ot">=</span> m.c.p1,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">" "</span> <span class="ot">=</span> m.c.g1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">" "</span> <span class="ot">=</span> m.c.g1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Before we move on, let’s take a quick look at the models and what they look like.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.list[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.list[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>There’s a lot going on here, but you can see from the summary output that organizing this could be a bit of a bear. We have three outcome categories, lots of categorical variables (some conceptually related), model summary statistics, etc.</p>
 </section>
@@ -311,9 +314,9 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <p>Beyond that, you might just want to customize how the footer of your table looks, what information is included in which places, etc. This is a good way to do that, but it takes a little extra work.</p>
 <p>First, we need to assign a “custom” class to each of the three model objects stored in the <code>mod.list</code> object. Assigning the custom class is going allow us to write some custom {tidy} and {glance} functions that will let us select the specific summary stats and other model info that we want to include.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(mod.list)){</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(mod.list)){</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">class</span>(mod.list[[i]]) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"custom"</span>, <span class="fu">class</span>(mod.list[[i]]))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next we can write out custom tidy function, appropriately labeled here <code>tidy.custom</code>. Actually, I think you <em>have</em> to name it this so {modelsummary} recognizes that you want to use a custom function.</p>
 <p>There’s a lot going on here, and some of it is going to be specific to the models I’m using as an example.</p>
@@ -323,7 +326,7 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <p>All I’m going here is using <code>case_when(...)</code> to identify the outcome variable levels/choices and creating a categorical <code>y.level</code> variable containing the full name for each of the choices for the outcome variable. As I mentioned above, those are “Don’t know”, “Negative”, and “Positive” (with “Neutral” as the omitted reference category).</p>
 <p>Next, I take the <code>term</code> column that {parameters} generates, which contains all of the predictor variables, and I remove the outcome level prefixes that {brms} attaches. This way I have two columns with variable names (<code>term</code>) and the outcome variable choice/model equation (i.e.&nbsp;<code>y.level</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tidy method extracts level names into new column</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tidy method extracts level names into new column</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tidy.custom <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">conf.level=</span>.<span class="dv">95</span>, ...) {                                   <span class="co"># Create function</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">=</span> parameters<span class="sc">::</span><span class="fu">parameters</span>(x, <span class="at">ci=</span>conf.level, <span class="at">verbose=</span><span class="cn">FALSE</span>) <span class="sc">|&gt;</span>                 <span class="co"># Call {parameters} to pull model parameter info with specified credible interval</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        parameters<span class="sc">::</span><span class="fu">standardize_names</span>(<span class="at">style=</span><span class="st">"broom"</span>) <span class="sc">|&gt;</span>                            <span class="co"># make names lower case</span></span>
@@ -332,11 +335,11 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">grepl</span>(<span class="st">"mupos"</span>, term) <span class="sc">~</span> <span class="st">"Positive"</span>),</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">term =</span> <span class="fu">gsub</span>(<span class="st">"dk|neg|pos"</span>, <span class="st">""</span>, term))                                 <span class="co"># remove outcome prefix {brms} attaches to variable names</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next we can move on to writing a custom function to pull the relevant model and summary statistic information. First, we need to tell <code>glance()</code> to quiet down since it’s going to do lots of stuff we don’t necessarily want it to do right now. I can’t remember if the <code>gof.check</code> lines are necessary at this point (I seem to recall it had no effect one way or the other when I was initially working on this), but I’ll turn those off just to be safe, too.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write custom glance function to extract summary information.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write custom glance function to extract summary information.</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>glance.custom <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ret <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">N =</span> <span class="fu">summary</span>(x)<span class="sc">$</span>nobs)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  ret</span>
@@ -344,12 +347,12 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn off GOF stuff</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>gof.check <span class="ot">&lt;-</span> modelsummary<span class="sc">::</span>gof_map</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>gof.check<span class="sc">$</span>omit <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>gof.check<span class="sc">$</span>omit <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next we can move on to using the {parameters} package to full information on the “random” part of our varying intercepts model. We’ll also use this step to include some basic summary information on the models as mentioned above.</p>
 <p>Ultimately the goal here is to generate a clean data frame containing summary information that we want. I’ve included more specific comments in the code chunk below for readers who want to scrutinize each step, but much of this mirrors what we just did with the <code>tidy.custom()</code> function above, it’s just doing it to the “random” or “varying” part of the model rather than the population-level coefficients.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write function to loop over list of models</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write function to loop over list of models</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">lapply</span>(mod.list, <span class="cf">function</span>(x){</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  temp.sd <span class="ot">&lt;-</span> parameters<span class="sc">::</span><span class="fu">parameters</span>(x, <span class="at">effect =</span> <span class="st">"random"</span>)  <span class="sc">|&gt;</span>                   <span class="co"># start with parameters and pull "random" component of model</span></span>
@@ -389,12 +392,12 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>) </span>
 <span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename those columns so they'll match eventual output data frame names</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rows.com) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span>, <span class="st">"col4"</span>, <span class="st">"col5"</span>, <span class="st">"col6"</span>, <span class="st">"col7"</span>, <span class="st">"col8"</span>, <span class="st">"col9"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rows.com) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span>, <span class="st">"col4"</span>, <span class="st">"col5"</span>, <span class="st">"col6"</span>, <span class="st">"col7"</span>, <span class="st">"col8"</span>, <span class="st">"col9"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Great! Next we can start cleaning up the variable names for presenting them in the table, and we can even go a step further to add grouping labels to help readers move between broad categories of predictor variables (e.g.&nbsp;income, age, etc.).</p>
 <p>Here’s we’re going to generate a tribble with the “raw” variable names and the “clean” label for presentation. Note that we have to arrange them in the order in which we want them to appear.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>coef.list <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(<span class="sc">~</span>raw, <span class="sc">~</span>clean,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>coef.list <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(<span class="sc">~</span>raw, <span class="sc">~</span>clean,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_contact_persYes"</span>, <span class="st">"Personal Contact: Yes"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_contact_persDontknowDdeclinetoanswer"</span>, <span class="st">"Personal Contact: DK/Decline"</span>,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_contact_nonpersYes"</span>, <span class="st">"Network Contact: Yes"</span>,</span>
@@ -444,11 +447,11 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_gdp_z"</span>, <span class="st">"GDP"</span>,</span>
 <span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_pop_z"</span>, <span class="st">"Population"</span>,</span>
 <span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_troops_z"</span>, <span class="st">"Troop deployment size"</span>,</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_Intercept"</span>, <span class="st">"Intercept"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"b_mu_Intercept"</span>, <span class="st">"Intercept"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next we’re going to add a new column that contains the grouping list. Since we’re using lots of categorical predictor variables we want to make sure they’re grouped in a sensible way.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>coef.list <span class="ot">&lt;-</span> coef.list <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>coef.list <span class="ot">&lt;-</span> coef.list <span class="sc">|&gt;</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">case_when</span>(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*ontact.*"</span>, raw) <span class="sc">~</span> <span class="st">"Contact Status"</span>,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*enefit.*"</span>, raw) <span class="sc">~</span> <span class="st">"Economic Benefits"</span>,</span>
@@ -463,16 +466,16 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*inf_1.*"</span>, raw) <span class="sc">~</span> <span class="st">"American Influence (Amount)"</span>,</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grepl</span>(<span class="st">".*inf_2.*"</span>, raw) <span class="sc">~</span> <span class="st">"American Influence (Quality)"</span>,</span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>           <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Group-Level Variables"</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>         )) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>         )) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next, because we’re dealing with a really wide table we’ll have coefficients with standard errors underneath. This means that each variable name is actually going to take up two lines. So we need to do a little extra here to properly format this bit. I have to admit I think Vincent actually came up with this particular solution as I was puttering with it for a while. So more props to him!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find how long the coefficient list is for the final table hline</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find how long the coefficient list is for the final table hline</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>last.line <span class="ot">&lt;-</span> <span class="fu">length</span>(coef.list[[<span class="dv">1</span>]]) <span class="sc">*</span> <span class="dv">2</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>coef_map <span class="ot">&lt;-</span> <span class="fu">setNames</span>(coef.list<span class="sc">$</span>clean, coef.list<span class="sc">$</span>raw)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">rle</span>(coef.list<span class="sc">$</span>group)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">setNames</span>(idx<span class="sc">$</span>lengths  <span class="sc">*</span> <span class="dv">2</span>, idx<span class="sc">$</span>values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">setNames</span>(idx<span class="sc">$</span>lengths  <span class="sc">*</span> <span class="dv">2</span>, idx<span class="sc">$</span>values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="putting-it-all-together" class="level1">
@@ -480,7 +483,7 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <p>Finally, we’ve done all of the prep work. Now we can generate the actual table itself! I’m going to change just a couple of things here. Since the output is going to appear on a webpage, I’ll change the “output” argument to HTML. I’ll also delete the <code>save_kable()</code> bit that tells it to save to a latex file, but you can add that in at the end if you want output.</p>
 <p>You can see that we use the <code>last.line</code> values from the previous chunk in that last <code>row_spec()</code> line to tell it where to put an horizontal line.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(mod.list,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(mod.list,</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">estimate =</span> <span class="st">"{estimate}"</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">statistic =</span> <span class="st">"conf.int"</span>,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fmt =</span> <span class="dv">2</span>,</span>
@@ -497,7 +500,7 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(last.line, <span class="at">hline_after =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">width =</span> <span class="st">"5cm"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">width =</span> <span class="st">"3cm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"600px"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"600px"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="whats-left" class="level1">
@@ -561,13 +564,14 @@ analytics" href="https://statcounter.com/" target="_blank"><img class="statcount
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,7 +2,7 @@ project:
   type: website
   output-dir: docs
   lib-dir: library
-
+  
 website:
   title: "Michael E. Flynn"
   description: "This is the academic website for Michael E. Flynn, associate professor of political science at Kansas State University."

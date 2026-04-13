@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,6 +12,9 @@
 
 <title>Using regular expressions (regex) to turn raw text into a data table – Michael E. Flynn</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -74,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../library/quarto-html/tippy.umd.min.js"></script>
 <script src="../../library/quarto-html/anchor.min.js"></script>
 <link href="../../library/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../library/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../library/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../library/bootstrap/bootstrap.min.js"></script>
 <link href="../../library/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../library/bootstrap/bootstrap-3e7bbe3da283536932b72e95cbbab47f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../library/bootstrap/bootstrap-3d1ae802280f324f23858fca10b0cdec.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -320,15 +323,15 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <h2 class="anchored" data-anchor-id="splitting-the-data-into-rows">Splitting the data into rows</h2>
 <p>The next step is going to be splitting the data into separate rows so that each individual agreement is in its own row. We can do this by splitting the string based on the line breaks.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> string <span class="sc">|&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> string <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_split</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>What I’m doing here is creating a new object named <code>data</code>, since we’re moving from the raw text and this will ultimately be the data that we want to work with.</p>
 <p>The <code>str_split</code> function is from the <code>stringr</code> package, which is part of the <code>tidyverse</code>. The first argument to <code>str_split</code> is the string that we want to split. In this case, we’re splitting the string based on the regular expression <code>\\r\\n\\r\\n</code>. This regular expression tells R to split the string based on the pattern of two line breaks. The <code>\\r</code> and <code>\\n</code> are the special characters that denote line breaks, and the <code>\\r\\n\\r\\n</code> pattern tells R to split the string based on two line breaks in a row.</p>
 <p>Why two in a row? Well, if we look back at <a href="#fig-datasnapshot1" class="quarto-xref">Figure&nbsp;1</a>, we can see that each agreement is separated by a blank line, meaning two line breaks. This is a consistent pattern that we can use to split the string into separate agreements.</p>
 <p>Now let’s take a look to make sure we’re getting separate lines for each agreement. But note that it’s still going to be a character list, so we can’t use the <code>head()</code> function to look at the first few rows.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data[[<span class="dv">1</span>]][<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data[[<span class="dv">1</span>]][<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "\r\nA\r\nAFGHANISTAN\r\nCULTURAL EXCHANGES, PROPERTY &amp; COOPERATION\r\nAgreement relating to the exchange of official publications.\r\nExchange of notes at Kabul February 29, 1944. Entered into force February 29, 1944.\r\n58 Stat. 1393; EAS 418; 5 Bevans 3; 106 UNTS 247"
 [2] "Agreement concerning cultural relations. Exchange of notes at Washington June 26, 1958. Entered into force June 26, 1958.\r\n9 UST 997; TIAS 4069; 321 UNTS 67"                                                                                                               
@@ -338,8 +341,8 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <p>Great! We can see that we have three agreements in the first three rows. I’ll give a spoiler here and say that in reality we have 9,000+ agreements and a couple of the individual rows don’t correspond to agreements, but we’re on the right track and this is stuff we can clean up later.</p>
 <p>So let’s go ahead and convert this into a data frame.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(<span class="at">col.names =</span> <span class="st">"agreement_text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(<span class="at">col.names =</span> <span class="st">"agreement_text"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>All we’re doing here is converting the list to a data frame and naming the resulting column “agreement_text”.</p>
 </section>
@@ -353,7 +356,7 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <p>The first step will be to generate the correlates of war (COW) country code for each country that appears in the data. The <code>countrycode</code> package is super useful as it will scan the agreement text and match country names it finds there.</p>
 <p>The second step is to identify the country names based on the COW codes we just pulled from the agreement text. We also want to remove any that read “United States” because we know that these are all US agreements with other countries, and so any of those matches are just incidental and we can replace them with missing values (i.e.&nbsp;<code>NA</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ccode =</span> countrycode<span class="sc">::</span><span class="fu">countrycode</span>(agreement_text, <span class="at">origin =</span> <span class="st">"country.name"</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">destination =</span> <span class="st">"cown"</span>), <span class="co"># Extract the country code from the agreement text</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ccode =</span> <span class="fu">case_when</span>( <span class="co"># Remove the United States. countrycode picked it up from agreement text.</span></span>
@@ -366,7 +369,7 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>          countryname <span class="sc">==</span> <span class="st">"United States"</span> <span class="sc">~</span> <span class="cn">NA</span>,</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> countryname</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="agreement-types" class="level3">
@@ -375,9 +378,9 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <p>This part is trickier, and it took me a lot of trial and error. But, from looking at the raw data we can see that the agreement type is always written out in all capital letters. Again, a super useful detail!</p>
 <p>The <code>str_extract</code> function is super useful here. I’m using it to extract the parts of the <code>agreement_text</code> column that match the provided regular expression. In this case, we want to tell it to look for all of the capital letters at the beginning of the string (i.e.&nbsp;the <code>agreement_text</code> cell). More specifically, we’ll use it within the <code>mutate()</code> function to create a new column called <code>type</code> that contains the extracted agreement type.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"^[A-ZA-Z</span><span class="sc">\\</span><span class="st">sA-Z</span><span class="sc">\\</span><span class="st">s</span><span class="sc">\\</span><span class="st">W]*</span><span class="sc">\\</span><span class="st">b"</span>), <span class="co"># Extract the type of agreement</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The regular expression I’m using here is <code>^[A-ZA-Z\\sA-Z\\s\\W]*\\b</code>. This is a bit complicated, but it’s basically doing the following:</p>
 <ol type="1">
@@ -391,7 +394,7 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <h3 class="anchored" data-anchor-id="dates">Dates</h3>
 <p>The next bit of information that we want to extract is the dates associated with each agreement. This includes the date that the agreement was signed or where there was an exchange of diplomatic notes, the date that it entered into force, and any dates where the agreement might have been amended.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">exchange =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"Exchange of.*</span><span class="sc">\\</span><span class="st">."</span>), <span class="co"># Extract the exchange of notes date</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">exchange_year =</span> <span class="fu">str_extract</span>(exchange, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>), <span class="co"># Extract the year of the exchange of notes</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">signed =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"Signed.*</span><span class="sc">\\</span><span class="st">."</span>), <span class="co"># Extract the signed date</span></span>
@@ -400,7 +403,7 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">entered_force_year =</span> <span class="fu">str_extract</span>(entered_force, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>), <span class="co"># Extract the year of the entered into force date</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">amended =</span> <span class="fu">str_extract</span>(agreement_text, <span class="st">"(.*Amendment.*)(?&lt;=Amendment)(?s)(.*$)"</span>), <span class="co"># Extract the amendment text</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">amended_year =</span> <span class="fu">str_extract_all</span>(amended, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">,</span><span class="sc">\\</span><span class="st">s)</span><span class="sc">\\</span><span class="st">d{4}"</span>) <span class="co"># Extract the version number using amended dates</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is a bit clunky, and I’m sure that someone who is better at regular expressions could do this more efficiently. But the basic idea is that we’re using the <code>str_extract</code> function to extract the relevant dates from the <code>agreement_text</code> column.</p>
 <p>For each date type I’m essentially performing the following steps. We can look at the exchange of notes year as an example:</p>
@@ -418,7 +421,7 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <p>The first two lines use the <code>fill</code> function to fill in the country code and country name columns. This is necessary because the country code and country name are only listed once for each country, but we want them to be listed for each agreement. The <code>fill</code> function fills in the missing values based on the previous non-missing value.</p>
 <p>Next, I want to ensure that every agreement has a “baseline” amendment year so we can expand and reshape the data. To do this, I group the data by individual agreement using the <code>rowwise()</code> function. Then I create the <code>amended_year</code> variable using the entered into force year and the amended years. We’ll come back to this in a second.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">fill</span>(ccode, <span class="at">.direction =</span> <span class="st">"down"</span>) <span class="sc">|&gt;</span> <span class="co"># Fill in the country code</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">fill</span>(countryname, <span class="at">.direction =</span> <span class="st">"down"</span>) <span class="sc">|&gt;</span> <span class="co"># Fill in the country name</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> <span class="co"># Do this so the mutate works! Runs following functions on one row at a time.</span></span>
@@ -443,7 +446,7 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(agreement_text, ccode, countryname, type, exchange, exchange_year, signed, signed_year, entered_force, entered_force_year, agreement_num, amended_year) <span class="sc">|&gt;</span></span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ccode, type, agreement_num, amended_year) <span class="sc">|&gt;</span></span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(agreement_num) <span class="sc">|&gt;</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">version_num =</span> <span class="fu">row_number</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">version_num =</span> <span class="fu">row_number</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The next two lines in the <code>mutate()</code> function just clean up the agreement type variable by removing the country name from the type. This is necessary because the country name is included in the agreement type for some agreements. The <code>str_remove</code> function is used to remove the country name from the agreement type and then we also recode empty rows <code>NA</code> if there’s no agreement type. This is an artifact of some lines having no agreement listed, but they’re given their own row because of a white space or line break. Next we ungroup the data and we fill the agreement type down.</p>
 <p>The only real important line left in this code is the <code>unnest(amended_year)</code> function. This function is used to unnest the <code>amended_year</code> column. Remember the cells that contained the list values for every year that an agreement was amended? Well we want a separate line for each of those amended versions of the agreement. If you’re familiar with IR data, you can think of this in a similar way to thinking about country-year data. We might be interested in when or why an agreement changes, so we want to break that out into separate rows. This is what the <code>unnest</code> function does. It takes a list column and creates a new row for each value in the list.</p>
@@ -507,13 +510,14 @@ Figure&nbsp;1: Snapshot of the raw text file in text editor.
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
