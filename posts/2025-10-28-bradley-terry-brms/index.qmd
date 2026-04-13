@@ -3,7 +3,7 @@ title: "Bradley--Terry Models and Pairwise Comparisons in brms"
 author: "Michael Flynn"
 date: "2025-10-28"
 description: "This is a short primer on how to run a Bradley-Terry Model for pairwise comparisons using brms in R."
-draft: true
+draft: false
 categories:
   - blogging
   - data analysis
