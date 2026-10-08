@@ -19,8 +19,12 @@ website:
         text: Minerva
       - href: book.qmd 
         text: Book
-      - href: software.qmd
-        text: Software
+      - text: Software
+        menu:
+          - text: "Software Packages"
+            href: software.qmd
+          - text: "{troopdata} Explorer"
+            href: troopdata-dashboard.qmd
       - text: Teaching
         menu:
           - text: "General"

@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Michael Flynn">
-<meta name="dcterms.date" content="2021-03-03">
 
-<title>Hurdle lognormal distribution densities? – Michael E. Flynn</title>
+<title>{troopdata} Explorer – Michael E. Flynn</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -28,61 +26,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="../../library/quarto-nav/quarto-nav.js"></script>
-<script src="../../library/quarto-nav/headroom.min.js"></script>
-<script src="../../library/clipboard/clipboard.min.js"></script>
-<script src="../../library/quarto-search/autocomplete.umd.js"></script>
-<script src="../../library/quarto-search/fuse.min.js"></script>
-<script src="../../library/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../library/quarto-html/quarto.js" type="module"></script>
-<script src="../../library/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../library/quarto-html/popper.min.js"></script>
-<script src="../../library/quarto-html/tippy.umd.min.js"></script>
-<script src="../../library/quarto-html/anchor.min.js"></script>
-<link href="../../library/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../library/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../library/bootstrap/bootstrap.min.js"></script>
-<link href="../../library/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../library/bootstrap/bootstrap-047f5d999b863a7db5f3347ec1cac57e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../library/quarto-nav/quarto-nav.js"></script>
+<script src="../library/quarto-nav/headroom.min.js"></script>
+<script src="../library/clipboard/clipboard.min.js"></script>
+<script src="../library/quarto-search/autocomplete.umd.js"></script>
+<script src="../library/quarto-search/fuse.min.js"></script>
+<script src="../library/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../library/quarto-html/quarto.js" type="module"></script>
+<script src="../library/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../library/quarto-html/popper.min.js"></script>
+<script src="../library/quarto-html/tippy.umd.min.js"></script>
+<script src="../library/quarto-html/anchor.min.js"></script>
+<link href="../library/quarto-html/tippy.css" rel="stylesheet">
+<link href="../library/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../library/bootstrap/bootstrap.min.js"></script>
+<link href="../library/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../library/bootstrap/bootstrap-047f5d999b863a7db5f3347ec1cac57e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -132,55 +95,24 @@ var sc_invisible=1;
 var sc_security="850f1a8e"; 
 </script>
 <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async=""></script>
-<noscript></noscript><meta name="twitter:title" content="Hurdle lognormal distribution densities? – Michael E. Flynn">
-<meta name="twitter:description" content="This is the academic website for Michael E. Flynn, associate professor of political science at Kansas State University.">
-<meta name="twitter:image" content="hurdle-lognormal-densities_files/figure-html/simulated-data-fig-1.png">
-<meta name="twitter:card" content="summary_large_image">
+<noscript></noscript><meta name="twitter:title" content="{troopdata} Explorer – Michael E. Flynn">
+<meta name="twitter:card" content="summary">
 </head><body class="nav-fixed quarto-light"><div class="statcounter"><a title="real time web
 analytics" href="https://statcounter.com/" target="_blank"><img class="statcounter" src="https://c.statcounter.com/5861296/0/850f1a8e/1/" alt="real time web analytics" referrerpolicy="no-referrer-when-downgrade"></a></div>
 <!-- End of Statcounter Code -->
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../../styles.scss">
+<link rel="stylesheet" href="../styles.scss">
 
 
 
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Michael E. Flynn</span>
     </a>
   </div>
@@ -191,19 +123,19 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../posts.html"> 
+    <a class="nav-link" href="../posts.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../minerva.html"> 
+    <a class="nav-link" href="../minerva.html"> 
 <span class="menu-text">Minerva</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../book.html"> 
+    <a class="nav-link" href="../book.html"> 
 <span class="menu-text">Book</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -212,11 +144,11 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-software">    
         <li>
-    <a class="dropdown-item" href="../../software.html">
+    <a class="dropdown-item" href="../software.html">
  <span class="dropdown-text">Software Packages</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../troopdata-dashboard.html">
+    <a class="dropdown-item" href="../dashboards/troopdata-dashboard.html">
  <span class="dropdown-text">{troopdata} Explorer</span></a>
   </li>  
     </ul>
@@ -227,17 +159,17 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-teaching">    
         <li>
-    <a class="dropdown-item" href="../../teaching.html">
+    <a class="dropdown-item" href="../teaching.html">
  <span class="dropdown-text">General</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../polsc-810-dashboard.html">
+    <a class="dropdown-item" href="../polsc-810-dashboard.html">
  <span class="dropdown-text">POLSC 810 Dashboard</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../../consulting.html"> 
+    <a class="nav-link" href="../consulting.html"> 
 <span class="menu-text">Consulting</span></a>
   </li>  
 </ul>
@@ -248,129 +180,39 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Hurdle lognormal distribution densities?</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">Blogging</div>
-                <div class="quarto-category">stats</div>
-              </div>
-                  </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Michael Flynn </p>
-            </div>
-    </div>
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">March 3, 2021</p>
-      </div>
-    </div>
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-layout-custom page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
-  <li><a href="#problem" id="toc-problem" class="nav-link" data-scroll-target="#problem">Problem</a></li>
-  <li><a href="#maybe-a-working-probability-density-function" id="toc-maybe-a-working-probability-density-function" class="nav-link" data-scroll-target="#maybe-a-working-probability-density-function">Maybe a working probability density function?</a></li>
-  </ul>
-</nav>
-    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
 
-
-
-
-
-<p>As a part of a larger project I’ve been working with BRMS and some models and family functions that are new to me. In particular, my work on troop deployments has made me think more about hurdle models. I’ve had some experience with zero-inflated models in the past, but haven’t spent a lot of time with hurdle models, specifically. Anyway, without going down the rabbit hole, I’ve been thinking about how to create probability density functions for some of these models. The <code>{countreg}</code> package contains some functions for hurdle negative binomial models, which got me thinking about building something similar for hurdle lognormal distributions. I’m really operating one the frontiers of my own experience/abilities, so I may be way off here, but let’s give this a shot and see if it works.</p>
-<section id="background" class="level1">
-<h1>Background</h1>
-<p>I work a lot with military deployment data. Typically these are country-year observations of the number of US military personnel stationed in various overseas locations (think Germany, Japan, etc.). So far most of our work has treated deployments as a predictor variable, but more recently we’ve started thinking more about modeling deployment levels themselves. In general, there tends to be a ton of skew in these data. For example, from 1990 forward the troop deployment data we have are more or less distributed like this:</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation . Values reflect what we see in our data.</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">&lt;-</span> <span class="fl">1e4</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>muval <span class="ot">=</span> <span class="fl">2.8</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sdval <span class="ot">=</span> <span class="fl">2.54</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>pival <span class="ot">=</span> <span class="fl">0.2</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>simvals <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, sims)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>simvals[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>)] <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, sims<span class="sc">*</span><span class="fl">0.2</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>simvals[<span class="fu">c</span>(<span class="dv">2001</span><span class="sc">:</span><span class="dv">10000</span>)] <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(sims<span class="sc">*</span><span class="fl">0.8</span>, <span class="at">meanlog =</span> muval, <span class="at">sdlog =</span> sdval)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log1p</span>(simvals), <span class="at">breaks =</span> <span class="dv">200</span>, <span class="at">main =</span> <span class="st">"Distribution of Simulated Troop Data"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="hurdle-lognormal-densities_files/figure-html/simulated-data-fig-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
-</figure>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">{troopdata} Explorer</h1>
 </div>
-</div>
-</div>
-<p>We’ve got about 20% zero values, and the non-zero values have a median of 16 and a mean of about 1,700. Conceivably every country <em>could</em> receive deployments, but some are highly unlikely to (e.g.&nbsp;North Korea). But even countries that do host US personnel tend to host very small deployments, as you can see by the relatively small median value. The mean is dragged upwards by large, long-standing legacy deployments in places like Germany, Japan, and South Korea.</p>
-</section>
-<section id="problem" class="level1">
-<h1>Problem</h1>
-<p>I’m glossing over a lot of the details here, but working on this has prompted me to think more about using hurdle models (like I already said). Yada yada yada, this has led me to think about what a probability density function for a hurdle model looks like. The <code>{stats}</code> package in <code>R</code> comes with a set of functions for handling lognormal distributions, but doesn’t appear to have anything to handle hurdle variants. Riffing off of the aforementioned <code>{countreg}</code> package, this is my attempt to create something comparable for hurdle lognormal distributions (I couldn’t find one with Elaine).</p>
-<div class="tenor-gif-embed" data-postid="5569195" data-share-method="host" data-width="100%" data-aspect-ratio="1.4821428571428572">
-<a href="https://tenor.com/view/seinfeld-jason-alexander-george-costanza-yada-yada-yada-pissed-gif-5569195">Seinfeld Jason Alexander GIF</a> from <a href="https://tenor.com/search/seinfeld-gifs">Seinfeld GIFs</a>
-</div>
-<script type="text/javascript" async="" src="https://tenor.com/embed.js"></script>
-</section>
-<section id="maybe-a-working-probability-density-function" class="level1">
-<h1>Maybe a working probability density function?</h1>
-<p>This is my shot at creating a probability density function…umm…function. I started with the builtin <code>dlnorm()</code> function, but the problem is that it only accepts positive values. If we have a lot of data that are failing to cross that hurdle (i.e.&nbsp;0 values) then this doesn’t really work. I think the solution is to insert an argument that details the propotion/probability of 0 values in the data (i.e.&nbsp;the <code>pval</code> argument). For non-zero values we have to first get the probability using <code>dlnorm()</code>. Once we generate the probability value for the <code>x</code> value using <code>dlnorm()</code> we then have to weight that probability value by the proportion of non-zero values in the data. In this case we enter a <code>pval</code> argument of 0.2 since 20% of the data are 0s, but when we calculate the probability for some values &gt; 0 we want to make sure that’s weighted by 0.8 since 80% of observations are &gt; 0. So really this is <span class="math inline">\(1 - pval\)</span>. If <code>x</code> equals zero then the probability should (I think?) just default to the <code>pval</code> argument.</p>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dhlnorm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, meanlog, sdlog, pval) {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    value <span class="ot">&lt;-</span> <span class="fu">dlnorm</span>(x, <span class="at">meanlog =</span> meanlog, <span class="at">sdlog =</span> sdlog, <span class="at">log =</span> <span class="cn">FALSE</span>) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">-</span>pval)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(value)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    value <span class="ot">&lt;-</span> pval</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(value)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">dhlnorm</span>(<span class="dv">3</span>, <span class="at">meanlog =</span> muval, <span class="at">sdlog =</span> sdval, <span class="at">pval =</span> <span class="fl">0.2</span>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(prob)</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.03346686</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Again, this is very much on the frontiers of my experience, so if anyone has any feedback I’d appreciate it. I have some potential applications in mind, so this is more than just running down a rabbit hole. I promise.</p>
 
 
-</section>
 
-</main> <!-- /main -->
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+  #quarto-content > * { padding-top: 0 !important; padding-bottom: 0 !important; }
+  #dashboard-frame { width: 100%; height: calc(100vh - 64px); border: 0; display: block; }
+</style>
+<iframe id="dashboard-frame" src="./dashboards/troopdata-explorer.html" title="{troopdata} Dashboard"></iframe>
+
+
+
+
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
