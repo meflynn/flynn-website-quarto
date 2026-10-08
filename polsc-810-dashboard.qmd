@@ -10,6 +10,6 @@ page-layout: custom
   #dashboard-frame { width: 100%; height: calc(100vh - 64px); border: 0; display: block; }
 </style>
 <iframe id="dashboard-frame"
-        src="polsc810-data-dashboard.html"
+        src="dashboards/polsc810-data-dashboard.html"
         title="POLSC/HIST 810 Data Dashboard"></iframe>
 ```
