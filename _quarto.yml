@@ -21,8 +21,12 @@ website:
         text: Book
       - href: software.qmd
         text: Software
-      - href: teaching.qmd
-        text: Teaching
+      - text: Teaching
+        menu:
+          - text: "General"
+            href: teaching.qmd
+          - text: "POLSC 810 Dashboard"
+            href: polsc-810-dashboard.html
       - href: consulting.qmd
         text: Consulting
 

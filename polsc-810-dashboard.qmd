@@ -1,0 +1,15 @@
+---
+title: "POLSC 810 Dashboard"
+format: html
+page-layout: custom
+---
+
+```{=html}
+<style>
+  #quarto-content > * { padding-top: 0 !important; padding-bottom: 0 !important; }
+  #dashboard-frame { width: 100%; height: calc(100vh - 64px); border: 0; display: block; }
+</style>
+<iframe id="dashboard-frame"
+        src="polsc810-data-dashboard.html"
+        title="POLSC/HIST 810 Data Dashboard"></iframe>
+```
